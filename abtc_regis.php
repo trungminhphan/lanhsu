@@ -99,7 +99,9 @@ switch ($update) {
 				<select name="id_tinhtrang" id="id_tinhtrang" class="select2">
 				<?php
 				foreach($arr_tinhtrang as $key => $value){
-					echo '<option value="'.$key.'">'.$value.'</option>';
+					if($key > 0){
+						echo '<option value="'.$key.'">'.$value.'</option>';
+					}
 				}
 				?>
 				</select>

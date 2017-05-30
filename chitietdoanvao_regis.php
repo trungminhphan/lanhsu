@@ -5,6 +5,16 @@ $dmdoanvao = new DMDoanVao();
 $id = isset($_GET['id']) ? $_GET['id'] : '';
 $doanvao_regis->id = $id; $dv = $doanvao_regis->get_one();
 ?>
+<script type="text/javascript">
+	$(document).ready(function(){
+		$(".xoadangky").click(function(){
+			_link = $(this).attr("href"); _this = $(this);
+			$.get(_link, function(d){
+				_this.parent("li").remove();
+			});
+		});
+	});
+</script>
 <h1><a href="doanvao_regis.php" class="nav-button transform"><span></span></a>&nbsp;Đăng ký - Chi tiết Đoàn Vào</h1>
 <div class="padding10 align-center"><h3>Mã số hồ sơ: <b><?php echo $dv['masohoso']; ?></b></h3></div>
 <div class="grid example">
@@ -60,8 +70,12 @@ $doanvao_regis->id = $id; $dv = $doanvao_regis->get_one();
 		<h3>Tình trạng xử lý</h3>
 			<u>
 			<?php
-			foreach($dv['status'] as $t){
-				echo '<li>'.date("d/m/Y", $t['date_post']->sec) . ' - '. $arr_tinhtrang[$t['t']].' ['.$t['noidung'].']</li>';
+			foreach($dv['status'] as $k => $t){
+				if($t['t'] == 0) {
+					echo '<li>'.date("d/m/Y", $t['date_post']->sec) . ' - '. $arr_tinhtrang[$t['t']].' ['.$t['noidung'].']</li>';
+				} else {
+					echo '<li>'.date("d/m/Y", $t['date_post']->sec) . ' - '. $arr_tinhtrang[$t['t']].' ['.$t['noidung'].'] <a href="get.xoadangkytructuyen.php?id='.$dv['_id'].'&act=doanvao&key='.$k.'" class="xoadangky" onclick="return false;"><span class="mif-bin"></span></a></li>';
+				}
 			}
 			?>
 			</u>

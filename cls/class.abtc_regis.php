@@ -45,7 +45,7 @@ class ABTC_Regis{
 			'ghichu' => $this->ghichu,
 			'giaytolienquan' => $this->giaytolienquan,
 			'date_post' => new MongoDate(),
-			'status' => array(),
+			'status' => array($this->status),
 			'id_user' => new MongoId($this->id_user));
 		return $this->_collection->insert($query);
 	}
@@ -85,6 +85,14 @@ class ABTC_Regis{
 		$query = array('$push' => array('status' => array('$each' => array($this->status), '$position' => 0)));
 		$condition = array('_id' => new MongoId($this->id));
 		return $this->_collection->update($condition, $query);
+	}
+
+	public function pull_status($key){
+		$query = array('$unset' => array('status.'.$key => true));
+		$condition = array('_id' => new MongoId($this->id));
+		$this->_collection->update($condition, $query);
+		$query_1 = array('$pull' => array('status' => null));
+		return $this->_collection->update($condition, $query_1);
 	}
 }
 

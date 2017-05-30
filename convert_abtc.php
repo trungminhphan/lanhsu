@@ -103,10 +103,9 @@ if(isset($_POST['submit'])){
 	$abtc->giaytolienquan = $giaytolienquan;
 	$abtc->ghichu = $ghichu;
 	$abtc->id_user = $id_user;
-	
 	if($abtc->convert()){
-		$abtc_regis->id = $id;
-		$abtc_regis->set_status(1);
+		//$abtc_regis->id = $id;
+		//$abtc_regis->set_status(1);
 		transfers_to('abtc_regis.php?update=insert_ok');
 	} else {
 		$msg='Không thể xử lý';

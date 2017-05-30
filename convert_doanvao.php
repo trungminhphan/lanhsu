@@ -2,6 +2,7 @@
 require_once('header.php');
 $doanvao_regis = new DoanVao_Regis();
 $doanvao = new DoanVao();$canbo = new CanBo(); $donvi = new DonVi(); $chucvu = new ChucVu();
+$mucdich = new MucDich();
 $id_regis = isset($_GET['id']) ? $_GET['id'] : '';
 $act = isset($_GET['act']) ? $_GET['act'] : '';
 $query = array('$or' => array(array('_id' => new MongoId('56f20d64af62da9792157931')), array('_id' => new MongoId('56f20d64af62da97921579cb'))));
@@ -12,6 +13,7 @@ $id_donvi_tiep=''; $id_donvi_duocphep = '56f20d64af62da9792157931'; $id_donvi_ch
 
 if(isset($_POST['submit'])){
 	$id_dmdoanvao = isset($_POST['id_dmdoanvao']) ? $_POST['id_dmdoanvao'] : '';
+	$id_mucdich = isset($_POST['id_mucdich']) ? $_POST['id_mucdich'] : '';
 	$masohoso = isset($_POST['masohoso']) ? $_POST['masohoso'] : '';
 	$id_donvi_xinphep_1 = isset($_POST['id_donvi_xinphep_1']) ? $_POST['id_donvi_xinphep_1'] : '';
 	$id_donvi_xinphep_2 = isset($_POST['id_donvi_xinphep_2']) ? $_POST['id_donvi_xinphep_2'] : '';
@@ -108,6 +110,7 @@ if(isset($_POST['submit'])){
 	$doanvao->id = $id;
 	$doanvao->masohoso = $masohoso;
 	$doanvao->id_dmdoanvao = $id_dmdoanvao;
+	$doanvao->id_mucdich = $id_mucdich;
 	$doanvao->congvanxinphep = $congvanxinphep;
 	$doanvao->quyetdinhchophep = $quyetdinhchophep;
 	$doanvao->quyetdinhchophep_2 = $quyetdinhchophep_2;
@@ -119,8 +122,8 @@ if(isset($_POST['submit'])){
 	$doanvao->ghichu = $ghichu;
 	$doanvao->id_user = $users->get_userid();
 	if($doanvao->convert()){
-		$doanvao_regis->id = $id;
-		$doanvao_regis->set_status(1);
+		//$doanvao_regis->id = $id;
+		//$doanvao_regis->set_status(1);
 		transfers_to('doanvao_regis.php?update=convert_ok');
 	} else {
 		$msg = 'Không thể xử lý hồ sơ';
@@ -131,6 +134,7 @@ if($id_regis){
 	$doanvao_regis->id = $id_regis; $dv = $doanvao_regis->get_one();
 	$id = $dv['_id'];
 	$id_dmdoanvao = $dv['id_dmdoanvao'];
+	$id_mucdich = isset($dv['id_mucdich']) ? $dv['id_mucdich'] : '';
 	if($dv['congvanxinphep']['id_donvi'][0]){
 		$donvi->id = $dv['congvanxinphep']['id_donvi'][0];
 		$donvi_list_one = $donvi->get_one();
@@ -152,6 +156,7 @@ if($id_regis){
 	//$ngaybanhanhquyetdinhchophep_2 = (isset($dv['quyetdinhchophep_2']['ngaybanhanh']) && $dv['quyetdinhchophep_2']['ngaybanhanh']) ? date("d/m/Y", $dv['quyetdinhchophep_2']['ngaybanhanh']->sec) : '';
 	//$danhsachdoan = $dv['danhsachdoan'];
 	//$danhsachdoan_2 = isset($dv['danhsachdoan_2']) ? $dv['danhsachdoan_2'] : '';
+
 	$ngayden = $dv['ngayden'] ? date("d/m/Y", $dv['ngayden']->sec)  : '';
 	$ngaydi = $dv['ngaydi'] ? date("d/m/Y", $dv['ngaydi']->sec)  : '';
 	$noidung = $dv['noidung'];$ghichu = $dv['ghichu'];
@@ -468,13 +473,29 @@ $(document).ready(function(){
 		?>
 	</div>
 	<div class="row cells12">
-		<div class="cell colspan2 padding-top-10 align-right"><b>5. Nội dung</b></div>	
+		<div class="cell colspan2 padding-top-10 align-right"><b>5. Mục đích</b></div>
+		<div class="cell colspan4 input-control select">
+		<select name="id_mucdich" id="id_mucdich" class="select2">
+			<option value="">Chọn mục đích</option>
+			<?php
+			$mucdich_list = $mucdich->get_all_list();
+			if($mucdich_list){
+				foreach ($mucdich_list as $md) {
+					echo '<option value="'.$md['_id'].'"'.($md['_id']==$id_mucdich ? ' selected' : '').'>'.$md['ten'].'</option>';
+				}
+			}
+			?>
+		</select>
+		</div>
+	</div>
+	<div class="row cells12">
+		<div class="cell colspan2 padding-top-10 align-right"><b>6. Nội dung</b></div>	
 		<div class="cell colspan10 input-control textarea">
 			<textarea name="noidung" id="noidung" placeholder="Nội dung"><?php echo isset($noidung) ? $noidung : ''; ?></textarea>
 		</div>
 	</div>
 	<div class="row cells12">
-		<div class="cell colspan2 padding-top-10 align-right"><b>6. Ghi chú</b></div>	
+		<div class="cell colspan2 padding-top-10 align-right"><b>7. Ghi chú</b></div>	
 		<div class="cell colspan10 input-control textarea">
 			<textarea name="ghichu" id="ghichu" placeholder="Ghi chú"><?php echo isset($ghichu) ? $ghichu : ''; ?></textarea>
 		</div>

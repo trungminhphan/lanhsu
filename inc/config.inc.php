@@ -49,7 +49,7 @@
 
 	$arr_tinhtrang = array(
 		0 => 'Đang xử lý',
-		1 => 'Đang trình Giám đốc Sở Ngoại vụ ký',
+		1 => 'Chờ bổ sung hồ sơ',
 		2 => 'Đang trình UBND ký',
 		3 => 'Hoàn tất hồ sơ',
 		4 => 'Hồ sơ không được duyệt'

@@ -9,6 +9,7 @@ class DoanVao_Regis{
 	public $masohoso = '';
 	public $congvanxinphep = array(); //id_donvi, ten, attachments = array(alias_name, filename, filetype), ngayky.
 	public $id_dmdoanvao = '';
+	public $id_mucdich = ''; //mục đích chuyến đipublic $id_mucdich = ''; //mục đích chuyến đi
 	public $ngaydi = '';
 	public $noidung = ''; //noi dung lam viec
 	public $danhsachdoan = array(); //id_canbo, id_donvi, id_chucvu
@@ -30,12 +31,13 @@ class DoanVao_Regis{
 			'masohoso' => $this->masohoso,
 			'congvanxinphep' => $this->congvanxinphep,
 			'id_dmdoanvao' => new MongoId($this->id_dmdoanvao),
+			'id_mucdich' => new MongoId($this->id_mucdich),
 			'ngayden' => $this->ngayden,
 			'ngaydi' => $this->ngaydi,
 			'noidung' => $this->noidung,
 			'ghichu' => $this->ghichu,
 			'date_post' => new MongoDate(),
-			'status' => array(),
+			'status' => array($this->status),
 			'hanxuly' => $this->hanxuly,
 			'ngayxuly' => $this->ngayxuly,
 			'id_user' => new MongoId($this->id_user));
@@ -90,6 +92,14 @@ class DoanVao_Regis{
 		$query = array('$push' => array('status' => array('$each' => array($this->status), '$position' => 0)));
 		$condition = array('_id' => new MongoId($this->id));
 		return $this->_collection->update($condition, $query);
+	}
+
+	public function pull_status($key){
+		$query = array('$unset' => array('status.'.$key => true));
+		$condition = array('_id' => new MongoId($this->id));
+		$this->_collection->update($condition, $query);
+		$query_1 = array('$pull' => array('status' => null));
+		return $this->_collection->update($condition, $query_1);
 	}
 
 	

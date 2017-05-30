@@ -3,7 +3,7 @@ class Users_Regis{
 	const COLLECTION = 'users_regis';
 	private $_mongo;
 	private $_collection;
-
+	
 	public $id = '';
 	public $email = '';
 	public $password = '';

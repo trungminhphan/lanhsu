@@ -50,21 +50,29 @@ if(isset($_POST) and $_SERVER['REQUEST_METHOD'] == "POST"){
 					$extension = pathinfo($name, PATHINFO_EXTENSION);
 					$alias = md5($name);
 					$alias_name = $alias . '_'. date("Ymdhms") . '.' . $extension;
-		            if(move_uploaded_file($_FILES["dinhkem_filecongvanxinphep"]["tmp_name"][$f], $target_files.$alias_name))
-		            $count++; // Number of successfully uploaded file
-		        	echo '<div class="row cells12" style="padding:0px 0px 10px 0px;margin:0px;">';
-						echo '<div class="cell colspan2"></div>';
-						echo '<div class="cell colspan10 input-control text">';
-							echo '<input type="hidden" name="congvanxinphep_alias_name[]" value="'.$alias_name.'" readonly/>';
-							echo '<input type="hidden" name="congvanxinphep_filetype[]" value="'.$extension.'" readonly/>';
-							echo '<span class="mif-attachment prepend-icon"></span>';
-							echo '<input type="text" name="congvanxinphep_filename[]" value="'.$ten_dinh_kem.'" class="bg-grayLighter" style="padding-left:50px;"/>';
-							echo '<div class="button-group">';
-								echo '<a href="get.xoataptin.php?filename='.$alias_name.'" onclick="return false;" class="delete_file button"><span class="mif-cross fg-red"></span></a>';
-								echo '<a href="'.$target_files.$alias_name.'" class="button" target="_blank"><span class="mif-file-download fg-blue"></span></a>';
+		            if(move_uploaded_file($_FILES["dinhkem_filecongvanxinphep"]["tmp_name"][$f], $target_files.$alias_name)){
+			            $count++; // Number of successfully uploaded file
+			        	echo '<div class="row cells12" style="padding:0px 0px 10px 0px;margin:0px;">';
+							echo '<div class="cell colspan2"></div>';
+							echo '<div class="cell colspan10 input-control text">';
+								echo '<input type="hidden" name="congvanxinphep_alias_name[]" value="'.$alias_name.'" readonly/>';
+								echo '<input type="hidden" name="congvanxinphep_filetype[]" value="'.$extension.'" readonly/>';
+								echo '<span class="mif-attachment prepend-icon"></span>';
+								echo '<input type="text" name="congvanxinphep_filename[]" value="'.$ten_dinh_kem.'" class="bg-grayLighter" style="padding-left:50px;"/>';
+								echo '<div class="button-group">';
+									echo '<a href="get.xoataptin.php?filename='.$alias_name.'" onclick="return false;" class="delete_file button"><span class="mif-cross fg-red"></span></a>';
+									echo '<a href="'.$target_files.$alias_name.'" class="button" target="_blank"><span class="mif-file-download fg-blue"></span></a>';
+								echo '</div>';
 							echo '</div>';
 						echo '</div>';
-					echo '</div>';
+					} else {
+						echo '<div class="info row cells12" style="padding:0px 0px 10px 0px;">';
+						echo '<div class="cell colspan2"></div>';
+						echo '<div class="cell colspan10 input-control text">';
+						echo '<div class="bg-red padding10 fg-white"><span class="mif-blocked"></span> Không đủ bộ nhớ để upload, vui lòng chọn lại ít tập tin hơn</div>';
+						echo '</div>';
+						echo '</div>';
+					}
 		        }
 		    }
 		}
