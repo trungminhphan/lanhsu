@@ -28,13 +28,15 @@ class VanBanPhapQuy{
 	public function get_list_condition($condition){
 		return $this->_collection->find($condition)->sort(array('date_post'=> -1));
 	}
-	public function get_list_limit($limit){
-		return $this->_collection->find($condition)->sort(array('date_post'=> -1))->limit($limit);	
+
+	public function get_list_limit(){
+		//return $this->_collection->find()->sort(array('date_post'=> -1));
+		return $this->_collection->find()->sort(array('date_post'=> -1));
 	}
 
 	public function insert(){
 		$query = array(
-			'id_linhvuc' => $this->id_linhvuc ? new MongoId($this->id_linhvuc) : '',
+			'id_linhvuc' => $this->id_linhvuc,
 			'loaivanban' => $this->loaivanban,
 			'id_coquanbanhanh' => $this->id_coquanbanhanh ? new MongoId($this->id_coquanbanhanh) : '',
 			'sovanban' => $this->sovanban,
@@ -49,7 +51,7 @@ class VanBanPhapQuy{
 
 	public function edit(){
 		$query = array( '$set' => array(
-			'id_linhvuc' => $this->id_linhvuc ? new MongoId($this->id_linhvuc) : '',
+			'id_linhvuc' => $this->id_linhvuc,
 			'loaivanban' => $this->loaivanban,
 			'id_coquanbanhanh' => $this->id_coquanbanhanh ? new MongoId($this->id_coquanbanhanh) : '',
 			'sovanban' => $this->sovanban,

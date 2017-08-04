@@ -35,6 +35,10 @@ class Users_Regis{
 						'password' => md5($this->password),
 						'status' => intval($this->status),
 						'canbo' => $this->canbo,
+						'hoten' => $this->hoten,
+						'donvi' => $this->donvi,
+						'chucvu' => $this->chucvu,
+						'dienthoai' => $this->dienthoai,
 						'date_post' => new MongoDate(),
 						'id_user' => new MongoId($this->id_user));
 		return $this->_collection->insert($query);
@@ -58,6 +62,24 @@ class Users_Regis{
 						'password' => md5($this->password),
 						'status' => intval($this->status),
 						'canbo' => $this->canbo,
+						'hoten' => $this->hoten,
+						'donvi' => $this->donvi,
+						'chucvu' => $this->chucvu,
+						'dienthoai' => $this->dienthoai,
+						'id_user' => $this->id_user ? new MongoId($this->id_user) : ''));
+
+		$condition = array('_id' => new MongoId($this->id));
+		return $this->_collection->update($condition, $query);
+	}
+
+	public function edit_non_pass(){
+		$query = array('$set' => array(
+						'status' => intval($this->status),
+						'canbo' => $this->canbo,
+						'hoten' => $this->hoten,
+						'donvi' => $this->donvi,
+						'chucvu' => $this->chucvu,
+						'dienthoai' => $this->dienthoai,
 						'id_user' => $this->id_user ? new MongoId($this->id_user) : ''));
 
 		$condition = array('_id' => new MongoId($this->id));

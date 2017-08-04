@@ -94,6 +94,12 @@ class DoanVao_Regis{
 		return $this->_collection->update($condition, $query);
 	}
 
+	public function edit_trinhtrang($key){
+		$query = array('$set' => array('status.'.$key => $this->status));
+		$condition = array('_id' => new MongoId($this->id));
+		return $this->_collection->update($condition, $query);
+	}
+
 	public function pull_status($key){
 		$query = array('$unset' => array('status.'.$key => true));
 		$condition = array('_id' => new MongoId($this->id));

@@ -80,6 +80,12 @@ class ABTC_Regis{
 		else return 1;
 	}
 
+	public function edit_trinhtrang($key){
+		$query = array('$set' => array('status.'.$key => $this->status));
+		$condition = array('_id' => new MongoId($this->id));
+		return $this->_collection->update($condition, $query);
+	}
+
 	public function push_tinhtrang(){
 		//$query = array('$push' => array('status' => $this->status));
 		$query = array('$push' => array('status' => array('$each' => array($this->status), '$position' => 0)));

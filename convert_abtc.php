@@ -24,8 +24,9 @@ if(isset($_POST['submit'])){
 	if($congvanxinphep_alias_name){
 		foreach ($congvanxinphep_alias_name as $key => $value) {
 			array_push($filecongvanxinphep, array('alias_name' => $value, 'filename' => $congvanxinphep_filename[$key], 'filetype'=>$congvanxinphep_filetype[$key]));
-			if(file_exists($folder_regis.$target_files_regis . $value)){
-				copy($folder_regis.$target_files_regis . $value, $target_files . $value);
+			if(file_exists($copy_source . $value)){
+				//copy($folder_regis.$target_files_regis . $value, $target_files . $value);
+				copy($$copy_source . $value, $copy_desc . $value);
 			}
 		}
 	}
@@ -74,7 +75,6 @@ if(isset($_POST['submit'])){
 											'ngayhethan' => $ngayhethan[$k] ? new MongoDate(convert_date_dd_mm_yyyy($ngayhethan[$k])) : ''));
 		}
 	}
-
 	$giaytolienquan = array();
 	$giaytolienquan_alias_name = isset($_POST['giaytolienquan_alias_name']) ? $_POST['giaytolienquan_alias_name'] : '';
 	$giaytolienquan_filename = isset($_POST['giaytolienquan_filename']) ? $_POST['giaytolienquan_filename'] : '';
@@ -83,8 +83,8 @@ if(isset($_POST['submit'])){
 	if($giaytolienquan_alias_name){
 		foreach ($giaytolienquan_alias_name as $key => $value) {
 			array_push($giaytolienquan, array('order'=>$giaytolienquan_key[$key], 'alias_name' => $value, 'filename' => $giaytolienquan_filename[$key], 'filetype'=>$giaytolienquan_filetype[$key]));
-			if(file_exists($folder_regis.$target_files_regis . $value)){
-				copy($folder_regis.$target_files_regis . $value, $target_files . $value);
+			if(file_exists($copy_source . $value)){
+				copy($$copy_source . $value, $copy_desc . $value);				
 			}
 		}
 	}

@@ -20,6 +20,16 @@ class LinhVuc{
 		return $this->_collection->find()->sort(array('ten'=> 1));
 	}
 
+	public function get_linhvuc($arr){
+		$arr_linhvuc = array();
+		foreach($arr as $a){
+			$this->id = $a;
+			$lv = $this->get_one();
+			$arr_linhvuc[] = $lv['ten'];
+		}
+		return implode(", ", $arr_linhvuc);
+	}
+
 	public function insert(){
 		return $this->_collection->insert(array('ten'=> trim($this->ten),'id_user' => new MongoId($this->id_user)));
 	}

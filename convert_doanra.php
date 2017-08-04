@@ -28,8 +28,9 @@ if(isset($_POST['submit'])){
 	if($congvanxinphep_alias_name){
 		foreach ($congvanxinphep_alias_name as $key => $value) {
 			array_push($filecongvanxinphep, array('alias_name' => $value, 'filename' => $congvanxinphep_filename[$key], 'filetype'=>$congvanxinphep_filetype[$key]));
-			if(file_exists($folder_regis.$target_files_regis . $value)){
-				copy($folder_regis.$target_files_regis . $value, $target_files . $value);
+			if(file_exists($copy_source . $value)){
+				//copy($folder_regis.$target_files_regis . $value, $target_files . $value);
+				copy($$copy_source . $value, $copy_desc . $value);
 			}
 		}
 	}

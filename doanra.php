@@ -47,7 +47,7 @@ if($update == 'no') $msg = 'Không thể xoá';
 			} else { $tentruongdoan = '';}
 			echo '<tr>';
 			echo '<td>'.$i.'</td>';
-			echo '<td>'.$tentruongdoan.'</td>';
+			echo '<td><a href="chitietdoanra.php?id='.$dr['_id'].'">'.$tentruongdoan.'</a></td>';
 			echo '<td>'.($dr['ngaydi'] ? date("d/m/Y",$dr['ngaydi']->sec) : '').'</td>';
 			echo '<td>'.($dr['ngayve'] ? date("d/m/Y",$dr['ngayve']->sec) : '').'</td>';
 			echo '<td>'.$dr['congvanxinphep']['ten'].'</td>';

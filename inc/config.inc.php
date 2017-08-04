@@ -36,21 +36,23 @@
 	$target_files_regis = 'uploads_regis/';
 	$folder_regis = '../lanhsuthutuc/';
 	$target_images = 'uploads/images/';
-	$target_files_public = '../lanhsuthutuc/uploads/';
+	$target_files_public = '/var/www/html/lanhsuthutuc/uploads/';
+	$target_files_public_link = '../lanhsuthutuc/uploads/';
 	$folder_files_public = 'uploads/';
+	$copy_source = '/var/www/html/lanhsuthutuc/uploads_regis/';
+	$copy_desc = '/var/www/html/lanhsu/uploads/';
 	$files_extension = array('pdf', 'zip', 'rar', 'doc', 'docx', 'xls', 'png', 'gif', 'jpg', 'jpeg', 'bmp', 'rtf');
 	$images_extension = array('png', 'gif', 'jpg', 'jpeg', 'bmp');
 	$valid_formats = array("jpg", "png", "gif", "zip", "bmp", "doc", "docx", "pdf", "xls", "xlsx", "ppt", "pptx", 'zip', 'rar');
+	$valid_formats_pdf = array('pdf');
 	$max_file_size = 50*1024*1024*1024; //50MB
-	
 	$arr_giaytolienquan = array('1. Giấy chứng nhận đăng ký kinh doanh','2. Giấy đăng ký thuế', '3. Các hợp đồng kinh tế với đối tác APEC', '4. Hộ chiếu – Thẻ APEC (trường hợp gia hạn)', '5. Sổ Bảo hiểm xã hội', '6. Văn bản xác nhận nghĩa vụ thuế', '7. Các giấy tờ khác');
 	$arr_donvitien = array('AUD'=>'AUST.DOLLAR','CAD'=>'CANADIAN DOLLAR','CHF'=>'SWISS FRANCE','DKK'=>'DANISH KRONE','EUR'=>'EURO','GBP'=>'BRITISH POUND','HKD'=>'HONGKONG DOLLAR','INR'=>'INDIAN RUPEE','JPY'=>'JAPANESE YEN','KRW'=>'SOUTH KOREAN WON','KWD'=>'KUWAITI DINAR','MYR'=>'MALAYSIAN RINGGIT','NOK'=>'NORWEGIAN KRONER','RUB'=>'RUSSIAN RUBLE','SAR'=>'SAUDI RIAL','SEK'=>'SWEDISH KRONA','SGD'=>'SINGAPORE DOLLAR','THB'=>'THAI BAHT','USD'=>'US DOLLAR');
 	$arr_loaivanban = array('Xuất cảnh', 'Nhập cảnh', 'ABTC');
-
 	$arr_tinhtrang = array(
-		0 => 'Đang xử lý',
-		1 => 'Chờ bổ sung hồ sơ',
-		2 => 'Đang trình UBND ký',
+		0 => 'Đã nhận',
+		1 => 'Bổ sung hồ sơ',
+		2 => 'Trình UBND tỉnh',
 		3 => 'Hoàn tất hồ sơ',
 		4 => 'Hồ sơ không được duyệt'
 	);

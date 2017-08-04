@@ -62,8 +62,8 @@ if(isset($_POST['submit'])){
 }
 if($id && $act == 'edit'){
 	$vanbanphapquy->id = $id; $vb = $vanbanphapquy->get_one();
-	$id_linhvuc = $vb['id_linhvuc'];
-	$loaivanban = $vb['loaivanban'];
+	$id_linhvuc = is_array($vb['id_linhvuc']) ? $vb['id_linhvuc'] : array($vb['id_linhvuc']);
+	$loaivanban = is_array($vb['loaivanban']) ? $vb['loaivanban'] : array($vb['loaivanban']);
 	$id_coquanbanhanh = $vb['id_coquanbanhanh'];
 	$sovanban = $vb['sovanban'];
 	$trichyeu = $vb['trichyeu'];
@@ -91,11 +91,11 @@ if($id && $act == 'edit'){
 	<div class="row cells12">
 		<div class="cell colspan2 padding-top-10">Lĩnh vực</div>
 		<div class="cell colspan4 input-control select">
-			<select name="id_linhvuc" id="id_linhvuc" class="select2">
+			<select name="id_linhvuc[]" id="id_linhvuc" class="select2" multiple="multiple">
 			<?php
 			if($linhvuc_list){
 				foreach ($linhvuc_list as $lv) {
-					echo '<option value="'.$lv['_id'].'"'.($lv['_id'] == $id_linhvuc ? ' selected' : '').'>'.$lv['ten'].'</option>';
+					echo '<option value="'.$lv['_id'].'"'.(in_array($lv['_id'],$id_linhvuc) ? ' selected' : '').'>'.$lv['ten'].'</option>';
 				}
 			}
 			?>
@@ -103,10 +103,10 @@ if($id && $act == 'edit'){
 		</div>
 		<div class="cell colspan2 padding-top-10">Loại văn bản</div>
 		<div class="cell colspan4 input-control select">
-			<select name="loaivanban" id="loaivanban" class="select2">
+			<select name="loaivanban[]" id="loaivanban" class="select2" multiple="multiple">
 			<?php
 			foreach ($arr_loaivanban as $lvb) {
-				echo '<option value="'.$lvb.'"'.($lvb == $loaivanban ? ' selected' : '').'>'.$lvb.'</option>';
+				echo '<option value="'.$lvb.'"'.(in_array($lvb,$loaivanban) ? ' selected' : '').'>'.$lvb.'</option>';
 			}
 			?>
 			</select>
