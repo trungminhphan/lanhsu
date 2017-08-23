@@ -17,6 +17,7 @@ if($update == 'no') $msg = 'Không thể xoá';
 </script>
 <h1><a href="index.php" class="nav-button transform"><span></span></a>&nbsp;Quản lý Đoàn Vào</h1>
 <a href="themdoanvao.php" class="button primary"><span class="mif-plus"></span> Thêm Quản lý Đoàn Vào</a>
+<a href="export_doanvao.php" class="button success"><span class="mif-file-excel"></span> Xuất Excel</a>
 <?php if($doanvao_list && $doanvao_list->count() > 0): ?>
 <table class="table striped hovered" id="doanvao_list">
 <thead>

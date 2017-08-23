@@ -97,11 +97,21 @@ $doanvao->id = $id; $dv = $doanvao->get_one();
 	</div>
 	<div class="row cells12">
 		<div class="cell colspan2">Mục đích:</div>
-		<div class="cell colspan10">
+		<div class="cell colspan4">
 		<?php
 			if(isset($dv['id_mucdich']) && $dv['id_mucdich']){
 				$mucdich->id = $dv['id_mucdich'];$md=$mucdich->get_one();
 				echo $md['ten'];
+			}
+		?>
+		</div>
+		<div class="cell colspan2">Lĩnh vực:</div>
+		<div class="cell colspan4">
+		<?php
+			if(isset($dv['id_linhvuc']) && $dv['id_linhvuc']){
+				$linhvuc = new LinhVuc();
+				$linhvuc->id = $dv['id_linhvuc'];$lv=$linhvuc->get_one();
+				echo $lv['ten'];
 			}
 		?>
 		</div>

@@ -1,6 +1,6 @@
 <?php
 require_once('header.php');
-$doanvao = new DoanVao();$canbo = new CanBo(); $donvi = new DonVi(); $chucvu = new ChucVu();$mucdich = new MucDich();
+$doanvao = new DoanVao();$canbo = new CanBo(); $donvi = new DonVi(); $chucvu = new ChucVu();$mucdich = new MucDich();$linhvuc = new Linhvuc();
 $id = isset($_GET['id']) ? $_GET['id'] : '';
 $act = isset($_GET['act']) ? $_GET['act'] : '';
 $update = isset($_GET['update']) ? $_GET['update'] : '';
@@ -8,7 +8,7 @@ $query = array('$or' => array(array('_id' => new MongoId('56f20d64af62da97921579
 $donvi = new DonVi();
 $donvi_list = $donvi->get_all_list();
 $donvi_list_capphep = $donvi->get_list_condition($query);
-$id_donvi_tiep=''; $id_donvi_duocphep = '56f20d64af62da9792157931'; $id_donvi_chophep = '56f20d64af62da97921579cb'; $id_dmdoanvao='';
+$id_donvi_tiep=''; $id_donvi_duocphep = '56f20d64af62da9792157931'; $id_donvi_chophep = '56f20d64af62da97921579cb'; $id_dmdoanvao='';$id_linhvuc='';
 if($id && $act=='del' && $users->is_admin()){
 	$doanvao->id = $id; $dv = $doanvao->get_one();
 	$doanvao->id_user = $users->get_userid();
@@ -40,7 +40,6 @@ switch ($update) {
 	case 'insert_no': $msg = 'Không thể thêm mới';  break;
 	default: $msg = ''; break;
 }
-
 if(isset($_POST['submit'])){
 	$id_dmdoanvao = isset($_POST['id_dmdoanvao']) ? $_POST['id_dmdoanvao'] : '';
 	$id_donvi_xinphep_1 = isset($_POST['id_donvi_xinphep_1']) ? $_POST['id_donvi_xinphep_1'] : '';
@@ -108,6 +107,7 @@ if(isset($_POST['submit'])){
 	$ngayden = isset($_POST['ngayden']) ? $_POST['ngayden'] : '';
 	$ngaydi = isset($_POST['ngaydi']) ? $_POST['ngaydi'] : '';
 	$id_mucdich = isset($_POST['id_mucdich']) ? $_POST['id_mucdich'] : '';
+	$id_linhvuc = isset($_POST['id_linhvuc']) ? $_POST['id_linhvuc'] : '';
 	$ghichu = isset($_POST['ghichu']) ? $_POST['ghichu'] : '';
 	$noidung = isset($_POST['noidung']) ? $_POST['noidung'] : '';
 	$id_canbo = isset($_POST['id_canbo']) ? $_POST['id_canbo'] : '';
@@ -142,6 +142,7 @@ if(isset($_POST['submit'])){
 	$doanvao->danhsachdoan = $danhsachdoan;
 	$doanvao->danhsachdoan_2 = $danhsachdoan_2;
 	$doanvao->id_mucdich = $id_mucdich;
+	$doanvao->id_linhvuc = $id_linhvuc;
 	$doanvao->noidung = $noidung;
 	$doanvao->ghichu = $ghichu;
 	$doanvao->id_user = $users->get_userid();
@@ -193,6 +194,7 @@ if($id){
 	$ngayden = $dv['ngayden'] ? date("d/m/Y", $dv['ngayden']->sec)  : '';
 	$ngaydi = $dv['ngaydi'] ? date("d/m/Y", $dv['ngaydi']->sec)  : '';
 	$id_mucdich = isset($dv['id_mucdich']) ? $dv['id_mucdich'] : '';
+	$id_linhvuc = isset($dv['id_linhvuc']) ? $dv['id_linhvuc'] : '';
 	$noidung = $dv['noidung'];$ghichu = $dv['ghichu'];
 }
 ?>
@@ -377,15 +379,14 @@ $(document).ready(function(){
 				$arr_cb = array();
 				if(isset($danhsachdoan) && $danhsachdoan){
 					foreach ($danhsachdoan as $key => $value) {
-						$canbo->id = $value['id_canbo']; $cbo = $canbo->get_one();
+						if(isset($value['id_canbo']) && $value['id_canbo']){
+							$canbo->id = $value['id_canbo']; $cbo = $canbo->get_one();
+							$member = $cbo['hoten'] . ' ['.$cbo['code'].']';
+							$id_cbo = $cbo['_id'];
+						} else { $member = ''; $id_cbo = '';}
 						$count = count($cbo['donvi']) - 1;						
-						//$donvi->id = $value['id_donvi'][0]; $dv = $donvi->get_one();
-						//$chucvu->id = $value['id_chucvu']; $cv = $chucvu->get_one();
-						if(isset($value['id_ham']) && $value['id_ham']) {$ham->id=$value['id_ham'];$h = $ham->get_one(); $tenham=$h['ten'];} else { $tenham='';}
-						//$member = $i .' - '. $cbo['code'] . ' - ' . $cbo['hoten'] .' - '.$dv['ten']. ' - ' .$tenham . ' '. $cv['ten'];
-						$member = $cbo['hoten'] . ' ['.$cbo['code'].']';
-
-						$v = $cbo['_id'] . '-' . implode(",", $value['id_donvi']) . '-' . $value['id_chucvu'] . '-'.$value['id_ham'];
+						//if(isset($value['id_ham']) && $value['id_ham']) { $ham->id=$value['id_ham'];$h = $ham->get_one(); $tenham=$h['ten'];} else { $tenham=''; }
+						$v = $id_cbo . '-' . implode(",", $value['id_donvi']) . '-' . $value['id_chucvu'] . '-'.$value['id_ham'];
 						echo '<option value="'.$v.'" selected>'.$member.'</option>';
 						array_push($arr_cb, $v);
 					}
@@ -515,6 +516,20 @@ $(document).ready(function(){
 			if($mucdich_list){
 				foreach ($mucdich_list as $md) {
 					echo '<option value="'.$md['_id'].'"'.($md['_id']==$id_mucdich ? ' selected' : '').'>'.$md['ten'].'</option>';
+				}
+			}
+			?>
+		</select>
+		</div>
+		<div class="cell colspan2 padding-top-10 align-right">Lĩnh vực</div>
+		<div class="cell colspan4 input-control select">
+		<select name="id_linhvuc" id="id_linhvuc" class="select2">
+			<option value="">Chọn lĩnh vực</option>
+			<?php
+			$linhvuc_list = $linhvuc->get_all_list();
+			if($linhvuc_list){
+				foreach ($linhvuc_list as $lv) {
+					echo '<option value="'.$lv['_id'].'"'.($lv['_id']==$id_linhvuc ? ' selected' : '').'>'.$lv['ten'].'</option>';
 				}
 			}
 			?>

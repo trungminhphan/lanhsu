@@ -13,6 +13,7 @@ class DoanVao{
 	public $ngaydi = '';
 	public $noidung = ''; //noi dung lam viec
 	public $id_mucdich = '';
+	public $id_linhvuc = '';
 	public $danhsachdoan = array(); //id_canbo, id_donvi, id_chucvu, id_ham
 	public $danhsachdoan_2 = array(); //id_canbo, id_donvi, id_chucvu, id_ham (danh sach nay co khi khong co quyet dinh...)
 	public $ghichu = '';
@@ -28,7 +29,7 @@ class DoanVao{
 		return $this->_collection->findOne(array('_id'=> new MongoId($this->id)));
 	}
 	public function get_all_list(){
-		return $this->_collection->find()->sort(array('_id'=> 1));
+		return $this->_collection->find()->sort(array('ngayden'=> -1, 'ngaydi' => -1));
 	}
 	public function get_list_condition($condition){
 		return $this->_collection->find($condition)->sort(array('_id'=> 1));
@@ -47,10 +48,11 @@ class DoanVao{
 						'danhsachdoan' => $this->danhsachdoan,
 						'danhsachdoan_2' => $this->danhsachdoan_2,
 						'id_mucdich' => $this->id_mucdich ? new MongoId($this->id_mucdich) : '',
+						'id_linhvuc' => $this->id_linhvuc ? new MongoId($this->id_linhvuc) : '',
 						'ghichu' => $this->ghichu,
 						'date_post' => new MongoDate(),
 						'id_user' => new MongoId($this->id_user));
-		//logs 
+		//logs
 		$logs = new Logs();
 		$logs->id = new MongoId();
 		$logs->action = 'ADD';
@@ -70,7 +72,7 @@ class DoanVao{
 	public function unset_danhsachdoan($danhsachdoan, $key){
 		$condition = array('_id' => new MongoId($this->id));
 		$query = array('$unset' => array($danhsachdoan .'.'. $key => true));
-		return $this->_collection->update($condition, $query);	
+		return $this->_collection->update($condition, $query);
 	}
 
 	public function unset_danhsachdoan_all($danhsachdoan){
@@ -82,7 +84,7 @@ class DoanVao{
 	public function pull_danhsachdoan($danhsachdoan, $key){
 		$condition = array('_id' => new MongoId($this->id));
 		$query = array('$pull' => array($danhsachdoan  => null));
-		return $this->_collection->update($condition, $query);	
+		return $this->_collection->update($condition, $query);
 	}
 
 	public function edit(){
@@ -99,10 +101,11 @@ class DoanVao{
 						'danhsachdoan' => $this->danhsachdoan,
 						'danhsachdoan_2' => $this->danhsachdoan_2,
 						'id_mucdich' => $this->id_mucdich ? new MongoId($this->id_mucdich) : '',
+						'id_linhvuc' => $this->id_linhvuc ? new MongoId($this->id_linhvuc) : '',
 						'ghichu' => $this->ghichu,
 						'id_user' => new MongoId($this->id_user)));
 		$condition = array('_id' => new MongoId($this->id));
-		
+
 		//logs
 		$logs = new Logs();
 		$logs->id = new MongoId();
@@ -143,7 +146,7 @@ class DoanVao{
 		$fields = array('_id' => true);
 		$result = $this->_collection->findOne($query, $fields);
 		if($result['_id']) return true;
-		else return false;	
+		else return false;
 	}
 
 	public function check_canbo_donvi($id_canbo, $id_donvi, $id_chucvu){
@@ -153,7 +156,7 @@ class DoanVao{
 		if($result['_id']) return true;
 		else return false;
 	}
-	
+
 	public function check_dm_ham($id_ham){
 		$query = array('danhsachdoan.id_ham' => new MongoId($id_ham));
 		$fields = array('_id' => true);
@@ -166,7 +169,7 @@ class DoanVao{
 		$fields = array('_id' => true);
 		$result = $this->_collection->findOne($query, $fields);
 		if($result['_id']) return true;
-		else return false;	
+		else return false;
 	}
 
 	public function check_dm_chucvu($id_chucvu){
@@ -176,7 +179,7 @@ class DoanVao{
 		if($result['_id']) return true;
 		else return false;
 	}
-	
+
 	public function get_union_list($start_date, $end_date){
 		$query = array();
 		array_push($query, array('ngayden' => array('$gte' => $start_date)));
@@ -206,7 +209,7 @@ class DoanVao{
 						'ghichu' => $this->ghichu,
 						'date_post' => new MongoDate(),
 						'id_user' => new MongoId($this->id_user));
-		//logs 
+		//logs
 		$logs = new Logs();
 		$logs->id = new MongoId();
 		$logs->action = 'ADD';
@@ -220,17 +223,17 @@ class DoanVao{
 		$query = array('id_user' => new MongoId($this->id_user));
 		return $this->_collection->count($query);
 	}
-	
+
 	public function check_timkiem($id_canbo){
 		$query = array('$or' => array(array('danhsachdoan.id_canbo' => new MongoId($id_canbo)), array('danhsachdoan_2.id_canbo' => new MongoId($id_canbo))));
 		$fields = array('_id' => true);
 		$result = $this->_collection->findOne($query, $fields);
 		if($result['_id']) return true;
-		else return false;	
+		else return false;
 	}
 
 	public function count_soluong($query){
-		return $this->_collection->find($query)->count();		
+		return $this->_collection->find($query)->count();
 	}
 }
 ?>

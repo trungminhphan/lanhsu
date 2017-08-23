@@ -1,7 +1,6 @@
 <?php
 require_once('header_none.php');
 require_once('cls/PHPExcel.php');
-
 $canbo = new CanBo();$doanvao=new DoanVao();$quocgia=new QuocGia();
 $id_canbo ='';$id_quocgia='';$id_kinhphi='';
 if(isset($_GET['submit'])){

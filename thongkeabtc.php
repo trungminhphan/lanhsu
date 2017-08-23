@@ -13,10 +13,12 @@ if(isset($_GET['submit'])){
 	}
 }
 ?>
+<script type="text/javascript" src="js/jquery.dataTables.min.js"></script>
 <script type="text/javascript" src="js/select2.min.js"></script>
 <script type="text/javascript" src="js/jquery.inputmask.js"></script>
 <script type="text/javascript">
 	$(document).ready(function(){
+		$("#abtc_list").dataTable();
 		$(".ngaythangnam").inputmask();
 		<?php if($msg) : ?>
         	$.Notify({type: 'alert', caption: 'Thông báo', content: '<?php echo $msg; ?>'});
@@ -57,7 +59,7 @@ if(isset($_GET['submit'])){
 <?php if(isset($union_list) && $union_list) : ?>
 <h4 class="align-center">THỐNG KÊ DOANH NHÂN SỬ DỤNG THẺ ABTC</h4>
 <h5 class="align-center">Từ ngày: <b><?php echo $tungay; ?></b> Đến ngày: <b><?php echo $denngay; ?></b></h5>
-<table class="table cell-hovered border bordered">
+<table class="table cell-hovered border bordered" id="abtc_list">
 <thead>
 	<tr>
 		<th>STT</th>
@@ -96,12 +98,14 @@ if(isset($_GET['submit'])){
 				echo '<td>'.$qg.'</td>';
 				echo '</tr>';
 				$i++;$sum_members++;
+				if($ds['sothe']) $sum_duoccap++; else $sum_khongcap++;
 			}
 		}
 	}
 	?>
 </tbody>
 </table>
+<hr style="clear:both;"/>
 <h4><span class="mif-checkmark"></span> Tổng số được cấp: <?php echo $sum_duoccap; ?></h4>
 <h4><span class="mif-cancel"></span> Tổng số không được cấp: <?php echo $sum_khongcap; ?></h4>
 <h4><span class="mif-users"></span> Tổng số doanh nhân: <?php echo $sum_members; ?></h4>

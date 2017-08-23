@@ -239,6 +239,7 @@ if($id){
 		$donvi->id = $dr['id_donvimoi'][0]; $list_donvimoi = $donvi->get_one();
 	} else { $list_donvimoi = ''; }
 
+
 	$id_quocgia = $dr['id_quocgia'];
 	$id_mucdich = $dr['id_mucdich'];
 	$id_kinhphi = $dr['id_kinhphi'];

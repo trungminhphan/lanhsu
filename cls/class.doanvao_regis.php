@@ -10,6 +10,7 @@ class DoanVao_Regis{
 	public $congvanxinphep = array(); //id_donvi, ten, attachments = array(alias_name, filename, filetype), ngayky.
 	public $id_dmdoanvao = '';
 	public $id_mucdich = ''; //mục đích chuyến đipublic $id_mucdich = ''; //mục đích chuyến đi
+	public $id_linhvuc = '';
 	public $ngaydi = '';
 	public $noidung = ''; //noi dung lam viec
 	public $danhsachdoan = array(); //id_canbo, id_donvi, id_chucvu
@@ -31,7 +32,8 @@ class DoanVao_Regis{
 			'masohoso' => $this->masohoso,
 			'congvanxinphep' => $this->congvanxinphep,
 			'id_dmdoanvao' => new MongoId($this->id_dmdoanvao),
-			'id_mucdich' => new MongoId($this->id_mucdich),
+			'id_mucdich' => $this->id_mucdich ? new MongoId($this->id_mucdich) : '',
+			'id_linhvuc' => $this->id_linhvuc ? new MongoId($this->id_linhvuc) : '',
 			'ngayden' => $this->ngayden,
 			'ngaydi' => $this->ngaydi,
 			'noidung' => $this->noidung,
@@ -52,7 +54,7 @@ class DoanVao_Regis{
 		return $this->_collection->findOne(array('_id'=> new MongoId($this->id)));
 	}
 	public function get_one_mshs(){
-		return $this->_collection->findOne(array('masohoso'=> $this->masohoso));	
+		return $this->_collection->findOne(array('masohoso'=> $this->masohoso));
 	}
 	public function get_all_list(){
 		return $this->_collection->find()->sort(array('status'=> 1, 'date_post' => -1));
@@ -64,14 +66,14 @@ class DoanVao_Regis{
 	public function set_status($status){
 		$query = array('$set' => array('status' => $status));
 		$condition = array('_id' => new MongoId($this->id));
-		return $this->_collection->update($condition, $query);	
+		return $this->_collection->update($condition, $query);
 	}
 
 	public function count_status_0(){
 		$query = array('$or'=> array(array('status.0.t' => 0), array('status.0.t' => 1), array('status.0.t' => 2)));
 		return $this->_collection->count($query);
 	}
-	
+
 	public function check_users($id_user){
 		$query = array('id_user'=> new MongoId($id_user));
 		$fields = array('_id'=> true);
@@ -108,7 +110,7 @@ class DoanVao_Regis{
 		return $this->_collection->update($condition, $query_1);
 	}
 
-	
+
 }
 
 ?>

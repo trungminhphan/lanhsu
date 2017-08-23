@@ -18,6 +18,7 @@ if($update == 'no') $msg = 'Không thể xoá';
 </script>
 <h1><a href="index.php" class="nav-button transform"><span></span></a>&nbsp;Quản lý Đoàn Ra</h1>
 <a href="themdoanra.php" class="button primary"><span class="mif-plus"></span> Thêm Quản lý Đoàn Ra</a>
+<a href="export_doanra.php" class="button success"><span class="mif-file-excel"></span> Xuất Excel</a>
 <?php if($doanra_list && $doanra_list->count() > 0): ?>
 <table class="table striped hovered" id="doanra_list">
 <thead>
@@ -26,9 +27,9 @@ if($update == 'no') $msg = 'Không thể xoá';
 		<th>Tên trưởng đoàn</th>
 		<th>Ngày đi</th>
 		<th>Ngày về</th>
-		<th>Văn bản xin phép</th>
 		<th>Văn bản cho phép</th>
-		<th>Đơn vị</th>
+		<th>Văn bản xin phép</th>
+		<th>Đơn vị xin phép</th>
 		<th><span class="mif-bin"></span></th>
 		<th><span class="mif-pencil"></span></th>
 	</tr>
@@ -50,8 +51,8 @@ if($update == 'no') $msg = 'Không thể xoá';
 			echo '<td><a href="chitietdoanra.php?id='.$dr['_id'].'">'.$tentruongdoan.'</a></td>';
 			echo '<td>'.($dr['ngaydi'] ? date("d/m/Y",$dr['ngaydi']->sec) : '').'</td>';
 			echo '<td>'.($dr['ngayve'] ? date("d/m/Y",$dr['ngayve']->sec) : '').'</td>';
-			echo '<td>'.$dr['congvanxinphep']['ten'].'</td>';
 			echo '<td><a href="chitietdoanra.php?id='.$dr['_id'].'">'.$dr['quyetdinhchophep']['ten'].'</a></td>';
+			echo '<td>'.$dr['congvanxinphep']['ten'].'</td>';
 			echo '<td>'.$tendonvi.'</td>';
 			if($users->is_admin()){
 				echo '<td><a href="themdoanra.php?id='.$dr['_id'].'&act=del" onclick="return confirm(\'Chắc chắc xoá?\');" title="Xoá"><span class="mif-bin"></span></td>';
