@@ -124,9 +124,7 @@ $quocgia_list = $quocgia->get_all_list();
 			<button name="submit" id="submit" value="OK" class="button primary"><span class="mif-checkmark"></span> Thống kê</button>
 			<?php if(isset($_GET['submit'])) : ?>
 				<a href="in_thongkedoanratheoluot.php?<?php echo $_SERVER['QUERY_STRING']; ?>" class="open_window button"><span class="mif-printer"></span> Print</a>
-				<?php if($id_donvi): ?>
-					<a href="export_thongkedoanratheoluot.php?<?php echo $_SERVER['QUERY_STRING']; ?>" class="button success"><span class="mif-file-excel"></span> Excel</a>
-				<?php endif; ?>
+				<a href="export_thongkedoanratheoluot.php?<?php echo $_SERVER['QUERY_STRING']; ?>" class="button success"><span class="mif-file-excel"></span> Excel</a>
 			<?php endif; ?>
 		</div>
 	</div>
@@ -202,7 +200,7 @@ if(isset($id_donvi) && $id_donvi){
 							if($c4)	echo '<li>'.$a4['ten'].': <a href="thongkedoanratheoluotxuatcanh.php?id_donvi='.$id_donvi.'-'.$a2['_id'] . '-' .$a3['_id'].'-'.$a4['_id'].'&tungay='.$tungay.'&denngay='.$denngay.'&id_quocgia='.$id_quocgia.'&id_kinhphi='.$id_kinhphi.'&submit=OK">'.$c4.'</a></li>';
 						}
 						echo '</ul>';
-						
+
 					}
 				}
 				echo '</ul>';

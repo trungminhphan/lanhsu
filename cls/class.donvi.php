@@ -31,7 +31,7 @@ class DonVi{
 		return $this->_collection->find()->sort(array('ten'=> 1));
 	}
 	public function get_all_list_regis(){
-		return $this->_collection->find(array('public' => 1))->sort(array('ten'=> 1));	
+		return $this->_collection->find(array('public' => 1))->sort(array('ten'=> 1));
 	}
 	public function get_list_condition($condition){
 		return $this->_collection->find($condition)->sort(array('ten'=> 1));
@@ -86,7 +86,7 @@ class DonVi{
 		$condition = array('_id' => new MongoId($this->id));
 		return $this->_collection->update($condition, $query);
 	}
-	
+
 	public function insert_level1(){
 		$query = array('ten' => $this->ten);
 		return $this->_collection->insert($query);
@@ -145,7 +145,7 @@ class DonVi{
 		$query = array('$pull' => array('level2.'.$this->k2. '.level3' => array('_id' => new MongoId($this->id_delete))));
 		$condition = array('_id' => new MongoId($this->id));
 		return $this->_collection->update($condition, $query);
-	}	
+	}
 	public function delete_level4(){
 		$query = array('$pull' => array('level2.'.$this->k2. '.level3.'.$this->k3.'.level4' => array('_id' => new MongoId($this->id_delete))));
 		$condition = array('_id' => new MongoId($this->id));
@@ -171,7 +171,7 @@ class DonVi{
 						}
 					}
 				}
-			}	
+			}
 		}
 		return $str_donvi;
 	}*/
@@ -181,7 +181,7 @@ class DonVi{
 		if(isset($arr[0]) && strlen($arr[0])==24){
 			$condition = array('_id' => new MongoId($arr[0]));
 			$result = $this->_collection->findOne($condition);
-			
+
 			$cap1='';$cap2='';$cap3='';$cap4='';
 			if($arr[0] && isset($result['ten'])) $str_donvi = $result['ten'];//$cap1 = $result['ten'];
 			if(isset($result['level2']) && $result['level2'] && $arr[1]){
@@ -197,9 +197,9 @@ class DonVi{
 							}
 						}
 					}
-				}	
+				}
 			}
-		} 
+		}
 		return $str_donvi;
 	}
 

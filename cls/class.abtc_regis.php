@@ -26,7 +26,7 @@ class ABTC_Regis{
 		return $this->_collection->findOne(array('_id'=> new MongoId($this->id)));
 	}
 	public function get_one_mshs(){
-		return $this->_collection->findOne(array('masohoso'=> $this->masohoso));	
+		return $this->_collection->findOne(array('masohoso'=> $this->masohoso, 'id_user' => new MongoId($this->id_user)));
 	}
 	public function get_all_list(){
 		return $this->_collection->find()->sort(array('status'=> 1, 'date_post' => -1));
@@ -58,7 +58,7 @@ class ABTC_Regis{
 	public function set_status($status){
 		$query = array('$set' => array('status' => $status));
 		$condition = array('_id' => new MongoId($this->id));
-		return $this->_collection->update($condition, $query);	
+		return $this->_collection->update($condition, $query);
 	}
 
 	public function count_status_0(){

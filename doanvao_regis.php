@@ -49,14 +49,16 @@ $(document).ready(function(){
 	<tr>
 		<th>STT</th>
 		<th>Mã Hồ sơ</th>
+		<th>Công văn xin phép</th>
 		<th>Đơn vị tiếp</th>
 		<th>Ngày đến</th>
 		<th>Ngày đi</th>
+		<th>Ngày đăng ký</th>
 		<th>Tình trạng</th>
 		<?php if($users->is_manager()): ?>
 			<th><span class="mif-bin"></span></th>
 		<?php endif; ?>
-		
+
 		<?php if($users->is_manager() || $users->is_updater()): ?>
 			<!--<th><span class="mif-pencil"></span></th>-->
 			<th><span class="mif-creative-cloud"></span></th>
@@ -68,15 +70,19 @@ $(document).ready(function(){
 	$i=1;
 	foreach ($doanvao_regis_list as $dv) {
 		$donvi->id = $dv['congvanxinphep']['id_donvi'][0];$dvi = $donvi->get_one();
-		if(isset($dv['status'][0]['t']) && $dv['status'][0]['t'] == 3) $tinhtrang = '<span class="mif-checkmark fg-blue"></span>';
+		$t = isset($dv['status'][0]['t'])  ? $dv['status'][0]['t'] : 0;
+		/*if(isset($dv['status'][0]['t']) && $dv['status'][0]['t'] == 3) $tinhtrang = '<span class="mif-checkmark fg-blue"></span>';
 		else if(isset($dv['status'][0]['t']) && $dv['status'][0]['t'] == 4) $tinhtrang = '<span class="mif-not fg-red"></span>';
-		else $tinhtrang = '<span class="mif-folder-upload fg-red"></span>';
+		else $tinhtrang = '<span class="mif-folder-upload fg-red"></span>';*/
+
 		echo '<td>'.$i++.'</td>';
 		echo '<td><a href="chitietdoanvao_regis.php?id='.$dv['_id'].'">'.$dv['masohoso'].'</a></td>';
+		echo '<td>'.$dv['congvanxinphep']['ten'].'</td>';
 		echo '<td>'.$dvi['ten'].'</td>';
 		echo '<td>'.($dv['ngayden'] ? date("d/m/Y",$dv['ngayden']->sec) : '').'</td>';
 		echo '<td>'.($dv['ngaydi'] ? date("d/m/Y",$dv['ngaydi']->sec) : '').'</td>';
-		echo '<td class="align-center"><a href="#" onlich="return false;" class="capnhattinhtrang" name="'.$dv['_id'].'">'.$tinhtrang.'</a></td>';
+		echo '<td>'.($dv['date_post'] ? date("d/m/Y H:i",$dv['date_post']->sec) : '').'</td>';
+		echo '<td class="align-center"><a href="#" onlich="return false;" class="capnhattinhtrang" name="'.$dv['_id'].'"><img src="images/status/'.$t.'.png" style="height:30px;"/></a></td>';
 		if($users->is_manager()){
 			echo '<td><a href="delete_regis.php?id='.$dv['_id'].'&act=doanvao" onclick="return confirm(\'Chắc chắc xoá?\');"><span class="mif-bin"></span></a></td>';
 		}

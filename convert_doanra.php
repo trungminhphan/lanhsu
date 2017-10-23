@@ -30,7 +30,7 @@ if(isset($_POST['submit'])){
 			array_push($filecongvanxinphep, array('alias_name' => $value, 'filename' => $congvanxinphep_filename[$key], 'filetype'=>$congvanxinphep_filetype[$key]));
 			if(file_exists($copy_source . $value)){
 				//copy($folder_regis.$target_files_regis . $value, $target_files . $value);
-				copy($$copy_source . $value, $copy_desc . $value);
+				copy($copy_source . $value, $copy_desc . $value);
 			}
 		}
 	}
@@ -216,7 +216,7 @@ $(document).ready(function(){
         $("#id_donvi_xinphep_2").select2({ placeholder : "Chọn đơn vị", allowClear: true });
         $("#id_donvi_xinphep_3").select2({ placeholder : "Chọn đơn vị", allowClear: true });
         $("#id_donvi_xinphep_4").select2({ placeholder : "Chọn đơn vị", allowClear: true });
-         
+
     });
 	<?php if(isset($id_donvi_xinphep_3) && $id_donvi_xinphep_3): ?>
 		$("#id_donvi_xinphep3").show();
@@ -427,7 +427,7 @@ $(document).ready(function(){
 			}
 		?>
 	</div>
-	
+
 	<div class="row cells12">
 		<div class="cell colspan2 padding-top-10 align-right">Thành viên khác</div>
 		<div class="cell colspan5 input-control select" style="height:100%;position:relative;">
@@ -509,7 +509,7 @@ $(document).ready(function(){
 			 <span class="input-state-error mif-warning"></span><span class="input-state-success mif-checkmark"></span>
 		</div>
 	</div>
-	<div class="row cells12">	
+	<div class="row cells12">
 		<div class="cell colspan2 padding-top-10 align-right"><b>6. Nước đến</b></div>
 		<div class="cell colspan4 input-control" data-role="select" data-multiple="true">
 			<select name="id_quocgia[]" id="id_quocgia" multiple class="select2">
@@ -574,7 +574,7 @@ $(document).ready(function(){
 					}
 				}
 			?>
-			<div class="cell colspan3 padding-top-10 align-right">Mục đích</div>	
+			<div class="cell colspan3 padding-top-10 align-right">Mục đích</div>
 			</select>
 		</div>
 		<div class="cell colspan2 padding-top-10 align-right"><b>10. Đơn vị mời:</b> </div>
@@ -588,7 +588,7 @@ $(document).ready(function(){
 					}
 				}
 			?>
-			<div class="cell colspan3 padding-top-10 align-right">Mục đích</div>	
+			<div class="cell colspan3 padding-top-10 align-right">Mục đích</div>
 			</select>
 		</div>
 	</div>
@@ -665,13 +665,13 @@ $(document).ready(function(){
 		</div>
 	</div>
 	<div class="row cells12">
-		<div class="cell colspan2 padding-top-10 align-right"><b>11. Nội dung</b></div>	
+		<div class="cell colspan2 padding-top-10 align-right"><b>11. Nội dung</b></div>
 		<div class="cell colspan10 input-control textarea">
 			<textarea name="noidung" id="noidung"><?php echo isset($noidung) ? $noidung : ''; ?></textarea>
 		</div>
 	</div>
 	<div class="row cells12">
-		<div class="cell colspan2 padding-top-10 align-right"><b>12. Báo cáo</b></div>	
+		<div class="cell colspan2 padding-top-10 align-right"><b>12. Báo cáo</b></div>
 		<div class="cell colspan9 input-control textarea">
 			<textarea name="noidung_baocao" id="noidung_baocao" placeholder="Nội dung báo cáo"><?php echo isset($noidung_baocao) ? $noidung_baocao : ''; ?></textarea>
 		</div>
@@ -701,7 +701,7 @@ $(document).ready(function(){
 		?>
 	</div>
 	<div class="row cells12">
-		<div class="cell colspan2 padding-top-10 align-right"><b>13. Ghi chú</b></div>	
+		<div class="cell colspan2 padding-top-10 align-right"><b>13. Ghi chú</b></div>
 		<div class="cell colspan10 input-control textarea">
 			<textarea name="ghichu" id="ghichu"><?php echo isset($ghichu) ? $ghichu : ''; ?></textarea>
 		</div>

@@ -1,6 +1,6 @@
 <?php
 require_once('header_none.php');
-$doanvao = new DoanVao();$donvi = new DonVi();$dmdoanvao = new DMDoanVao();$canbo = new CanBo();
+$doanvao = new DoanVao();$donvi = new DonVi();$dmdoanvao = new DMDoanVao();$canbo = new CanBo();$mucdich = new MucDich();$linhvuc = new LinhVuc();
 $doanvao_list = $doanvao->get_all_list();
 require_once('cls/PHPExcel.php');
 $inputFileName = 'templates/export_doanvao.xlsx';
@@ -27,10 +27,20 @@ if($doanvao_list){
 			$canbo->id = $dv['danhsachdoan'][0]['id_canbo'];$cb=$canbo->get_one();
 			$tentruongdoan = $cb['hoten'];
 		} else { $tentruongdoan = '';}
-
 		$ngayden = isset($dv['ngayden']) ? date("d/m/Y", $dv['ngayden']->sec) : '';
 		$ngaydi = isset($dv['ngaydi']) ? date("d/m/Y", $dv['ngaydi']->sec) : '';
 
+		if(isset($dv['id_mucdich']) && $dv['id_mucdich']){
+			$mucdich->id = $dv['id_mucdich']; $md = $mucdich->get_one();
+			$tenmucdich = $md['ten'];
+		} else { $tenmucdich = '';  }
+
+		if(isset($dv['id_linhvuc']) && $dv['id_linhvuc']){
+			$linhvuc->id = $dv['id_linhvuc']; $lv = $linhvuc->get_one();
+			$tenlinhvuc = $lv['ten'];
+		} else { $tenlinhvuc = '';  }
+		if(isset($dv['noidung'])) $noidung = $dv['noidung'];
+		else $noidung = '';
 		$objPHPExcel->setActiveSheetIndex()->setCellValue('A'.$i, $stt);
 		$objPHPExcel->setActiveSheetIndex()->setCellValue('B'.$i, $tendoanvao);
 		$objPHPExcel->setActiveSheetIndex()->setCellValue('C'.$i, $tentruongdoan);
@@ -38,6 +48,9 @@ if($doanvao_list){
 		$objPHPExcel->setActiveSheetIndex()->setCellValue('E'.$i, $ngaydi);
 		$objPHPExcel->setActiveSheetIndex()->setCellValue('F'.$i, $dv['congvanxinphep']['ten']);
 		$objPHPExcel->setActiveSheetIndex()->setCellValue('G'.$i, $dv['quyetdinhchophep']['ten']);
+		$objPHPExcel->setActiveSheetIndex()->setCellValue('H'.$i, $tenmucdich);
+		$objPHPExcel->setActiveSheetIndex()->setCellValue('I'.$i, $tenlinhvuc);
+		$objPHPExcel->setActiveSheetIndex()->setCellValue('J'.$i, $noidung);
 		$i++; $stt++;
 	}
 }

@@ -21,11 +21,11 @@
 	//$g_config['admin_user'] = 'admin';
 	//$g_config['admin_password'] = MD5('pmtrung');
 	//$g_config['admin_password'] = '6701a36f285636bfbf4afc07bed8fc0c';
-	
+
 	//$hash_password["crypt"] = 'MD5';
 	//$hash_password["password"] = 'PASSWORD';
 	//$hash_password[""] = 'PLAIN_TEXT';
-	
+
 	//smtp config for send mail
 	$items_per_group = 30;
 	$items_per_group_dicu = 30;
@@ -40,7 +40,7 @@
 	$target_files_public_link = '../lanhsuthutuc/uploads/';
 	$folder_files_public = 'uploads/';
 	$copy_source = '/var/www/html/lanhsuthutuc/uploads_regis/';
-	$copy_desc = '/var/www/html/lanhsu/uploads/';
+	$copy_desc = '/var/www/html/lanhsu/uploads/files/';
 	$files_extension = array('pdf', 'zip', 'rar', 'doc', 'docx', 'xls', 'png', 'gif', 'jpg', 'jpeg', 'bmp', 'rtf');
 	$images_extension = array('png', 'gif', 'jpg', 'jpeg', 'bmp');
 	$valid_formats = array("jpg", "png", "gif", "zip", "bmp", "doc", "docx", "pdf", "xls", "xlsx", "ppt", "pptx", 'zip', 'rar');
@@ -50,10 +50,8 @@
 	$arr_donvitien = array('AUD'=>'AUST.DOLLAR','CAD'=>'CANADIAN DOLLAR','CHF'=>'SWISS FRANCE','DKK'=>'DANISH KRONE','EUR'=>'EURO','GBP'=>'BRITISH POUND','HKD'=>'HONGKONG DOLLAR','INR'=>'INDIAN RUPEE','JPY'=>'JAPANESE YEN','KRW'=>'SOUTH KOREAN WON','KWD'=>'KUWAITI DINAR','MYR'=>'MALAYSIAN RINGGIT','NOK'=>'NORWEGIAN KRONER','RUB'=>'RUSSIAN RUBLE','SAR'=>'SAUDI RIAL','SEK'=>'SWEDISH KRONA','SGD'=>'SINGAPORE DOLLAR','THB'=>'THAI BAHT','USD'=>'US DOLLAR');
 	$arr_loaivanban = array('Xuất cảnh', 'Nhập cảnh', 'ABTC');
 	$arr_tinhtrang = array(
-		0 => 'Đã nhận',
-		1 => 'Bổ sung hồ sơ',
-		2 => 'Trình UBND tỉnh',
-		3 => 'Hoàn tất hồ sơ',
+		0 => 'Đã nhận', 1 => 'Bổ sung hồ sơ',
+		2 => 'Trình UBND tỉnh', 3 => 'Hoàn tất hồ sơ',
 		4 => 'Hồ sơ không được duyệt'
 	);
 ?>

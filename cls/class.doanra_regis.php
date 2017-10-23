@@ -30,12 +30,15 @@ class DoanRa_Regis{
 	public function get_one(){
 		return $this->_collection->findOne(array('_id'=> new MongoId($this->id)));
 	}
+
 	public function get_one_mshs(){
-		return $this->_collection->findOne(array('masohoso'=> $this->masohoso));
+		return $this->_collection->findOne(array('masohoso'=> $this->masohoso, 'id_user' => new MongoId($this->id_user)));
 	}
+
 	public function get_all_list(){
-		return $this->_collection->find()->sort(array('status'=> 1, 'date_post' => -1));
+		return $this->_collection->find()->sort(array('date_post' => -1, 'status'=> 1));
 	}
+
 	public function get_list_condition($condition){
 		return $this->_collection->find($condition)->sort(array('_id'=> 1));
 	}

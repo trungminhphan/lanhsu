@@ -15,7 +15,7 @@ $abtc->id = $id; $a = $abtc->get_one();
 	</div>
 	<?php
 	$i = 1;
-	
+
 		echo '<div class="row cells12">';
 			echo '<div class="cell colspan6">';
 			if(isset($a['congvanxinphep']['attachments'])){
@@ -32,7 +32,7 @@ $abtc->id = $id; $a = $abtc->get_one();
 			} else { echo ''; }
 			echo '</div>';
 		echo '</div>';$i++;
-	
+
 
 	?>
 </div>
@@ -64,7 +64,7 @@ $abtc->id = $id; $a = $abtc->get_one();
 				echo '<div class="cell colspan2">'.$cb['hoten'].'</div>';
 				echo '<div class="cell colspan2">'.$dv.'</div>';
 				echo '<div class="cell colspan2">'.$cv['ten'].'</div>';
-				echo '<div class="cell">'.$cb['passport'][$count].'</div>';
+				echo '<div class="cell">'.(isset($cb['passport'][$count]) ? $cb['passport'][$count] : '').'</div>';
 				echo '<div class="cell">'.$tinhtrang.'</div>';
 				echo '<div class="cell colspan2">'.($member['ngaycap'] ? date("d/m/Y", $member['ngaycap']->sec) : '').'</div>';
 				echo '<div class="cell colspan2">'.($member['ngayhethan'] ? date("d/m/Y", $member['ngayhethan']->sec) : '').'</div>';
@@ -78,7 +78,7 @@ $abtc->id = $id; $a = $abtc->get_one();
 	<div class="row cells12">
 		<div class="cell colspan2">Nước cấp thẻ: </div>
 		<div class="cell colspan6"><?php echo $quocgia->get_quoctich($a['id_quocgia']); ?></div>
-		<div class="cell colspan4">Tình trạng: 
+		<div class="cell colspan4">Tình trạng:
 			<?php
 			if($a['chophep'] == 1) echo '<span class="mif-checkmark fg-blue"></span> Cho phép';
 			else echo '<span class="mif-cancel fg-red"></span> Không cho phép';

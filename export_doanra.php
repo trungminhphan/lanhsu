@@ -1,6 +1,7 @@
 <?php
 require_once('header_none.php');
 $doanra = new DoanRa();$donvi = new DonVi();$canbo = new CanBo();
+$quocgia = new QuocGia();$mucdich = new MucDich();$kinhphi = new KinhPhi();
 $doanra_list = $doanra->get_all_list();
 require_once('cls/PHPExcel.php');
 $inputFileName = 'templates/export_doanra.xlsx';
@@ -25,8 +26,22 @@ if($doanra_list){
 			$canbo->id = $dr['danhsachdoan'][0]['id_canbo'];$cb=$canbo->get_one();
 			$tentruongdoan = $cb['hoten'];
 		} else { $tentruongdoan = '';}
+		if(isset($dr['id_mucdich']) && $dr['id_mucdich']){
+			$mucdich->id = $dr['id_mucdich']; $md = $mucdich->get_one();
+			$tenmucdich = $md['ten'];
+		} else { $tenmucdich = '';  }
+		if(isset($dr['sotien']['VND'])) $sotien = $dr['sotien']['VND']; else $sotien = '';
+		if(isset($dr['id_kinhphi']) && $dr['id_kinhphi']){
+			$kinhphi->id = $dr['id_kinhphi']; $kp = $kinhphi->get_one();
+			$tenkinhphi = $kp['ten'];
+		} else { $tenkinhphi = '';  }
 		$ngaydi = $dr['ngaydi'] ? date("d/m/Y",$dr['ngaydi']->sec) : '';
 		$ngayve = $dr['ngayve'] ? date("d/m/Y",$dr['ngayve']->sec) : '';
+		$nuocden = $quocgia->get_quoctich($dr['id_quocgia']);
+		if(isset($dr['id_donvimoi']) && is_array($dr['id_donvimoi'])){
+			$donvimoi = $donvi->tendonvi($dr['id_donvimoi']);
+		} else { $donvimoi = ''; }
+		if(isset($dr['baocao']['noidung'])) $baocao = $dr['baocao']['noidung'];else $baocao = '';
 
 		$objPHPExcel->setActiveSheetIndex()->setCellValue('A'.$i, $stt);
 		$objPHPExcel->setActiveSheetIndex()->setCellValue('B'.$i, $tentruongdoan);
@@ -35,6 +50,14 @@ if($doanra_list){
 		$objPHPExcel->setActiveSheetIndex()->setCellValue('E'.$i, $dr['congvanxinphep']['ten']);
 		$objPHPExcel->setActiveSheetIndex()->setCellValue('F'.$i, $dr['quyetdinhchophep']['ten']);
 		$objPHPExcel->setActiveSheetIndex()->setCellValue('G'.$i, $tendonvi);
+		$objPHPExcel->setActiveSheetIndex()->setCellValue('H'.$i, $nuocden);
+		$objPHPExcel->setActiveSheetIndex()->setCellValue('I'.$i, $tenmucdich);
+		$objPHPExcel->setActiveSheetIndex()->setCellValue('J'.$i, $sotien);
+		$objPHPExcel->setActiveSheetIndex()->setCellValue('K'.$i, $tenkinhphi);
+		$objPHPExcel->setActiveSheetIndex()->setCellValue('L'.$i, $donvimoi);
+		$objPHPExcel->setActiveSheetIndex()->setCellValue('L'.$i, $donvimoi);
+		$objPHPExcel->setActiveSheetIndex()->setCellValue('M'.$i, $baocao);
+		$objPHPExcel->setActiveSheetIndex()->setCellValue('N'.$i, $dr['ghichu']);
 		$i++; $stt++;
 	}
 }

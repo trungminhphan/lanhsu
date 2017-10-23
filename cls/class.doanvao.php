@@ -206,6 +206,8 @@ class DoanVao{
 						'noidung' => $this->noidung,
 						'danhsachdoan' => $this->danhsachdoan,
 						'danhsachdoan_2' => $this->danhsachdoan_2,
+						'id_mucdich' => $this->id_mucdich ? new MongoId($this->id_mucdich) : '',
+						'id_linhvuc' => $this->id_linhvuc ? new MongoId($this->id_linhvuc) : '',
 						'ghichu' => $this->ghichu,
 						'date_post' => new MongoDate(),
 						'id_user' => new MongoId($this->id_user));

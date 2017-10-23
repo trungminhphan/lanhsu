@@ -65,15 +65,16 @@ switch ($update) {
 		foreach ($abtc_regis_list as $a) {
 			//$quocgia->id = $a['id_quocgia'];$qg= $quocgia->get_one();
 			$count = count($a['status']) - 1;
-			if(isset($a['status'][0]['t']) && $a['status'][0]['t'] == 3) $tinhtrang = '<span class="mif-checkmark fg-blue"></span>';
+			$t = isset($dv['status'][0]['t'])  ? $dv['status'][0]['t'] : 0;
+			/*if(isset($a['status'][0]['t']) && $a['status'][0]['t'] == 3) $tinhtrang = '<span class="mif-checkmark fg-blue"></span>';
 			else if(isset($a['status'][0]['t']) && $a['status'][0]['t'] == 4) $tinhtrang = '<span class="mif-not fg-red"></span>';
-			else $tinhtrang = '<span class="mif-folder-upload fg-red"></span>';
+			else $tinhtrang = '<span class="mif-folder-upload fg-red"></span>';*/
 			echo '<tr>';
 			echo '<td>'.$i.'</td>';
 			echo '<td><a href="chitietabct_regis.php?id='.$a['_id'].'">'.$a['masohoso'].'</a></td>';
 			echo '<td>'.$a['congvanxinphep']['ten'].'</td>';
 			echo '<td>'.($a['congvanxinphep']['ngayky'] ? date("d/m/Y",$a['congvanxinphep']['ngayky']->sec) : '').'</td>';
-			echo '<td class="align-center"><a href="#" onlich="return false;" class="capnhattinhtrang" name="'.$a['_id'].'">'.$tinhtrang.'</a></td>';
+			echo '<td class="align-center"><a href="#" onlich="return false;" class="capnhattinhtrang" name="'.$a['_id'].'"><img src="images/status/'.$t.'.png" style="height:30px;"/></a></td>';
 			if($users->is_manager()){
 				echo '<td><a href="delete_regis.php?id='.$a['_id'].'&act=abtc" onclick="return confirm(\'Chắc chắc xoá?\');" title="Xoá"><span class="mif-bin"></span></td>';
 			}

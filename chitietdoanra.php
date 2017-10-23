@@ -15,10 +15,11 @@ $doanra->id = $id; $dr = $doanra->get_one();
 	</div>
 	<div class="row cells12">
 		<div class="cell colspan2 align-left"><b>Họ tên</b></div>
+		<div class="cell colspan4"><b>Đơn vị</b></div>
 		<div class="cell colspan2"><b>Chức vụ</b></div>
-		<div class="cell colspan4"><b>Đơn vị xin phép</b></div>
-		<div class="cell colspan4"><b>Đơn vị cấp phép</b></div>
-		
+		<div class="cell colspan2"><b>Đơn vị xin phép</b></div>
+		<div class="cell colspan2"><b>Đơn vị cấp phép</b></div>
+
 	</div>
 	<?php
 	$i = 1;
@@ -31,12 +32,13 @@ $doanra->id = $id; $dr = $doanra->get_one();
 		} else { $tenham = '';}
 		echo '<div class="row cells12">';
 			echo '<div class="cell colspan2">'.$i. '. ' .$cb['hoten'].'</div>';
+			echo '<div class="cell colspan4">'.$dv.'</div>';
 			echo '<div class="cell colspan2">'.$tenham . ' '.$cv['ten'].'</div>';
 			if($k > 0 ){
-				echo '<div class="cell colspan4 align-center">Như trên</div>';
-				echo '<div class="cell colspan4 align-center">Như trên</div>';
+				echo '<div class="cell colspan2 align-center">Như trên</div>';
+				echo '<div class="cell colspan2 align-center">Như trên</div>';
 			} else {
-				echo '<div class="cell colspan4">';
+				echo '<div class="cell colspan2">';
 				if(isset($dr['congvanxinphep']['attachments'][0]['alias_name'])){
 					echo '<span class="tag info padding5 margin5"><span class="mif-attachment"></span> <a href="'.$target_files.$dr['congvanxinphep']['attachments'][0]['alias_name'].'" class="fg-white">'.$dr['congvanxinphep']['attachments'][0]['filename'].'</a></span>';
 				}
@@ -44,7 +46,7 @@ $doanra->id = $id; $dr = $doanra->get_one();
 					echo '<span class="tag info padding5 margin5"><span class="mif-attachment"></span> <a href="'.$target_files.$dr['congvanxinphep']['attachments'][1]['alias_name'].'" class="fg-white">'.$dr['congvanxinphep']['attachments'][1]['filename'].'</a></span>';
 				}
 				echo '</div>';
-				echo '<div class="cell colspan4">';
+				echo '<div class="cell colspan2">';
 				if(isset($dr['quyetdinhchophep']['attachments'][0]['alias_name'])){
 					echo '<span class="tag info padding5 margin5"><span class="mif-attachment"></span> <a href="'.$target_files.$dr['quyetdinhchophep']['attachments'][0]['alias_name'].'" class="fg-white">'.$dr['quyetdinhchophep']['attachments'][0]['filename'].'</a></span>';
 				}
@@ -63,24 +65,25 @@ $doanra->id = $id; $dr = $doanra->get_one();
 			} else { $tenham = '';}
 			echo '<div class="row cells12">';
 				echo '<div class="cell colspan2">'.$i. '. ' .$cb['hoten'].'</div>';
+				echo '<div class="cell colspan4">'.$dv.'</div>';
 				echo '<div class="cell colspan2">'.$tenham . ' '.$cv['ten'].'</div>';
 				if($k2 > 0){
-					echo '<div class="cell colspan4 align-center">Như trên</div>';
-					echo '<div class="cell colspan4 align-center">Như trên</div>';
+					echo '<div class="cell colspan2 align-center">Như trên</div>';
+					echo '<div class="cell colspan2 align-center">Như trên</div>';
 				} else {
-					echo '<div class="cell colspan4"><span class="tag info padding5 margin5">';
+					echo '<div class="cell colspan2"><span class="tag info padding5 margin5">';
 					if(isset($dr['congvanxinphep']['attachments'][0]['filename'])){
 						echo '<span class="mif-attachment"></span> <a href="'.$target_files.$dr['congvanxinphep']['attachments'][0]['alias_name'].'" class="fg-white">'.$dr['congvanxinphep']['attachments'][0]['filename'].'</a></span>';
 					}
 					echo '</div>';
-					echo '<div class="cell colspan4">';
+					echo '<div class="cell colspan2">';
 					if(isset($dr['quyetdinhchophep_2']['attachments'][0]['alias_name'])){
 						echo '<span class="mif-attachment"></span> <span class="tag info padding5 margin5"><a href="'.$target_files.$dr['quyetdinhchophep_2']['attachments'][0]['alias_name'].'" class="fg-white">'.$dr['quyetdinhchophep_2']['attachments'][0]['filename'].'</a></span>';
 					}
 					echo '</div>';
 				}
 			echo '</div>';$i++;
-		}	
+		}
 	}
 	?>
 </div>
@@ -117,6 +120,18 @@ $doanra->id = $id; $dr = $doanra->get_one();
 	</div>
 	<div class="row cells12">
 		<div class="cell colspan12">Nội dung: <?php echo $dr['noidung']; ?></div>
+	</div>
+	<div class="row cells12">
+		<div class="cell colspan12">
+				Báo cáo: <?php echo $dr['baocao']['noidung']; ?>
+				<?php
+				if(isset($dr['baocao']['attachments'])){
+					foreach($dr['baocao']['attachments'] as $dk){
+						echo '<a href="'.$target_files.$dk['alias_name'].'"><span class="tag info padding5 margin5"><span class="mif-attachment"></span>'.$dk['filename'] .'</span></a>';
+					}
+				}
+				?>
+		</div>
 	</div>
 	<div class="row cells12">
 		<div class="cell colspan12">Ghi chú: <?php echo $dr['ghichu']; ?></div>

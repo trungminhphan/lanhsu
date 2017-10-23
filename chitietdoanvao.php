@@ -13,54 +13,60 @@ $doanvao->id = $id; $dv = $doanvao->get_one();
 	</div>
 	<div class="row cells12">
 		<div class="cell colspan2 align-left"><b>Họ tên</b></div>
+		<div class="cell colspan4"><b>Đơn vị</b></div>
 		<div class="cell colspan2"><b>Chức vụ</b></div>
-		<div class="cell colspan4"><b>Đơn vị xin phép</b></div>
-		<div class="cell colspan4"><b>Đơn vị cấp phép</b></div>
+		<div class="cell colspan2"><b>Đơn vị xin phép</b></div>
+		<div class="cell colspan2"><b>Đơn vị cấp phép</b></div>
 	</div>
 	<?php
 	$i = 1;
-	foreach ($dv['danhsachdoan'] as $k => $ds) {
-		$canbo->id = $ds['id_canbo'];$cb = $canbo->get_one();
-		//$donvi->id = $ds['id_donvi']; $dvi = $donvi->get_one();
-		//$dvi = $donvi->tendonvi($ds['id_donvi']);
-		if(isset($dv['id_dmdoanvao']) && $dv['id_dmdoanvao']){
-			$dmdoanvao->id = $dv['id_dmdoanvao']; $d = $dmdoanvao->get_one();
-			$tendoanvao = $d['ten'];
-		} else { $tendoanvao = ''; }
-		if(isset($ds['id_chucvu']) && $ds['id_chucvu']){
-			$chucvu->id = $ds['id_chucvu']; $cv=$chucvu->get_one();
-			$tenchucvu = $cv['ten'];
-		} else { $tenchucvu = ''; }
-		if(isset($ds['id_ham']) && $ds['id_ham']){
-			$ham->id = $ds['id_ham']; $h = $ham->get_one(); $tenham = $h['ten'];
-		} else { $tenham = ''; }
-		echo '<div class="row cells12">';
-			echo '<div class="cell colspan2">'.$i. '. ' .$cb['hoten'].'</div>';
-			echo '<div class="cell colspan2">'.($tenham ? $tenham . ',' : '') .' '. $tenchucvu.'</div>';
-			if($k > 0){
-				echo '<div class="cell colspan4 align-center">Như trên</div>';
-				echo '<div class="cell colspan4 align-center">Như trên</div>';
-			} else {
-				echo '<div class="cell colspan4">';
-				if(isset($dv['congvanxinphep']['attachments'][0]['filename'])){
-					echo '<span class="tag info padding5 margin5"><a href="'.$target_files.$dv['congvanxinphep']['attachments'][0]['alias_name'].'" class="fg-white">'.$dv['congvanxinphep']['attachments'][0]['filename'].'</a></span>';
+	if(isset($dv['danhsachdoan']) && $dv['danhsachdoan']){
+		foreach ($dv['danhsachdoan'] as $k => $ds) {
+			$canbo->id = $ds['id_canbo'];$cb = $canbo->get_one();
+			$dvi = $donvi->tendonvi($ds['id_donvi']);
+			//$donvi->id = $ds['id_donvi']; $dvi = $donvi->get_one();
+			//$dvi = $donvi->tendonvi($ds['id_donvi']);
+			if(isset($dv['id_dmdoanvao']) && $dv['id_dmdoanvao']){
+				$dmdoanvao->id = $dv['id_dmdoanvao']; $d = $dmdoanvao->get_one();
+				$tendoanvao = $d['ten'];
+			} else { $tendoanvao = ''; }
+			if(isset($ds['id_chucvu']) && $ds['id_chucvu']){
+				$chucvu->id = $ds['id_chucvu']; $cv=$chucvu->get_one();
+				$tenchucvu = $cv['ten'];
+			} else { $tenchucvu = ''; }
+			if(isset($ds['id_ham']) && $ds['id_ham']){
+				$ham->id = $ds['id_ham']; $h = $ham->get_one(); $tenham = $h['ten'];
+			} else { $tenham = ''; }
+			echo '<div class="row cells12">';
+				echo '<div class="cell colspan2">'.$i. '. ' .$cb['hoten'].'</div>';
+				echo '<div class="cell colspan4">'.$dvi.'</div>';
+				echo '<div class="cell colspan2">'.($tenham ? $tenham . ',' : '') .' '. $tenchucvu.'</div>';
+				if($k > 0){
+					echo '<div class="cell colspan2 align-center">Như trên</div>';
+					echo '<div class="cell colspan2 align-center">Như trên</div>';
+				} else {
+					echo '<div class="cell colspan2">';
+					if(isset($dv['congvanxinphep']['attachments'][0]['filename'])){
+						echo '<span class="tag info padding5 margin5"><a href="'.$target_files.$dv['congvanxinphep']['attachments'][0]['alias_name'].'" class="fg-white">'.$dv['congvanxinphep']['attachments'][0]['filename'].'</a></span>';
+					}
+					if(isset($dv['congvanxinphep']['attachments'][1]['filename'])){
+						echo '<span class="tag info padding5 margin5"><a href="'.$target_files.$dv['congvanxinphep']['attachments'][1]['alias_name'].'" class="fg-white">'.$dv['congvanxinphep']['attachments'][1]['filename'].'</a></span>';
+					}
+					echo '</div>';
+					echo '<div class="cell colspan2">';
+					if(isset($dv['quyetdinhchophep']['attachments'][0]['filename'])){
+						echo '<span class="tag info padding5 margin5"><a href="'.$target_files.$dv['quyetdinhchophep']['attachments'][0]['alias_name'].'" class="fg-white">'.$dv['quyetdinhchophep']['attachments'][0]['filename'].'</a></span>';
+					}
+					echo '</div>';
 				}
-				if(isset($dv['congvanxinphep']['attachments'][1]['filename'])){
-					echo '<span class="tag info padding5 margin5"><a href="'.$target_files.$dv['congvanxinphep']['attachments'][1]['alias_name'].'" class="fg-white">'.$dv['congvanxinphep']['attachments'][1]['filename'].'</a></span>';
-				}
-				echo '</div>';
-				echo '<div class="cell colspan4">';
-				if(isset($dv['quyetdinhchophep']['attachments'][0]['filename'])){
-					echo '<span class="tag info padding5 margin5"><a href="'.$target_files.$dv['quyetdinhchophep']['attachments'][0]['alias_name'].'" class="fg-white">'.$dv['quyetdinhchophep']['attachments'][0]['filename'].'</a></span>';
-				}
-				echo '</div>';
-			}
-		echo '</div>';$i++;
+			echo '</div>';$i++;
+		}
 	}
 
 	if(isset($dv['danhsachdoan_2']) && $dv['danhsachdoan_2']){
 		foreach ($dv['danhsachdoan_2'] as $k2 => $dv_2) {
 			$canbo->id = $dv_2['id_canbo'];$cb = $canbo->get_one();
+			$dvi = $donvi->tendonvi($ds_2['id_donvi']);
 			//$donvi->id = $ds['id_donvi'][0]; $dv = $donvi->get_one();
 			//$dvi = $donvi->tendonvi($ds_2['id_donvi']);
 			$chucvu->id = $dv_2['id_chucvu']; $cv=$chucvu->get_one();
@@ -69,17 +75,18 @@ $doanvao->id = $id; $dv = $doanvao->get_one();
 			} else { $tenham = '';}
 			echo '<div class="row cells12">';
 				echo '<div class="cell colspan2">'.$i. '. ' .$cb['hoten'].'</div>';
+				echo '<div class="cell colspan4">'.$dvi.'</div>';
 				echo '<div class="cell colspan2">'.$tenham . ' '.$cv['ten'].'</div>';
 				if($k2>0){
-					echo '<div class="cell colspan4 align-center">Như trên</div>';
-					echo '<div class="cell colspan4 align-center">Như trên</div>';
+					echo '<div class="cell colspan2 align-center">Như trên</div>';
+					echo '<div class="cell colspan2 align-center">Như trên</div>';
 				} else {
-					echo '<div class="cell colspan4">';
+					echo '<div class="cell colspan2">';
 					if(isset($dv['congvanxinphep']['attachments'][0]['filename'])){
 						echo '<span class="tag info padding5 margin5"><a href="'.$target_files.$dv['congvanxinphep']['attachments'][0]['alias_name'].'" class="fg-white">'.$dv['congvanxinphep']['attachments'][0]['filename'].'</a></span>';
 					} else { echo ''; }
 					echo '</div>';
-					echo '<div class="cell colspan4">';
+					echo '<div class="cell colspan2">';
 					if(isset($dv['quyetdinhchophep_2']['attachments'][0]['filename'])){
 						echo '<span class="tag info padding5 margin5"><a href="'.$target_files.$dv['quyetdinhchophep_2']['attachments'][0]['alias_name'].'" class="fg-white">'.$dv['quyetdinhchophep_2']['attachments'][0]['filename'].'</a></span>';
 					} else { echo ''; }
@@ -87,7 +94,7 @@ $doanvao->id = $id; $dv = $doanvao->get_one();
 				}
 
 			echo '</div>';$i++;
-		}	
+		}
 	}
 	?>
 	<div class="row cells12">

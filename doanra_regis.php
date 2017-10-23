@@ -52,6 +52,7 @@ switch ($update) {
 		<th>Đơn vị</th>
 		<th>Ngày đi</th>
 		<th>Ngày về</th>
+		<th>Ngày đăng ký</th>
 		<th style="text-align:center;">Tình trạng</th>
 		<?php if($users->is_manager()): ?>
 			<th><span class="mif-bin"></span></th>
@@ -67,9 +68,11 @@ switch ($update) {
 	$i=1;
 	foreach ($doanra_regis_list as $dr) {
 		$donvi->id = $dr['congvanxinphep']['id_donvi'][0];$dv = $donvi->get_one();
-		if(isset($dr['status'][0]['t']) && $dr['status'][0]['t'] == 3) $tinhtrang = '<span class="mif-checkmark fg-blue"></span>';
+		$t = isset($dr['status'][0]['t'])  ? $dr['status'][0]['t'] : 0;
+		/*if(isset($dr['status'][0]['t']) && $dr['status'][0]['t'] == 3) $tinhtrang = '<span class="mif-checkmark fg-blue"></span>';
 		else if(isset($dr['status'][0]['t']) && $dr['status'][0]['t'] == 4) $tinhtrang = '<span class="mif-not fg-red"></span>';
-		else $tinhtrang = '<span class="mif-folder-upload fg-red"></span>';
+		else $tinhtrang = '<span class="mif-folder-upload fg-red"></span>';*/
+
 		echo '<tr>';
 		echo '<td>'.$i++.'</td>';
 		echo '<td><a href="chitietdoanra_regis.php?id='.$dr['_id'].'">'.$dr['masohoso'].'</a></td>';
@@ -77,7 +80,8 @@ switch ($update) {
 		echo '<td>'.$dv['ten'].'</td>';
 		echo '<td>'.($dr['ngaydi'] ? date("d/m/Y",$dr['ngaydi']->sec) : '').'</td>';
 		echo '<td>'.($dr['ngayve'] ? date("d/m/Y",$dr['ngayve']->sec) : '').'</td>';
-		echo '<td class="align-center"><a href="#" onlich="return false;" class="capnhattinhtrang" name="'.$dr['_id'].'">'.$tinhtrang.'</a></td>';
+		echo '<td>'.($dr['date_post'] ? date("d/m/Y H:i",$dr['date_post']->sec) : '').'</td>';
+		echo '<td class="align-center"><a href="#" onlich="return false;" class="capnhattinhtrang" name="'.$dr['_id'].'"><img src="images/status/'.$t.'.png" style="height:30px;"/></a></td>';
 		if($users->is_manager()){
 			echo '<td><a href="delete_regis.php?id='.$dr['_id'].'&act=doanra" onclick="return confirm(\'Chắc chắc xoá?\');"><span class="mif-bin"></span></a></td>';
 		}
@@ -103,7 +107,7 @@ switch ($update) {
 				<?php
 				foreach($arr_tinhtrang as $key => $value){
 					if($key > 0) {
-						echo '<option value="'.$key.'">'.$value.'</option>'; 
+						echo '<option value="'.$key.'">'.$value.'</option>';
 					}
 				}
 				?>

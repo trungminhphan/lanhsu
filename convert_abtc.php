@@ -26,7 +26,7 @@ if(isset($_POST['submit'])){
 			array_push($filecongvanxinphep, array('alias_name' => $value, 'filename' => $congvanxinphep_filename[$key], 'filetype'=>$congvanxinphep_filetype[$key]));
 			if(file_exists($copy_source . $value)){
 				//copy($folder_regis.$target_files_regis . $value, $target_files . $value);
-				copy($$copy_source . $value, $copy_desc . $value);
+				copy($copy_source . $value, $copy_desc . $value);
 			}
 		}
 	}
@@ -84,7 +84,7 @@ if(isset($_POST['submit'])){
 		foreach ($giaytolienquan_alias_name as $key => $value) {
 			array_push($giaytolienquan, array('order'=>$giaytolienquan_key[$key], 'alias_name' => $value, 'filename' => $giaytolienquan_filename[$key], 'filetype'=>$giaytolienquan_filetype[$key]));
 			if(file_exists($copy_source . $value)){
-				copy($$copy_source . $value, $copy_desc . $value);				
+				copy($$copy_source . $value, $copy_desc . $value);
 			}
 		}
 	}
@@ -97,7 +97,7 @@ if(isset($_POST['submit'])){
 	$abtc->masohoso = $masohoso;
 	$abtc->congvanxinphep = $congvanxinphep;
 	$abtc->quyetdinhchophep = $quyetdinhchophep;
-	$abtc->chophep = $chophep; 
+	$abtc->chophep = $chophep;
 	$abtc->id_quocgia = $id_quocgia;
 	$abtc->thongtinthanhvien = $thongtinthanhvien;
 	$abtc->giaytolienquan = $giaytolienquan;
@@ -110,7 +110,7 @@ if(isset($_POST['submit'])){
 	} else {
 		$msg='Không thể xử lý';
 	}
-	
+
 }
 if($id_regis){
 	$abtc_regis->id = $id_regis; $a = $abtc_regis->get_one();
@@ -346,10 +346,10 @@ $(document).ready(function(){
 			<label class="switch">
 			    <input type="checkbox" name="chophep" id="chophep" value="1" <?php echo $chophep == 1 ? ' checked' : ''; ?>/>
 			    <span class="check"></span>
-			</label>			
+			</label>
 		</div>
 	</div>
-	
+
 	<div class="row cells12">
 		<div class="cell colspan12">
 			<b>3. DANH SÁCH CÁ NHÂN ĐƯỢC CẤP PHÉP</b>

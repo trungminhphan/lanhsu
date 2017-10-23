@@ -14,7 +14,7 @@ $id_donvi_tiep=''; $id_donvi_duocphep = '56f20d64af62da9792157931'; $id_donvi_ch
 if(isset($_POST['submit'])){
 	$id_dmdoanvao = isset($_POST['id_dmdoanvao']) ? $_POST['id_dmdoanvao'] : '';
 	$id_mucdich = isset($_POST['id_mucdich']) ? $_POST['id_mucdich'] : '';
-	$id_linhvuc = isset($_POST['$id_linhvuc']) ? $_POST['$id_linhvuc'] : '';
+	$id_linhvuc = isset($_POST['id_linhvuc']) ? $_POST['id_linhvuc'] : '';
 	$masohoso = isset($_POST['masohoso']) ? $_POST['masohoso'] : '';
 	$id_donvi_xinphep_1 = isset($_POST['id_donvi_xinphep_1']) ? $_POST['id_donvi_xinphep_1'] : '';
 	$id_donvi_xinphep_2 = isset($_POST['id_donvi_xinphep_2']) ? $_POST['id_donvi_xinphep_2'] : '';
@@ -32,7 +32,7 @@ if(isset($_POST['submit'])){
 			array_push($filecongvanxinphep, array('alias_name' => $value, 'filename' => $congvanxinphep_filename[$key], 'filetype'=>$congvanxinphep_filetype[$key]));
 			if(file_exists($copy_source . $value)){
 				//copy($folder_regis.$target_files_regis . $value, $target_files . $value);
-				copy($$copy_source . $value, $copy_desc . $value);
+				copy($copy_source . $value, $copy_desc . $value);
 			}
 		}
 	}
@@ -160,7 +160,7 @@ if($id_regis){
 	//$danhsachdoan = $dv['danhsachdoan'];
 	//$danhsachdoan_2 = isset($dv['danhsachdoan_2']) ? $dv['danhsachdoan_2'] : '';
 	$id_mucdich = isset($dv['id_mucdich']) ? $dv['id_mucdich'] : '';
-	$id_linhvuc = isset($dv['$id_linhvuc']) ? $dv['$id_linhvuc'] : '';
+	$id_linhvuc = isset($dv['id_linhvuc']) ? $dv['id_linhvuc'] : '';
 	$ngayden = $dv['ngayden'] ? date("d/m/Y", $dv['ngayden']->sec)  : '';
 	$ngaydi = $dv['ngaydi'] ? date("d/m/Y", $dv['ngaydi']->sec)  : '';
 	$noidung = $dv['noidung'];$ghichu = $dv['ghichu'];
