@@ -9,7 +9,8 @@ if(isset($_GET['submit'])){
 	$tungay = isset($_GET['tungay']) ? $_GET['tungay'] : '';
 	$denngay = isset($_GET['denngay']) ? $_GET['denngay'] : '';
 	$id_quocgia = isset($_GET['id_quocgia']) ? $_GET['id_quocgia'] : '';
-	$id_kinhphi = isset($_GET['id_kinhphi']) ? $_GET['id_kinhphi'] : '';
+	$id_mucdich = isset($_GET['id_mucdich']) ? $_GET['id_mucdich'] : '';
+	$id_linhvuc = isset($_GET['id_linhvuc']) ? $_GET['id_linhvuc'] : '';
 
 	if(convert_date_dd_mm_yyyy($tungay) > convert_date_dd_mm_yyyy($denngay) || !$id_canbo){
 		$msg = 'Chọn ngày sai hoặc chưa chọn Cá nhân thống kê';
@@ -21,6 +22,12 @@ if(isset($_GET['submit'])){
 		if($id_canbo){
 			$arr_cb = array('$or' => array(array('danhsachdoan.id_canbo' => new MongoId($id_canbo)), array('danhsachdoan_2.id_canbo'=> new MongoId($id_canbo))));
 			array_push($query, $arr_cb);
+		}
+		if($id_mucdich){
+			array_push($query, array('id_mucdich' => new MongoId($id_mucdich)));
+		}
+		if($id_linhvuc){
+			array_push($query, array('id_linhvuc' => new MongoId($id_linhvuc)));
 		}
 		$q = array('$and' => $query);
 		$union_list = $doanvao->get_list_condition($q);
@@ -57,14 +64,34 @@ if(isset($union_list) && $union_list->count() > 0){
 		$soquyetdinh = $u['quyetdinhchophep']['ten'];
 		$ngayden = $u['ngayden'] ? date("d/m/Y", $u['ngayden']->sec) : '';
 		$ngaydi = $u['ngaydi'] ? date("d/m/Y", $u['ngaydi']->sec) : '';
-
-		$objPHPExcel->setActiveSheetIndex()->setCellValue('A'.$i, $stt);
-		$objPHPExcel->setActiveSheetIndex()->setCellValue('B'.$i, $congvanxinphep);
-		$objPHPExcel->setActiveSheetIndex()->setCellValue('C'.$i, $soquyetdinh);
-		$objPHPExcel->setActiveSheetIndex()->setCellValue('D'.$i, $ngayden);
-		$objPHPExcel->setActiveSheetIndex()->setCellValue('E'.$i, $ngaydi);
-		$objPHPExcel->setActiveSheetIndex()->setCellValue('F'.$i, $u['noidung']);
-		$i++;$stt++;
+		$blnQuocGia = false;
+		if($id_quocgia){
+			if($u['danhsachdoan']){
+				foreach($u['danhsachdoan'] as $ds){
+					$canbo->id = $ds['id_canbo']; $cb = $canbo->get_one();
+					if($id_quocgia == strval($cb['id_quoctich'])){
+						$blnQuocGia = true;
+					}
+				}
+			}
+			if($u['danhsachdoan_2']){
+				foreach($u['danhsachdoan_2'] as $ds2){
+					$canbo->id = $ds2['id_canbo']; $cb = $canbo->get_one();
+					if($id_quocgia == strval($cb['id_quoctich'])){
+						$blnQuocGia = true;
+					}
+				}
+			}
+		}
+		if(!$id_quocgia || ($id_quocgia && $blnQuocGia==true)){
+			$objPHPExcel->setActiveSheetIndex()->setCellValue('A'.$i, $stt);
+			$objPHPExcel->setActiveSheetIndex()->setCellValue('B'.$i, $congvanxinphep);
+			$objPHPExcel->setActiveSheetIndex()->setCellValue('C'.$i, $soquyetdinh);
+			$objPHPExcel->setActiveSheetIndex()->setCellValue('D'.$i, $ngayden);
+			$objPHPExcel->setActiveSheetIndex()->setCellValue('E'.$i, $ngaydi);
+			$objPHPExcel->setActiveSheetIndex()->setCellValue('F'.$i, $u['noidung']);
+			$i++;$stt++;
+		}
 	}
 }
 

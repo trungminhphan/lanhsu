@@ -16,7 +16,6 @@ if(isset($_GET['submit'])){
 		$msg = 'Chọn sai ngày thống kê.';
 	} else {
 		if($ngoainuoc){
-			//$query = array('id_quoctich' => array('$ne' => '56f9fd7732341c4008002015'), 'id_quoctich' => array('$ne' => new MongoId('56f9fd7732341c4008002015')));
 			$query = array('$and' => array(array('id_quoctich' => array('$ne' => '56f9fd7732341c4008002015')), array('id_quoctich' => array('$ne' => new MongoId('56f9fd7732341c4008002015')))));
 			$canbo_list = $canbo->get_list_condition($query);
 		} else {
@@ -27,10 +26,10 @@ if(isset($_GET['submit'])){
 				array_push($query_canbo, array('loaicongchuc' => 'VC'));
 			}
 			if($dangvien == 1){
-				array_push($query_canbo, array('dangvien' => '1'));	
+				array_push($query_canbo, array('dangvien' => '1'));
 			}
 			if($tinhuyvien == 1){
-				array_push($query_canbo, array('tinhuyvien' => '1'));	
+				array_push($query_canbo, array('tinhuyvien' => '1'));
 			}
 			if(count($query_canbo) > 0)
 			$canbo_list = $canbo->get_list_condition(array('$and' => $query_canbo));
@@ -73,7 +72,7 @@ if(isset($_GET['submit'])){
 <form action="<?php echo $_SERVER['PHP_SELF']; ?>" method="get" accept-charset="utf-8" id="thongkephanloaiform">
 <div class="grid">
 	<div class="row cells12 align-center">
-		<div class="cell colspan12">			
+		<div class="cell colspan12">
 			<label class="input-control checkbox">
 		    	<input type="checkbox" class="trongnuoc" name="congchuc" value="CC" id="congchuc" <?php echo $congchuc=='CC' ? ' checked' : ''; ?>>
 		        <span class="check"></span>
@@ -122,7 +121,7 @@ if(isset($_GET['submit'])){
 	<div class="row cells12">
 		<div class="cell colspan12 align-center">
 			<button name="submit" id="submit" value="OK" class="button primary"><span class="mif-checkmark"></span> OK</button>
-			<?php if(isset($_GET['submit']) && !$ngoainuoc) : ?>
+			<?php if(isset($_GET['submit'])) : ?>
 				<a href="export_thongkephanloai.php?<?php echo $_SERVER['QUERY_STRING']; ?>" class="button success"><span class="mif-file-excel"></span> Excel</a>
 			<?php endif; ?>
 		</div>
@@ -179,7 +178,7 @@ if(isset($_GET['submit'])){
 					echo '<tr>';$i++;
 				}
 			}
-			
+
 			?>
 			</tbody>
 		</table>
@@ -206,7 +205,7 @@ if(isset($_GET['submit'])){
 				$q = array('$and' => $query_check);
 				if($doanra->check_thongkephanloai($q)){
 					if($cb['donvi']){
-						$donvi = new DonVi();$chucvu = new ChucVu();		
+						$donvi = new DonVi();$chucvu = new ChucVu();
 						if(isset($cb['donvi'][0]['id_donvi'][0]) && $cb['donvi'][0]['id_donvi'][0]){
 							$tendonvi = $donvi->tendonvi($cb['donvi'][0]['id_donvi']);
 						} else { $tendonvi = ''; $full_donvi='';}

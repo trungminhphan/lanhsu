@@ -23,26 +23,31 @@ if(isset($_GET['submit'])){
 	$vienchuc = isset($_GET['vienchuc']) ? $_GET['vienchuc'] : '';
 	$dangvien = isset($_GET['dangvien']) ? $_GET['dangvien'] : '';
 	$tinhuyvien = isset($_GET['tinhuyvien']) ? $_GET['tinhuyvien'] : '';
-
+	$ngoainuoc = isset($_GET['ngoainuoc']) ? $_GET['ngoainuoc'] : '';
 	$tungay = isset($_GET['tungay']) ? $_GET['tungay'] : '';
 	$denngay = isset($_GET['denngay']) ? $_GET['denngay'] : '';
 	if(convert_date_dd_mm_yyyy($tungay) > convert_date_dd_mm_yyyy($denngay)){
 		$msg = 'Chọn sai ngày thống kê.';
 	} else {
-		if($congchuc == 'CC'){
-			array_push($query_canbo, array('loaicongchuc' => 'CC'));
+		if($ngoainuoc){
+			$query = array('$and' => array(array('id_quoctich' => array('$ne' => '56f9fd7732341c4008002015')), array('id_quoctich' => array('$ne' => new MongoId('56f9fd7732341c4008002015')))));
+			$canbo_list = $canbo->get_list_condition($query);
+		} else {
+			if($congchuc == 'CC'){
+				array_push($query_canbo, array('loaicongchuc' => 'CC'));
+			}
+			if($vienchuc == 'VC'){
+				array_push($query_canbo, array('loaicongchuc' => 'VC'));
+			}
+			if($dangvien == 1){
+				array_push($query_canbo, array('dangvien' => '1'));
+			}
+			if($tinhuyvien == 1){
+				array_push($query_canbo, array('tinhuyvien' => '1'));
+			}
+			if(count($query_canbo) > 0)
+			$canbo_list = $canbo->get_list_condition(array('$and' => $query_canbo));
 		}
-		if($vienchuc == 'VC'){
-			array_push($query_canbo, array('loaicongchuc' => 'VC'));
-		}
-		if($dangvien == 1){
-			array_push($query_canbo, array('dangvien' => '1'));	
-		}
-		if($tinhuyvien == 1){
-			array_push($query_canbo, array('tinhuyvien' => '1'));	
-		}
-		if(count($query_canbo) > 0)
-		$canbo_list = $canbo->get_list_condition(array('$and' => $query_canbo));
 		$start_date = new MongoDate(convert_date_dd_mm_yyyy($tungay));
 		$end_date = new MongoDate(convert_date_dd_mm_yyyy($denngay));
 	}
@@ -52,33 +57,65 @@ if(isset($_GET['submit'])){
 
 if(isset($canbo_list) && $canbo_list->count() >0){
 	$i=2;$stt=1;
-	$query_date = array(array('ngaydi' => array('$gte' => $start_date)), array('ngayve' => array('$lte' => $end_date)));
-	foreach ($canbo_list as $cb) {
-		$query_check = $query_date;
-		$arr_cb = array('$or' => array(array('danhsachdoan.id_canbo' => new MongoId($cb['_id'])), array('danhsachdoan_2.id_canbo'=> new MongoId($cb['_id']))));
-		array_push($query_check, $arr_cb);
-		$q = array('$and' => $query_check);
-		if($doanra->check_thongkephanloai($q)){	
-			if($cb['donvi']){
-				$donvi = new DonVi();$chucvu = new ChucVu();		
-				if(isset($cb['donvi'][0]['id_donvi'][0]) && $cb['donvi'][0]['id_donvi'][0]){
-					$tendonvi = $donvi->tendonvi($cb['donvi'][0]['id_donvi']);
-				} else { $tendonvi = ''; $full_donvi='';}
-				if(isset($cb['donvi'][0]['id_chucvu']) && $cb['donvi'][0]['id_chucvu']){
-					$chucvu->id = $cb['donvi'][0]['id_chucvu'];$cv = $chucvu->get_one();
-					$tenchucvu = $cv['ten'];
-				} else{
-					$tenchucvu = '';
+	if($ngoainuoc){
+		$donvi = new DonVi();$chucvu = new ChucVu();$count=0;$doanvao = new DoanVao();
+		$query_date = array(array('ngayden' => array('$gte' => $start_date)), array('ngaydi' => array('$lte' => $end_date)));
+		foreach ($canbo_list as $cb) {
+			$query_check = $query_date;
+			$arr_cb = array('$or' => array(array('danhsachdoan.id_canbo' => new MongoId($cb['_id'])), array('danhsachdoan_2.id_canbo'=> new MongoId($cb['_id']))));
+			array_push($query_check, $arr_cb);
+			$q = array('$and' => $query_check);
+			$count = $doanvao->count_soluong($q);
+			if($count){
+				if(isset($cb['donvi']) && $cb['donvi']){
+						if(isset($cb['donvi'][0]['id_donvi'][0]) && $cb['donvi'][0]['id_donvi'][0]){
+						$tendonvi = $donvi->tendonvi($cb['donvi'][0]['id_donvi']);
+					} else { $tendonvi = ''; $full_donvi='';}
+					if(isset($cb['donvi'][0]['id_chucvu']) && $cb['donvi'][0]['id_chucvu']){
+						$chucvu->id = $cb['donvi'][0]['id_chucvu'];$cv = $chucvu->get_one();
+						$tenchucvu = $cv['ten'];
+					} else{
+						$tenchucvu = '';
+					}
+				} else {
+					$tendonvi='';$tenchucvu='';
 				}
-			} else {
-				$tendonvi='';$tenchucvu='';
+				$objPHPExcel->setActiveSheetIndex()->setCellValue('A'.$i, $cb['code']);
+				$objPHPExcel->setActiveSheetIndex()->setCellValue('B'.$i, $cb['hoten']);
+				$objPHPExcel->setActiveSheetIndex()->setCellValue('C'.$i, $tendonvi);
+				$objPHPExcel->setActiveSheetIndex()->setCellValue('D'.$i, $tenchucvu);
+				$objPHPExcel->setActiveSheetIndex()->setCellValue('E'.$i, $count);
+				$i++;$stt++;
 			}
-
-			$objPHPExcel->setActiveSheetIndex()->setCellValue('A'.$i, $cb['code']);
-			$objPHPExcel->setActiveSheetIndex()->setCellValue('B'.$i, $cb['hoten']);
-			$objPHPExcel->setActiveSheetIndex()->setCellValue('C'.$i, $tendonvi);
-			$objPHPExcel->setActiveSheetIndex()->setCellValue('D'.$i, $tenchucvu);
-			$i++;$stt++;
+		}
+	} else {
+		$query_date = array(array('ngaydi' => array('$gte' => $start_date)), array('ngayve' => array('$lte' => $end_date)));
+		foreach ($canbo_list as $cb) {
+			$query_check = $query_date;
+			$arr_cb = array('$or' => array(array('danhsachdoan.id_canbo' => new MongoId($cb['_id'])), array('danhsachdoan_2.id_canbo'=> new MongoId($cb['_id']))));
+			array_push($query_check, $arr_cb);
+			$q = array('$and' => $query_check);
+			if($doanra->check_thongkephanloai($q)){
+				if($cb['donvi']){
+					$donvi = new DonVi();$chucvu = new ChucVu();
+					if(isset($cb['donvi'][0]['id_donvi'][0]) && $cb['donvi'][0]['id_donvi'][0]){
+						$tendonvi = $donvi->tendonvi($cb['donvi'][0]['id_donvi']);
+					} else { $tendonvi = ''; $full_donvi='';}
+					if(isset($cb['donvi'][0]['id_chucvu']) && $cb['donvi'][0]['id_chucvu']){
+						$chucvu->id = $cb['donvi'][0]['id_chucvu'];$cv = $chucvu->get_one();
+						$tenchucvu = $cv['ten'];
+					} else{
+						$tenchucvu = '';
+					}
+				} else {
+					$tendonvi='';$tenchucvu='';
+				}
+				$objPHPExcel->setActiveSheetIndex()->setCellValue('A'.$i, $cb['code']);
+				$objPHPExcel->setActiveSheetIndex()->setCellValue('B'.$i, $cb['hoten']);
+				$objPHPExcel->setActiveSheetIndex()->setCellValue('C'.$i, $tendonvi);
+				$objPHPExcel->setActiveSheetIndex()->setCellValue('D'.$i, $tenchucvu);
+				$i++;$stt++;
+			}
 		}
 	}
 }

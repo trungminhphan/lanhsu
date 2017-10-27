@@ -6,8 +6,10 @@ if(isset($_GET['submit'])){
 	$id_canbo = isset($_GET['id_canbo']) ? $_GET['id_canbo']  : '';
 	$tungay = isset($_GET['tungay']) ? $_GET['tungay'] : '';
 	$denngay = isset($_GET['denngay']) ? $_GET['denngay'] : '';
-
-	if(convert_date_dd_mm_yyyy($tungay) > convert_date_dd_mm_yyyy($denngay) || !$id_canbo){
+	$id_quocgia = isset($_GET['id_quocgia']) ? $_GET['id_quocgia'] : '';
+	$id_mucdich = isset($_GET['id_mucdich']) ? $_GET['id_mucdich'] : '';
+	$id_linhvuc = isset($_GET['id_linhvuc']) ? $_GET['id_linhvuc'] : '';
+	if(convert_date_dd_mm_yyyy($tungay) > convert_date_dd_mm_yyyy($denngay)){
 		$msg = 'Chọn ngày sai hoặc chưa chọn Cá nhân thống kê';
 	} else {
 		$start_date = new MongoDate(convert_date_dd_mm_yyyy($tungay));
@@ -17,6 +19,12 @@ if(isset($_GET['submit'])){
 		if($id_canbo){
 			$arr_cb = array('$or' => array(array('danhsachdoan.id_canbo' => new MongoId($id_canbo)), array('danhsachdoan_2.id_canbo'=> new MongoId($id_canbo))));
 			array_push($query, $arr_cb);
+		}
+		if($id_mucdich){
+			array_push($query, array('id_mucdich' => new MongoId($id_mucdich)));
+		}
+		if($id_linhvuc){
+			array_push($query, array('id_linhvuc' => new MongoId($id_linhvuc)));
 		}
 		$q = array('$and' => $query);
 		$union_list = $doanvao->get_list_condition($q);
@@ -43,7 +51,7 @@ if(isset($_GET['submit'])){
 </head>
 <body>
 <div class="place-left align-center">
-	<b>UBND TỈNH AN GIANG <br /> 
+	<b>UBND TỈNH AN GIANG <br />
 	SỞ NGOẠI VỤ</b> <br />_____________
 
 </div>
@@ -88,14 +96,35 @@ if(isset($id_canbo) && $id_canbo){
 			$soquyetdinh = $u['quyetdinhchophep']['ten'];
 			$ngayden = $u['ngayden'] ? date("d/m/Y", $u['ngayden']->sec) : '';
 			$ngaydi = $u['ngaydi'] ? date("d/m/Y", $u['ngaydi']->sec) : '';
-			echo '<tr>
-				<td>'.$i.'</td>
-				<td>'.$congvanxinphep.'</td>
-				<td>'.$soquyetdinh.'</td>
-				<td>'.$ngayden.'</td>
-				<td>'.$ngaydi.'</td>
-				<td>'.$u['noidung'].'</td>
-			</tr>';$i++;
+			$blnQuocGia = false;
+			if($id_quocgia){
+				if($u['danhsachdoan']){
+					foreach($u['danhsachdoan'] as $ds){
+						$canbo->id = $ds['id_canbo']; $cb = $canbo->get_one();
+						if($id_quocgia == strval($cb['id_quoctich'])){
+							$blnQuocGia = true;
+						}
+					}
+				}
+				if($u['danhsachdoan_2']){
+					foreach($u['danhsachdoan_2'] as $ds2){
+						$canbo->id = $ds2['id_canbo']; $cb = $canbo->get_one();
+						if($id_quocgia == strval($cb['id_quoctich'])){
+							$blnQuocGia = true;
+						}
+					}
+				}
+			}
+			if(!$id_quocgia || ($id_quocgia && $blnQuocGia==true)){
+				echo '<tr>
+					<td>'.$i.'</td>
+					<td>'.$congvanxinphep.'</td>
+					<td>'.$soquyetdinh.'</td>
+					<td>'.$ngayden.'</td>
+					<td>'.$ngaydi.'</td>
+					<td>'.$u['noidung'].'</td>
+				</tr>';$i++;
+			}
 		}
 	?>
 	</tbody>

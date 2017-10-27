@@ -1,6 +1,7 @@
 <?php
 require_once('header.php');
 $canbo = new CanBo();$doanvao=new DoanVao();$quocgia=new QuocGia();
+$mucdich = new MucDich(); $linhvuc = new LinhVuc();
 $id_canbo ='';$id_quocgia='';$id_kinhphi='';
 if(isset($_GET['submit'])){
 	$query = array();
@@ -9,9 +10,10 @@ if(isset($_GET['submit'])){
 	$tungay = isset($_GET['tungay']) ? $_GET['tungay'] : '';
 	$denngay = isset($_GET['denngay']) ? $_GET['denngay'] : '';
 	$id_quocgia = isset($_GET['id_quocgia']) ? $_GET['id_quocgia'] : '';
-	$id_kinhphi = isset($_GET['id_kinhphi']) ? $_GET['id_kinhphi'] : '';
+	$id_mucdich = isset($_GET['id_mucdich']) ? $_GET['id_mucdich'] : '';
+	$id_linhvuc = isset($_GET['id_linhvuc']) ? $_GET['id_linhvuc'] : '';
 
-	if(convert_date_dd_mm_yyyy($tungay) > convert_date_dd_mm_yyyy($denngay) || !$id_canbo){
+	if(convert_date_dd_mm_yyyy($tungay) > convert_date_dd_mm_yyyy($denngay)){
 		$msg = 'Chọn ngày sai hoặc chưa chọn Cá nhân thống kê';
 	} else {
 		$start_date = new MongoDate(convert_date_dd_mm_yyyy($tungay));
@@ -21,6 +23,13 @@ if(isset($_GET['submit'])){
 		if($id_canbo){
 			$arr_cb = array('$or' => array(array('danhsachdoan.id_canbo' => new MongoId($id_canbo)), array('danhsachdoan_2.id_canbo'=> new MongoId($id_canbo))));
 			array_push($query, $arr_cb);
+		}
+
+		if($id_mucdich){
+			array_push($query, array('id_mucdich' => new MongoId($id_mucdich)));
+		}
+		if($id_linhvuc){
+			array_push($query, array('id_linhvuc' => new MongoId($id_linhvuc)));
 		}
 		$q = array('$and' => $query);
 		$union_list = $doanvao->get_list_condition($q);
@@ -49,7 +58,7 @@ if(isset($_GET['submit'])){
 	<div class="row cells12">
 		<div class="cell colspan4 input-control select">
 			<label>Họ tên</label>
-			<select name="id_canbo" id="id_canbo">
+			<select name="id_canbo" id="id_canbo" data-placeholder="Chọn cá nhân cần thống kê" data-allow-clear="true">
 			<?php
 			if(isset($id_canbo) && $id_canbo){
 				$canbo->id = $id_canbo; $cb = $canbo->get_one();
@@ -67,6 +76,51 @@ if(isset($_GET['submit'])){
 			<label>Đến ngày</label>
 			<input type="text" name="denngay" id="denngay" value="<?php echo isset($denngay) ? $denngay : date('d/m/Y'); ?>" class="ngaythangnam" data-inputmask="'alias': 'date'" data-validate-func="required" placeholder="Chọn ngày" />
 			<span class="input-state-error mif-warning"></span><span class="input-state-success mif-checkmark"></span>
+		</div>
+	</div>
+	<div class="row cells12">
+		<div class="cell colspan4 input-control select">
+			<label>Mục đích</label>
+			<select name="id_mucdich" id="id_mucdich" data-placeholder="Chọn mục đích" data-allow-clear="true" class="select2">
+				<option value=""></option>
+				option
+			<?php
+			$mucdich_list = $mucdich->get_all_list();
+			if($mucdich_list){
+				foreach($mucdich_list as $md){
+					echo '<option value="'.$md['_id'].'"'.($md['_id'] == $id_mucdich ? ' selected' : '').'>'.$md['ten'].'</option>';
+				}
+			}
+			?>
+			</select>
+		</div>
+		<div class="cell colspan4 input-control select">
+			<label>Lĩnh vực</label>
+			<select name="id_linhvuc" id="id_linhvuc" data-placeholder="Chọn lĩnh vực" data-allow-clear="true" class="select2">
+				<option value=""></option>
+			<?php
+			$linhvuc_list = $linhvuc->get_all_list();
+			if($linhvuc_list){
+				foreach($linhvuc_list as $lv){
+					echo '<option value="'.$lv['_id'].'"'.($lv['_id'] == $id_linhvuc ? ' selected' : '').'>'.$lv['ten'].'</option>';
+				}
+			}
+			?>
+			</select>
+		</div>
+		<div class="cell colspan4 input-control select">
+			<label>Quốc gia</label>
+			<select name="id_quocgia" id="id_quocgia" data-placeholder="Chọn quốc gia" data-allow-clear="true" class="select2">
+			<option value=""></option>
+			<?php
+			$quocgia_list = $quocgia->get_all_list();
+			if($quocgia_list){
+				foreach($quocgia_list as $qg){
+					echo '<option value="'.$qg['_id'].'"'.($qg['_id'] == $id_quocgia ? ' selected' : '').'>'.$qg['ten'].'</option>';
+				}
+			}
+			?>
+			</select>
 		</div>
 	</div>
 	<div class="row cells12">
@@ -114,14 +168,37 @@ if(isset($id_canbo) && $id_canbo){
 			$soquyetdinh = $u['quyetdinhchophep']['ten'];
 			$ngayden = $u['ngayden'] ? date("d/m/Y", $u['ngayden']->sec) : '';
 			$ngaydi = $u['ngaydi'] ? date("d/m/Y", $u['ngaydi']->sec) : '';
-			echo '<tr>
-				<td>'.$i.'</td>
-				<td>'.$congvanxinphep.'</td>
-				<td><a href="chitietdoanvao.php?id='.$u['_id'].'" target="_blank">'.$soquyetdinh.'</a></td>
-				<td>'.$ngayden.'</td>
-				<td>'.$ngaydi.'</td>
-				<td>'.$u['noidung'].'</td>
-			</tr>';$i++;
+			$blnQuocGia = false;
+			if($id_quocgia){
+				if($u['danhsachdoan']){
+					foreach($u['danhsachdoan'] as $ds){
+						$canbo->id = $ds['id_canbo']; $cb = $canbo->get_one();
+						if($id_quocgia == strval($cb['id_quoctich'])){
+							$blnQuocGia = true;
+						}
+					}
+				}
+				if($u['danhsachdoan_2']){
+					foreach($u['danhsachdoan_2'] as $ds2){
+						$canbo->id = $ds2['id_canbo']; $cb = $canbo->get_one();
+						if($id_quocgia == strval($cb['id_quoctich'])){
+							$blnQuocGia = true;
+						}
+					}
+				}
+			}
+			if(!$id_quocgia || ($id_quocgia && $blnQuocGia==true)){
+				echo '<tr>
+					<td>'.$i.'</td>
+					<td>'.$congvanxinphep.'</td>
+					<td><a href="chitietdoanvao.php?id='.$u['_id'].'" target="_blank">'.$soquyetdinh.'</a></td>
+					<td>'.$ngayden.'</td>
+					<td>'.$ngaydi.'</td>
+					<td>'.$u['noidung'].'</td>
+				</tr>';
+			}
+
+			$i++;
 		}
 	?>
 	</tbody>
