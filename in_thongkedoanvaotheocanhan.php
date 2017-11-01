@@ -92,6 +92,12 @@ if(isset($id_canbo) && $id_canbo){
 	<?php
 		$i = 1;
 		foreach ($union_list as $u) {
+			if(isset($u['danhsachdoan'][0]['id_canbo']) && $u['danhsachdoan'][0]['id_canbo']){
+				$canbo->id = $u['danhsachdoan'][0]['id_canbo']; $cb = $canbo->get_one();
+				$tentruongdoan = $cb['hoten'];
+			} else {
+				$tentruongdoan = '';
+			}
 			$congvanxinphep = $u['congvanxinphep']['ten'];
 			$soquyetdinh = $u['quyetdinhchophep']['ten'];
 			$ngayden = $u['ngayden'] ? date("d/m/Y", $u['ngayden']->sec) : '';
@@ -118,6 +124,7 @@ if(isset($id_canbo) && $id_canbo){
 			if(!$id_quocgia || ($id_quocgia && $blnQuocGia==true)){
 				echo '<tr>
 					<td>'.$i.'</td>
+					<td>'.$tentruongdoan.'</td>
 					<td>'.$congvanxinphep.'</td>
 					<td>'.$soquyetdinh.'</td>
 					<td>'.$ngayden.'</td>

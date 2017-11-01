@@ -1,24 +1,33 @@
 <?php
 require_once('header.php');
 $canbo = new CanBo();$doanvao=new DoanVao();$donvi = new DonVi();$quocgia=new QuocGia();
+$linhvuc = new LinhVuc();$mucdich = new MucDich();
 $id_donvi='';
 if(isset($_GET['submit'])){
 	$query = array();
 	$id_donvi = isset($_GET['id_donvi']) ? $_GET['id_donvi'] : '';
 	$tungay = isset($_GET['tungay']) ? $_GET['tungay'] : '';
 	$denngay = isset($_GET['denngay']) ? $_GET['denngay'] : '';
-	if(convert_date_dd_mm_yyyy($tungay) > convert_date_dd_mm_yyyy($denngay) || !$id_donvi){
+	$id_mucdich = isset($_GET['id_mucdich']) ? $_GET['id_mucdich'] : '';
+	$id_linhvuc = isset($_GET['id_linhvuc']) ? $_GET['id_linhvuc'] : '';
+	if(convert_date_dd_mm_yyyy($tungay) > convert_date_dd_mm_yyyy($denngay)){
 		$msg = 'Chọn ngày sai hoặc chưa chọn Đơn vị thống kê';
 	} else {
 		$start_date = new MongoDate(convert_date_dd_mm_yyyy($tungay));
 		$end_date = new MongoDate(convert_date_dd_mm_yyyy($denngay));
 		array_push($query, array('ngayden' => array('$gte' => $start_date)));
 		array_push($query, array('ngaydi' => array('$lte' => $end_date)));
-		/*if($id_donvi){
-			array_push($query, array('congvanxinphep.id_donvi.0' => $id_donvi));
-		}*/
 		if($id_donvi){
+			array_push($query, array('congvanxinphep.id_donvi.0' => $id_donvi));
+		}
+		/*if($id_donvi){
 			array_push($query, array('$or' => array(array('danhsachdoan.0.id_donvi.0' => $id_donvi), array('danhsachdoan_2.0.id_donvi.0' => $id_donvi))));
+		}*/
+		if($id_mucdich){
+			array_push($query, array('id_mucdich' => new MongoId($id_mucdich)));
+		}
+		if($id_linhvuc){
+			array_push($query, array('id_linhvuc' => new MongoId($id_linhvuc)));
 		}
 		$q = array('$and' => $query);
 		$union_list = $doanvao->get_list_condition($q);
@@ -68,11 +77,42 @@ if(isset($_GET['submit'])){
 		</div>
 	</div>
 	<div class="row cells12">
+		<div class="cell colspan4 input-control select">
+			<label>Mục đích</label>
+			<select name="id_mucdich" id="id_mucdich" data-placeholder="Chọn mục đích" data-allow-clear="true" class="select2">
+				<option value=""></option>
+				option
+			<?php
+			$mucdich_list = $mucdich->get_all_list();
+			if($mucdich_list){
+				foreach($mucdich_list as $md){
+					echo '<option value="'.$md['_id'].'"'.($md['_id'] == $id_mucdich ? ' selected' : '').'>'.$md['ten'].'</option>';
+				}
+			}
+			?>
+			</select>
+		</div>
+		<div class="cell colspan4 input-control select">
+			<label>Lĩnh vực</label>
+			<select name="id_linhvuc" id="id_linhvuc" data-placeholder="Chọn lĩnh vực" data-allow-clear="true" class="select2">
+				<option value=""></option>
+			<?php
+			$linhvuc_list = $linhvuc->get_all_list();
+			if($linhvuc_list){
+				foreach($linhvuc_list as $lv){
+					echo '<option value="'.$lv['_id'].'"'.($lv['_id'] == $id_linhvuc ? ' selected' : '').'>'.$lv['ten'].'</option>';
+				}
+			}
+			?>
+			</select>
+		</div>
+	</div>
+	<div class="row cells12">
 		<div class="cell colspan12 align-center">
 			<button name="submit" id="submit" value="OK" class="button primary"><span class="mif-checkmark"></span> Thống kê</button>
 			<?php if(isset($_GET['submit'])) : ?>
-				<a href="in_thongkedoanvaotheodonvi.php?tungay=<?php echo $tungay; ?>&denngay=<?php echo $denngay; ?>&id_donvi=<?php echo $id_donvi; ?>&submit=OK" class="open_window button"><span class="mif-printer"></span> Print</a>
-				<a href="export_thongkedoanvaotheodonvi.php?tungay=<?php echo $tungay; ?>&denngay=<?php echo $denngay; ?>&id_donvi=<?php echo $id_donvi; ?>&submit=OK" class="button success"><span class="mif-file-excel"></span> Excel</a>
+				<a href="in_thongkedoanvaotheodonvi.php?<?php echo $_SERVER['QUERY_STRING']; ?>" class="open_window button"><span class="mif-printer"></span> Print</a>
+				<a href="export_thongkedoanvaotheodonvi.php??<?php echo $_SERVER['QUERY_STRING']; ?>" class="button success"><span class="mif-file-excel"></span> Excel</a>
 				<!--<a href="export_thongkedoanratheocanhan_word.php" class="button bg-teal fg-white"><span class="mif-file-word"></span> Word</a>-->
 			<?php endif; ?>
 		</div>
@@ -134,7 +174,13 @@ if(isset($id_donvi) && $id_donvi){
 	<?php
 		$i = 1;
 		foreach ($union_list as $u) {
-			$canbo->id = $u['danhsachdoan'][0]['id_canbo']; $cb = $canbo->get_one();
+			if(isset($u['danhsachdoan'][0]['id_canbo']) && $u['danhsachdoan'][0]['id_canbo']){
+				$canbo->id = $u['danhsachdoan'][0]['id_canbo']; $cb = $canbo->get_one();
+				$tentruongdoan = $cb['hoten'];
+			} else {
+				$tentruongdoan = '';
+			}
+
 			$congvanxinphep = $u['congvanxinphep']['ten'];
 			$soquyetdinh = $u['quyetdinhchophep']['ten'];
 			$ngayden = $u['ngayden'] ? date("d/m/Y", $u['ngayden']->sec) : '';
@@ -145,9 +191,9 @@ if(isset($id_donvi) && $id_donvi){
 			} else { $tenquoctich = ''; }
 			echo '<tr>
 				<td>'.$i.'</td>
-				<td>'.$cb['hoten'].'</td>
+				<td>'.$tentruongdoan.'</td>
 				<td>'.$tenquoctich.'</td>
-				<td>'.$congvanxinphep.'</td>
+				<td><a href="chitietdoanvao.php?id='.$u['_id'].'">'.$congvanxinphep.'</a></td>
 				<td>'.$soquyetdinh.'</td>
 				<td>'.$ngayden.'</td>
 				<td>'.$ngaydi.'</td>

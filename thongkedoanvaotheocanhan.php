@@ -127,8 +127,8 @@ if(isset($_GET['submit'])){
 		<div class="cell colspan12 align-center">
 			<button name="submit" id="submit" value="OK" class="button primary"><span class="mif-checkmark"></span> Thống kê</button>
 			<?php if(isset($_GET['submit'])) : ?>
-				<a href="in_thongkedoanvaotheocanhan.php?tungay=<?php echo $tungay; ?>&denngay=<?php echo $denngay; ?>&id_canbo=<?php echo $id_canbo; ?>&submit=OK" class="open_window button"><span class="mif-printer"></span> Print</a>
-				<a href="export_thongkedoanvaotheocanhan.php?tungay=<?php echo $tungay; ?>&denngay=<?php echo $denngay; ?>&id_canbo=<?php echo $id_canbo; ?>&submit=OK" class="button success"><span class="mif-file-excel"></span> Excel</a>
+				<a href="in_thongkedoanvaotheocanhan.php?<?php echo $_SERVER['QUERY_STRING']; ?>" class="open_window button"><span class="mif-printer"></span> Print</a>
+				<a href="export_thongkedoanvaotheocanhan.php?<?php echo $_SERVER['QUERY_STRING']; ?>" class="button success"><span class="mif-file-excel"></span> Excel</a>
 				<!--<a href="export_thongkedoanratheocanhan_word.php" class="button bg-teal fg-white"><span class="mif-file-word"></span> Word</a>-->
 			<?php endif; ?>
 		</div>
@@ -153,6 +153,7 @@ if(isset($id_canbo) && $id_canbo){
 	<thead>
 		<tr>
 			<th>STT</th>
+			<th>Trưởng đoàn</th>
 			<th>Văn bản xin phép</th>
 			<th>Văn bản cho phép</th>
 			<th>Ngày đến</th>
@@ -164,6 +165,12 @@ if(isset($id_canbo) && $id_canbo){
 	<?php
 		$i = 1;
 		foreach ($union_list as $u) {
+			if(isset($u['danhsachdoan'][0]['id_canbo']) && $u['danhsachdoan'][0]['id_canbo']){
+				$canbo->id = $u['danhsachdoan'][0]['id_canbo']; $cb = $canbo->get_one();
+				$tentruongdoan = $cb['hoten'];
+			} else {
+				$tentruongdoan = '';
+			}
 			$congvanxinphep = $u['congvanxinphep']['ten'];
 			$soquyetdinh = $u['quyetdinhchophep']['ten'];
 			$ngayden = $u['ngayden'] ? date("d/m/Y", $u['ngayden']->sec) : '';
@@ -190,6 +197,7 @@ if(isset($id_canbo) && $id_canbo){
 			if(!$id_quocgia || ($id_quocgia && $blnQuocGia==true)){
 				echo '<tr>
 					<td>'.$i.'</td>
+					<td>'.$tentruongdoan.'</td>
 					<td>'.$congvanxinphep.'</td>
 					<td><a href="chitietdoanvao.php?id='.$u['_id'].'" target="_blank">'.$soquyetdinh.'</a></td>
 					<td>'.$ngayden.'</td>

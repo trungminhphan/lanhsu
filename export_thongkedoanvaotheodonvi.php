@@ -8,19 +8,19 @@ if(isset($_GET['submit'])){
 	$id_donvi = isset($_GET['id_donvi']) ? $_GET['id_donvi'] : '';
 	$tungay = isset($_GET['tungay']) ? $_GET['tungay'] : '';
 	$denngay = isset($_GET['denngay']) ? $_GET['denngay'] : '';
-	if(convert_date_dd_mm_yyyy($tungay) > convert_date_dd_mm_yyyy($denngay) || !$id_donvi){
+	if(convert_date_dd_mm_yyyy($tungay) > convert_date_dd_mm_yyyy($denngay)){
 		$msg = 'Chọn ngày sai hoặc chưa chọn Đơn vị thống kê';
 	} else {
 		$start_date = new MongoDate(convert_date_dd_mm_yyyy($tungay));
 		$end_date = new MongoDate(convert_date_dd_mm_yyyy($denngay));
 		array_push($query, array('ngayden' => array('$gte' => $start_date)));
 		array_push($query, array('ngaydi' => array('$lte' => $end_date)));
-		/*if($id_donvi){
-			array_push($query, array('congvanxinphep.id_donvi.0' => $id_donvi));
-		}*/
 		if($id_donvi){
-			array_push($query, array('$or' => array(array('danhsachdoan.0.id_donvi.0' => $id_donvi), array('danhsachdoan_2.0.id_donvi.0' => $id_donvi))));
+			array_push($query, array('congvanxinphep.id_donvi.0' => $id_donvi));
 		}
+		/*if($id_donvi){
+			array_push($query, array('$or' => array(array('danhsachdoan.0.id_donvi.0' => $id_donvi), array('danhsachdoan_2.0.id_donvi.0' => $id_donvi))));
+		}*/
 		$q = array('$and' => $query);
 		$union_list = $doanvao->get_list_condition($q);
 	}
@@ -47,7 +47,12 @@ if(isset($union_list) && $union_list->count() > 0){
 
 	$i = 3; $stt=1;
 	foreach ($union_list as $u) {
-		$canbo->id = $u['danhsachdoan'][0]['id_canbo']; $cb = $canbo->get_one();
+		if(isset($u['danhsachdoan'][0]['id_canbo']) && $u['danhsachdoan'][0]['id_canbo']){
+			$canbo->id = $u['danhsachdoan'][0]['id_canbo']; $cb = $canbo->get_one();
+			$tentruongdoan = $cb['hoten'];
+		} else {
+			$tentruongdoan = '';
+		}
 		$congvanxinphep = $u['congvanxinphep']['ten'];
 		$soquyetdinh = $u['quyetdinhchophep']['ten'];
 		$ngayden = $u['ngayden'] ? date("d/m/Y", $u['ngayden']->sec) : '';
@@ -57,7 +62,7 @@ if(isset($union_list) && $union_list->count() > 0){
 			$tenquoctich = $qt['ten'];
 		} else { $tenquoctich = ''; }
 		$objPHPExcel->setActiveSheetIndex()->setCellValue('A'.$i, $stt);
-		$objPHPExcel->setActiveSheetIndex()->setCellValue('B'.$i, $cb['hoten']);
+		$objPHPExcel->setActiveSheetIndex()->setCellValue('B'.$i, $tentruongdoan);
 		$objPHPExcel->setActiveSheetIndex()->setCellValue('C'.$i, $tenquoctich);
 		$objPHPExcel->setActiveSheetIndex()->setCellValue('D'.$i, $congvanxinphep);
 		$objPHPExcel->setActiveSheetIndex()->setCellValue('E'.$i, $soquyetdinh);

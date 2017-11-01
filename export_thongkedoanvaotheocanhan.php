@@ -2,6 +2,7 @@
 require_once('header_none.php');
 require_once('cls/PHPExcel.php');
 $canbo = new CanBo();$doanvao=new DoanVao();$quocgia=new QuocGia();
+$linhvuc = new LinhVuc();$mucdich = new MucDich();
 $id_canbo ='';$id_quocgia='';$id_kinhphi='';
 if(isset($_GET['submit'])){
 	$query = array();
@@ -12,7 +13,7 @@ if(isset($_GET['submit'])){
 	$id_mucdich = isset($_GET['id_mucdich']) ? $_GET['id_mucdich'] : '';
 	$id_linhvuc = isset($_GET['id_linhvuc']) ? $_GET['id_linhvuc'] : '';
 
-	if(convert_date_dd_mm_yyyy($tungay) > convert_date_dd_mm_yyyy($denngay) || !$id_canbo){
+	if(convert_date_dd_mm_yyyy($tungay) > convert_date_dd_mm_yyyy($denngay)){
 		$msg = 'Chọn ngày sai hoặc chưa chọn Cá nhân thống kê';
 	} else {
 		$start_date = new MongoDate(convert_date_dd_mm_yyyy($tungay));
@@ -83,6 +84,7 @@ if(isset($union_list) && $union_list->count() > 0){
 				}
 			}
 		}
+
 		if(!$id_quocgia || ($id_quocgia && $blnQuocGia==true)){
 			$objPHPExcel->setActiveSheetIndex()->setCellValue('A'.$i, $stt);
 			$objPHPExcel->setActiveSheetIndex()->setCellValue('B'.$i, $congvanxinphep);

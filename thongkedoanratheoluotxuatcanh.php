@@ -11,7 +11,6 @@ if(isset($_GET['submit'])){
 	$denngay = isset($_GET['denngay']) ? $_GET['denngay'] : '';
 	$id_quocgia = isset($_GET['id_quocgia']) ? $_GET['id_quocgia'] : '';
 	$id_kinhphi = isset($_GET['id_kinhphi']) ? $_GET['id_kinhphi'] : '';
-
 	if(convert_date_dd_mm_yyyy($tungay) > convert_date_dd_mm_yyyy($denngay)){
 		$msg = 'Chọn ngày sai hoặc chưa chọn Đơn vị thống kê';
 	} else {
@@ -22,13 +21,13 @@ if(isset($_GET['submit'])){
 		if($id_donvi && count($a) == 1){
 			array_push($query, array('$or' => array(array('danhsachdoan.id_donvi.0' => $id_donvi), array('danhsachdoan_2.id_donvi.0' => $id_donvi))));
 		} else if($id_donvi && count($a) == 2){
-			array_push($query, array('$or' => array(array('danhsachdoan.id_donvi.0' => $id_donvi,'danhsachdoan.id_donvi.1' => $a[1]), array('danhsachdoan_2.id_donvi.0' => $id_donvi, 'danhsachdoan_2.id_donvi.1' => $a[1]))));
+			array_push($query, array('$or' => array(array('danhsachdoan.id_donvi.0' => $id_donvi), array('danhsachdoan_2.id_donvi.0' => $id_donvi))));
+			array_push($query, array('$or' => array(array('danhsachdoan.id_donvi.1' => $a[1]), array('danhsachdoan_2.id_donvi.1' => $a[1]))));
 		} else if($id_donvi && count($a) == 3){
 			array_push($query, array('$or' => array(array('danhsachdoan.id_donvi.0' => $id_donvi,'danhsachdoan.id_donvi.1' => $a[1], 'danhsachdoan.id_donvi.2' => $a[2]), array('danhsachdoan_2.id_donvi.0' => $id_donvi, 'danhsachdoan_2.id_donvi.1' => $a[1], 'danhsachdoan_2.id_donvi.2' => $a[2]))));
 		} else if($id_donvi && count($a) == 4){
 			array_push($query, array('$or' => array(array('danhsachdoan.id_donvi.0' => $id_donvi,'danhsachdoan.id_donvi.1' => $a[1], 'danhsachdoan.id_donvi.2' => $a[2], 'danhsachdoan.id_donvi.3' => $a[3]), array('danhsachdoan_2.id_donvi.0' => $id_donvi, 'danhsachdoan_2.id_donvi.1' => $a[1], 'danhsachdoan_2.id_donvi.2' => $a[2], 'danhsachdoan_2.id_donvi.3' => $a[3]))));
 		} else {
-			//array_push($query, array('$or' => array(array('danhsachdoan.id_donvi.0' => $id_donvi), array('danhsachdoan_2.id_donvi.0' => $id_donvi))));
 			$donvi_list = $donvi->get_all_list();
 		}
 
@@ -38,11 +37,17 @@ if(isset($_GET['submit'])){
 		if($id_quocgia){
 			array_push($query, array('id_quocgia' => $id_quocgia));
 		}
+		$q1 = array('$and' => array(
+			array('ngaydi' => array('$gte' => $start_date)),
+			array('ngayve' => array('$lte' => $end_date)),
+			array('$or' => array(array('danhsachdoan.id_donvi.0' => $id_donvi), array('danhsachdoan_2.id_donvi.0' => $id_donvi)))
+		));
+		$list_1 = $doanra->get_list_condition($q1);
 		$q = array('$and' => $query);
 		$union_list = $doanra->get_list_condition($q);
+
 	}
 }
-
 $kinhphi_list = $kinhphi->get_all_list();
 $quocgia_list = $quocgia->get_all_list();
 ?>
@@ -135,7 +140,7 @@ $quocgia_list = $quocgia->get_all_list();
 <?php
 if(isset($id_donvi) && $id_donvi){
 	$c1 = 0;
-	foreach ($union_list as $u) {
+	foreach ($list_1 as $u) {
 		if($u['danhsachdoan']){
 			foreach ($u['danhsachdoan'] as $ds) {
 				if($ds['id_donvi'][0] == $id_donvi) $c1++;
@@ -154,12 +159,12 @@ if(isset($id_donvi) && $id_donvi){
 			foreach ($union_list as $u) {
 				if($u['danhsachdoan']){
 					foreach ($u['danhsachdoan'] as $ds) {
-						if($ds['id_donvi'][0] == $id_donvi && $ds['id_donvi'][1]==$a2['_id']) $c2++;
+						if($ds['id_donvi'][0] == $id_donvi && $ds['id_donvi'][1]==strval($a2['_id'])) $c2++;
 					}
 				}
 				if($u['danhsachdoan_2']){
 					foreach ($u['danhsachdoan_2'] as $ds2) {
-						if($ds2['id_donvi'][0] == $id_donvi && $ds2['id_donvi'][1] == $a2['_id']) $c2++;
+						if($ds2['id_donvi'][0] == $id_donvi && $ds2['id_donvi'][1] == strval($a2['_id'])) $c2++;
 					}
 				}
 			}

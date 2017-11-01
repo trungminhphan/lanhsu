@@ -54,7 +54,7 @@ if(isset($_GET['submit'])){
 					}
 				}
 				?>
-			</select>			
+			</select>
 		</div>
 		<div class="cell colspan4 input-control text" data-role="datepicker" data-format="dd/mm/yyyy">
 			<label>Từ ngày</label>
@@ -93,7 +93,12 @@ if(isset($_GET['submit'])){
 	<?php
 		$i = 1;
 		foreach ($union_list as $u) {
-			$canbo->id = $u['danhsachdoan'][0]['id_canbo']; $cb = $canbo->get_one();
+			if(isset($u['danhsachdoan'][0]['id_canbo']) && $u['danhsachdoan'][0]['id_canbo']){
+				$canbo->id = $u['danhsachdoan'][0]['id_canbo']; $cb = $canbo->get_one();
+				$tentruongdoan = $cb['hoten'];
+			} else { $tentruongdoan = '';}
+
+
 			$soquyetdinh = $u['quyetdinhchophep']['ten'];
 			$congvanxinphep = $u['congvanxinphep']['ten'];
 			$ngayden = $u['ngayden'] ? date("d/m/Y", $u['ngayden']->sec) : '';
@@ -104,7 +109,7 @@ if(isset($_GET['submit'])){
 			} else { $tenquoctich = ''; }
 			echo '<tr>
 				<td>'.$i.'</td>
-				<td>'.$cb['hoten'].'</td>
+				<td>'.$tentruongdoan.'</td>
 				<td>'.$tenquoctich.'</td>
 				<td>'.$congvanxinphep.'</td>
 				<td><a href="chitietdoanvao.php?id='.$u['_id'].'" target="_blank">'.$soquyetdinh.'</a></td>

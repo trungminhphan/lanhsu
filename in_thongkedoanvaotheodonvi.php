@@ -8,15 +8,18 @@ if(isset($_GET['submit'])){
 	$id_donvi = isset($_GET['id_donvi']) ? $_GET['id_donvi'] : '';
 	$tungay = isset($_GET['tungay']) ? $_GET['tungay'] : '';
 	$denngay = isset($_GET['denngay']) ? $_GET['denngay'] : '';
-		if(convert_date_dd_mm_yyyy($tungay) > convert_date_dd_mm_yyyy($denngay) || !$id_donvi){
+		if(convert_date_dd_mm_yyyy($tungay) > convert_date_dd_mm_yyyy($denngay)){
 		$msg = 'Chọn ngày sai hoặc chưa chọn Đơn vị thống kê';
 	} else {
 		$start_date = new MongoDate(convert_date_dd_mm_yyyy($tungay));
 		$end_date = new MongoDate(convert_date_dd_mm_yyyy($denngay));
 		array_push($query, array('ngayden' => array('$gte' => $start_date)));
 		array_push($query, array('ngaydi' => array('$lte' => $end_date)));
-		if($id_donvi){
+		/*if($id_donvi){
 			array_push($query, array('$or' => array(array('danhsachdoan.0.id_donvi.0' => $id_donvi), array('danhsachdoan_2.0.id_donvi.0' => $id_donvi))));
+		}*/
+		if($id_donvi){
+			array_push($query, array('congvanxinphep.id_donvi.0' => $id_donvi));
 		}
 		$q = array('$and' => $query);
 		$union_list = $doanvao->get_list_condition($q);
@@ -44,7 +47,7 @@ if(isset($_GET['submit'])){
 </head>
 <body>
 <div class="place-left align-center">
-	<b>UBND TỈNH AN GIANG <br /> 
+	<b>UBND TỈNH AN GIANG <br />
 	SỞ NGOẠI VỤ</b> <br />_____________
 
 </div>
@@ -112,7 +115,13 @@ if(isset($id_donvi) && $id_donvi){
 	<?php
 		$i = 1;
 		foreach ($union_list as $u) {
-			$canbo->id = $u['danhsachdoan'][0]['id_canbo']; $cb = $canbo->get_one();
+			if(isset($u['danhsachdoan'][0]['id_canbo']) && $u['danhsachdoan'][0]['id_canbo']){
+				$canbo->id = $u['danhsachdoan'][0]['id_canbo']; $cb = $canbo->get_one();
+				$tentruongdoan = $cb['hoten'];
+			} else {
+				$tentruongdoan = '';
+			}
+
 			$congvanxinphep = $u['congvanxinphep']['ten'];
 			$soquyetdinh = $u['quyetdinhchophep']['ten'];
 			$ngayden = $u['ngayden'] ? date("d/m/Y", $u['ngayden']->sec) : '';
@@ -123,7 +132,7 @@ if(isset($id_donvi) && $id_donvi){
 			} else { $tenquoctich = ''; }
 			echo '<tr>
 				<td>'.$i.'</td>
-				<td>'.$cb['hoten'].'</td>
+				<td>'.$tentruongdoan.'</td>
 				<td>'.$tenquoctich.'</td>
 				<td>'.$congvanxinphep.'</td>
 				<td>'.$soquyetdinh.'</td>

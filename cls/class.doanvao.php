@@ -237,5 +237,93 @@ class DoanVao{
 	public function count_soluong($query){
 		return $this->_collection->find($query)->count();
 	}
+
+	public function count_sodoan($query){
+		return $this->_collection->find($query)->count();
+	}
+
+	public function count_soluot($query, $id_donvi){
+		$union_list = $this->_collection->find($query);
+		$c1 = 0;
+		if($union_list){
+			foreach ($union_list as $u) {
+				if($u['danhsachdoan']){
+					foreach ($u['danhsachdoan'] as $ds) {
+						if($ds['id_donvi'][0] == $id_donvi) $c1++;
+					}
+				}
+				if($u['danhsachdoan_2']){
+					foreach ($u['danhsachdoan_2'] as $ds2) {
+						if($ds2['id_donvi'][0] == $id_donvi) $c1++;
+					}
+				}
+			}
+		}
+		return $c1;
+	}
+
+	public function count_soluot_to_nguoi($query, $id_donvi, $id_canbo){
+		$union_list = $this->_collection->find($query);
+		$c1 = 0;
+		if($union_list){
+			foreach ($union_list as $u) {
+				if($u['danhsachdoan']){
+					foreach ($u['danhsachdoan'] as $ds) {
+						if($ds['id_donvi'][0] == $id_donvi && $ds['id_canbo'] == $id_canbo) $c1++;
+					}
+				}
+				if($u['danhsachdoan_2']){
+					foreach ($u['danhsachdoan_2'] as $ds2) {
+						if($ds2['id_donvi'][0] == $id_donvi && $ds2['id_canbo'] == $id_canbo) $c1++;
+					}
+				}
+			}
+		}
+		return $c1;
+	}
+
+	public function count_songuoi($query, $id_donvi){
+		$arr_canbo = array();
+		$result = $this->_collection->find($query);
+		foreach ($result as $s) {
+			if(isset($s['danhsachdoan']) && $s['danhsachdoan']){
+				foreach ($s['danhsachdoan'] as $ds) {
+					if(!in_array($ds['id_canbo'], $arr_canbo) && $ds['id_donvi'][0] == $id_donvi){
+						array_push($arr_canbo, $ds['id_canbo']);
+					}
+				}
+			}
+			if(isset($s['danhsachdoan_2']) && $s['danhsachdoan_2']){
+				foreach ($s['danhsachdoan_2'] as $ds2) {
+					if(!in_array($ds2['id_canbo'], $arr_canbo) && $ds2['id_donvi'][0] == $id_donvi){
+						array_push($arr_canbo, $ds2['id_canbo']);
+					}
+				}
+			}
+		}
+		return count($arr_canbo);
+	}
+
+	public function get_list_songuoi($query, $id_donvi){
+		$arr_canbo = array();
+		$result = $this->_collection->find($query);
+		foreach ($result as $s) {
+			if(isset($s['danhsachdoan']) && $s['danhsachdoan']){
+				foreach ($s['danhsachdoan'] as $ds) {
+					if(!in_array($ds['id_canbo'], $arr_canbo) && $ds['id_donvi'][0] == $id_donvi){
+						array_push($arr_canbo, $ds['id_canbo']);
+					}
+				}
+			}
+			if(isset($s['danhsachdoan_2']) && $s['danhsachdoan_2']){
+				foreach ($s['danhsachdoan_2'] as $ds2) {
+					if(!in_array($ds2['id_canbo'], $arr_canbo) && $ds2['id_donvi'][0] == $id_donvi){
+						array_push($arr_canbo, $ds2['id_canbo']);
+					}
+				}
+			}
+		}
+		return $arr_canbo;
+	}
 }
 ?>

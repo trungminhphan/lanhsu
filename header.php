@@ -102,7 +102,7 @@ $total_count=$count_doanra+$count_doanvao+$count_abtc;
             <a href="#" class="dropdown-toggle"><span class="mif-chart-line mif-2x"></span>&nbsp;&nbsp;Thống kê</a>
             <ul class="d-menu" data-role="dropdown">
                 <li class="dropdown-toggle"><a href="#"><span class="mif-enlarge"></span>&nbsp;&nbsp;Đoàn ra</a>
-                    <ul class="d-menu" data-role="dropdown">    
+                    <ul class="d-menu" data-role="dropdown">
                         <li><a href="thongkedoanratheocanhan.php">Thống kê theo Cá nhân</a></li>
                         <li class="divider"></li>
                         <li><a href="thongkedoanratheodonvi.php">Thống kê theo Đơn vị (xin phép)</a></li>
@@ -118,10 +118,12 @@ $total_count=$count_doanra+$count_doanvao+$count_abtc;
                 </li>
                 <li class="divider"></li>
                 <li class="dropdown-toggle"><a href="#"><span class="mif-shrink"></span>&nbsp;&nbsp;Đoàn vào</a>
-                    <ul class="d-menu" data-role="dropdown">    
+                    <ul class="d-menu" data-role="dropdown">
                         <li><a href="thongkedoanvaotheocanhan.php">Thống kê theo Cá nhân</a></li>
                         <li class="divider"></li>
                         <li><a href="thongkedoanvaotheodonvi.php">Thống kê theo Đơn vị</a></li>
+                        <li class="divider"></li>
+                        <li><a href="thongkedoanvaotheoluotnhapcanh.php">Thống kê theo Lượt nhập cảnh</a></li>
                         <li class="divider"></li>
                         <li><a href="thongkedoanvaotheomucdich.php">Thống kê theo Mục đích</a></li>
                         <li class="divider"></li>
