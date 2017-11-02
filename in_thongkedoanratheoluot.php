@@ -37,6 +37,12 @@ if(isset($_GET['submit'])){
 		if($id_quocgia){
 			array_push($query, array('id_quocgia' => $id_quocgia));
 		}
+		$q1 = array('$and' => array(
+			array('ngaydi' => array('$gte' => $start_date)),
+			array('ngayve' => array('$lte' => $end_date)),
+			array('$or' => array(array('danhsachdoan.id_donvi.0' => $id_donvi), array('danhsachdoan_2.id_donvi.0' => $id_donvi)))
+		));
+		$list_1 = $doanra->get_list_condition($q1);
 		$q = array('$and' => $query);
 		$union_list = $doanra->get_list_condition($q);
 	}
@@ -62,7 +68,7 @@ if(isset($_GET['submit'])){
 </head>
 <body>
 <div class="place-left align-center">
-	<b>UBND TỈNH AN GIANG <br /> 
+	<b>UBND TỈNH AN GIANG <br />
 	SỞ NGOẠI VỤ</b> <br />_____________
 
 </div>
@@ -80,7 +86,7 @@ if(isset($_GET['submit'])){
 if(isset($id_donvi) && $id_donvi){
 	$donvi->id = $id_donvi; $dv = $donvi->get_one();
 	$c1 = 0;
-	foreach ($union_list as $u) {
+	foreach ($list_1 as $u) {
 		if($u['danhsachdoan']){
 			foreach ($u['danhsachdoan'] as $ds) {
 				if($ds['id_donvi'][0] == $id_donvi) $c1++;
@@ -93,6 +99,7 @@ if(isset($id_donvi) && $id_donvi){
 		}
 	}
 	echo '<h4>' . $dv['ten'] .': <span class="fg-blue">'.$c1.' lượt xuất cảnh</span></h4>';
+if(count($a) == 1) {
 	if(isset($dv['level2']) && $dv['level2']){
 		foreach ($dv['level2'] as $a2) {
 			$c2 = 0;
@@ -145,12 +152,12 @@ if(isset($id_donvi) && $id_donvi){
 							if($c4)	echo '<li>'.$a4['ten'].': '.$c4.'</li>';
 						}
 						echo '</ul>';
-						
+
 					}
 				}
 				echo '</ul>';
 			}
-
+			}
 		}
 	}
 }
@@ -190,38 +197,54 @@ if(isset($id_donvi) && $id_donvi){
 			if($u['danhsachdoan']){
 				foreach ($u['danhsachdoan'] as $ds) {
 					if($ds['id_donvi'][0] == $id_donvi){
-						$canbo->id = $ds['id_canbo']; $cb = $canbo->get_one();
-						echo '<tr>
-							<td>'.$i.'</td>
-							<td>'.$cb['hoten'].'</td>
-							<td>'.$cvxinphep.'</td>
-							<td>'.$soquyetdinh.'</td>
-							<td>'.$ngaydi.'</td>
-							<td>'.$ngayve.'</td>
-							<td class="align-right">'.$songay.'</td>
-							<td>'.$nuocden.'</td>
-							<td>'.$tenkinhphi.'</td>
-							<td>'.$u['noidung'].'</td>
-						</tr>';$i++;
+						$show = false;
+						if(count($a) == 2 && $a[1] == $ds['id_donvi'][1]){
+							$show = true;
+						} else if(count($a) == 1) {
+							$show = true;
+						}
+						if($show){
+							$canbo->id = $ds['id_canbo']; $cb = $canbo->get_one();
+							echo '<tr>
+								<td>'.$i.'</td>
+								<td>'.$cb['hoten'].'</td>
+								<td>'.$cvxinphep.'</td>
+								<td>'.$soquyetdinh.'</td>
+								<td>'.$ngaydi.'</td>
+								<td>'.$ngayve.'</td>
+								<td class="align-right">'.$songay.'</td>
+								<td>'.$nuocden.'</td>
+								<td>'.$tenkinhphi.'</td>
+								<td>'.$u['noidung'].'</td>
+							</tr>';$i++;
+						}
 					}
 				}
 			}
 			if($u['danhsachdoan_2']){
 				foreach ($u['danhsachdoan_2'] as $ds2) {
 					if($ds2['id_donvi'][0] == $id_donvi){
-						$canbo->id = $ds2['id_canbo']; $cb = $canbo->get_one();
-						echo '<tr>
-							<td>'.$i.'</td>
-							<td>'.$cb['hoten'].'</td>
-							<td>'.$cvxinphep.'</td>
-							<td>'.$soquyetdinh.'</td>
-							<td>'.$ngaydi.'</td>
-							<td>'.$ngayve.'</td>
-							<td class="align-right">'.$songay.'</td>
-							<td>'.$nuocden.'</td>
-							<td>'.$tenkinhphi.'</td>
-							<td>'.$u['noidung'].'</td>
-						</tr>';$i++;
+						$show = false;
+						if(count($a) == 2 && $a[1] == $ds2['id_donvi'][1]){
+							$show = true;
+						} else if(count($a) == 1) {
+							$show = true;
+						}
+						if($show){
+							$canbo->id = $ds2['id_canbo']; $cb = $canbo->get_one();
+							echo '<tr>
+								<td>'.$i.'</td>
+								<td>'.$cb['hoten'].'</td>
+								<td>'.$cvxinphep.'</td>
+								<td>'.$soquyetdinh.'</td>
+								<td>'.$ngaydi.'</td>
+								<td>'.$ngayve.'</td>
+								<td class="align-right">'.$songay.'</td>
+								<td>'.$nuocden.'</td>
+								<td>'.$tenkinhphi.'</td>
+								<td>'.$u['noidung'].'</td>
+							</tr>';$i++;
+						}
 					}
 				}
 			}
@@ -269,4 +292,3 @@ if(isset($id_donvi) && $id_donvi){
 <?php endif; ?>
 </body>
 </html>
-

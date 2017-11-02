@@ -121,11 +121,13 @@ $total_count=$count_doanra+$count_doanvao+$count_abtc;
                     <ul class="d-menu" data-role="dropdown">
                         <li><a href="thongkedoanvaotheocanhan.php">Thống kê theo Cá nhân</a></li>
                         <li class="divider"></li>
-                        <li><a href="thongkedoanvaotheodonvi.php">Thống kê theo Đơn vị</a></li>
+                        <li><a href="thongkedoanvaotheodonvi.php">Thống kê theo Đơn vị tiếp</a></li>
                         <li class="divider"></li>
-                        <li><a href="thongkedoanvaotheoluotnhapcanh.php">Thống kê theo Lượt nhập cảnh</a></li>
+                        <li><a href="thongkedoanvaotheoluotnhapcanh.php">Thống kê theo Tổ chức nước ngoài</a></li>
                         <li class="divider"></li>
                         <li><a href="thongkedoanvaotheomucdich.php">Thống kê theo Mục đích</a></li>
+                        <li class="divider"></li>
+                        <li><a href="thongkedoanvaotheolinhvuc.php">Thống kê theo Lĩnh vực</a></li>
                         <li class="divider"></li>
                         <li><a href="thongkedoanvao.php">Thống kê theo Đoàn vào</a></li>
                     </ul>

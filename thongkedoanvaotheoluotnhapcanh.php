@@ -29,13 +29,11 @@ if(isset($_GET['submit'])){
         } else {
             $donvi_list = $donvi->get_all_list();
         }
-
         $query_1 =array(
             array('ngayden' => array('$gte' => $start_date)),
             array('ngaydi' => array('$lte' => $end_date)),
             array('$or' => array(array('danhsachdoan.id_donvi.0' => $id_donvi), array('danhsachdoan_2.id_donvi.0' => $id_donvi)))
         );
-
         if($id_mucdich){
             array_push($query, array('id_mucdich' => new MongoId($id_mucdich)));
             array_push($query_1, array('id_mucdich' => new MongoId($id_mucdich)));
@@ -48,7 +46,6 @@ if(isset($_GET['submit'])){
         $list_1 = $doanvao->get_list_condition($q1);
         $q = array('$and' => $query);
         $union_list = $doanvao->get_list_condition($q);
-
     }
 }
 $kinhphi_list = $kinhphi->get_all_list();
@@ -73,7 +70,7 @@ $quocgia_list = $quocgia->get_all_list();
         $('#list_result').dataTable();
     });
 </script>
-<h1><a href="index.php" class="nav-button transform"><span></span></a>&nbsp;Thống kê Đoàn vào theo Đơn vị (lượt nhập cảnh)</h1>
+<h1><a href="index.php" class="nav-button transform"><span></span></a>&nbsp;Thống kê Đoàn vào theo Tổ chức nước ngoài</h1>
 <form method="GET" action="<?php echo $_SERVER['PHP_SELF']; ?>" id="thongkeform" data-role="validator" data-show-required-state="false" enctype="multipart/form-data">
 <div class="grid" style="margin-top: 30px;">
     <div class="row cells12">
@@ -158,7 +155,7 @@ if(isset($id_donvi) && $id_donvi){
             }
         }
     }
-    echo '<h4><a href=""><span class="mif-arrow-left"></span></a> ' . $dv['ten'] .': <span class="fg-blue"><a href="thongkedoanvaotheoluotnhapcanh.php?id_donvi='.$id_donvi.'&tungay='.$tungay.'&denngay='.$denngay.'&id_quocgia='.$id_quocgia.'&id_kinhphi='.$id_kinhphi.'&submit=OK">'.$c1.'</a> lượt xuất cảnh (từ ngày: '.$tungay.'  đến ngày: '.$denngay.')</span></h4>';
+    echo '<h4><a href=""><span class="mif-arrow-left"></span></a> ' . $dv['ten'] .': <span class="fg-blue"><a href="thongkedoanvaotheoluotnhapcanh.php?id_donvi='.$id_donvi.'&tungay='.$tungay.'&denngay='.$denngay.'&id_quocgia='.$id_quocgia.'&id_kinhphi='.$id_kinhphi.'&submit=OK">'.$c1.'</a> lượt nhập cảnh (từ ngày: '.$tungay.'  đến ngày: '.$denngay.')</span></h4>';
     if(isset($dv['level2']) && $dv['level2']){
         foreach ($dv['level2'] as $a2) {
             $c2 = 0;

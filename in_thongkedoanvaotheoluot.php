@@ -82,7 +82,7 @@ if(isset($_GET['submit'])){
     <br /><i>An Giang, ngày <?php echo date("d"); ?> tháng <?php echo date("m"); ?> năm <?php echo date("Y"); ?></i>
 </div>
 <div style="clear: both;padding-top:20px;">
-    <h4 class="align-center">THỐNG KÊ ĐOÀN RA ĐƠN VỊ (LƯỢT XUẤT CẢNH)</h4>
+    <h4 class="align-center">THỐNG KÊ THEO TỔ CHỨC NƯỚC NGOÀI</h4>
     <h5 class="align-center">Từ ngày: <b><?php echo $tungay; ?></b> Đến ngày: <b><?php echo $denngay; ?></b></h5>
 </div>
 
@@ -273,4 +273,3 @@ if(isset($id_donvi) && $id_donvi){
 <?php endif; ?>
 </body>
 </html>
-

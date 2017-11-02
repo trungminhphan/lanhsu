@@ -21,8 +21,7 @@ if(isset($_GET['submit'])){
 		if($id_donvi && count($a) == 1){
 			array_push($query, array('$or' => array(array('danhsachdoan.id_donvi.0' => $id_donvi), array('danhsachdoan_2.id_donvi.0' => $id_donvi))));
 		} else if($id_donvi && count($a) == 2){
-			array_push($query, array('$or' => array(array('danhsachdoan.id_donvi.0' => $id_donvi), array('danhsachdoan_2.id_donvi.0' => $id_donvi))));
-			array_push($query, array('$or' => array(array('danhsachdoan.id_donvi.1' => $a[1]), array('danhsachdoan_2.id_donvi.1' => $a[1]))));
+			array_push($query, array('$or' => array(array('danhsachdoan.id_donvi.0' => $id_donvi,'danhsachdoan.id_donvi.1' => $a[1]), array('danhsachdoan_2.id_donvi.0' => $id_donvi, 'danhsachdoan_2.id_donvi.1' => $a[1]))));
 		} else if($id_donvi && count($a) == 3){
 			array_push($query, array('$or' => array(array('danhsachdoan.id_donvi.0' => $id_donvi,'danhsachdoan.id_donvi.1' => $a[1], 'danhsachdoan.id_donvi.2' => $a[2]), array('danhsachdoan_2.id_donvi.0' => $id_donvi, 'danhsachdoan_2.id_donvi.1' => $a[1], 'danhsachdoan_2.id_donvi.2' => $a[2]))));
 		} else if($id_donvi && count($a) == 4){
@@ -153,6 +152,7 @@ if(isset($id_donvi) && $id_donvi){
 		}
 	}
 	echo '<h4><a href=""><span class="mif-arrow-left"></span></a> ' . $dv['ten'] .': <span class="fg-blue"><a href="thongkedoanratheoluotxuatcanh.php?id_donvi='.$id_donvi.'&tungay='.$tungay.'&denngay='.$denngay.'&id_quocgia='.$id_quocgia.'&id_kinhphi='.$id_kinhphi.'&submit=OK">'.$c1.'</a> lượt xuất cảnh (từ ngày: '.$tungay.'  đến ngày: '.$denngay.')</span></h4>';
+	if(count($a) == 1) {
 	if(isset($dv['level2']) && $dv['level2']){
 		foreach ($dv['level2'] as $a2) {
 			$c2 = 0;
@@ -168,7 +168,7 @@ if(isset($id_donvi) && $id_donvi){
 					}
 				}
 			}
-			if($c2)	echo '<h5><span class="mif-arrow-right"></span> '.$a2['ten'].': <a href="thongkedoanratheoluotxuatcanh.php?id_donvi='.$id_donvi.'-'.$a2['_id'].'&tungay='.$tungay.'&denngay='.$denngay.'&id_quocgia='.$id_quocgia.'&id_kinhphi='.$id_kinhphi.'&submit=OK">'.$c2.'</a></h5>';
+			if($c2)	echo '<h5><span class="mif-arrow-right"></span> '.$a2['ten'].': <a href="thongkedoanratheoluotxuatcanh.php?id_donvi='.$id_donvi.'-'.$a2['_id'].'&tungay='.$tungay.'&denngay='.$denngay.'&id_quocgia='.$id_quocgia.'&id_kinhphi='.$id_kinhphi.'&submit=OK" target="_blank">'.$c2.'</a></h5>';
 			if(isset($a2['level3']) && $a2['level3']){
 				echo '<ul>';
 				foreach ($a2['level3'] as $a3) {
@@ -176,16 +176,16 @@ if(isset($id_donvi) && $id_donvi){
 					foreach ($union_list as $u) {
 						if($u['danhsachdoan']){
 							foreach ($u['danhsachdoan'] as $ds) {
-								if($ds['id_donvi'][0] == $id_donvi && $ds['id_donvi'][1]==$a2['_id'] && $ds['id_donvi'][2]==$a3['_id']) $c3++;
+								if($ds['id_donvi'][0] == $id_donvi && $ds['id_donvi'][1]==strval($a2['_id']) && $ds['id_donvi'][2]==strval($a3['_id'])) $c3++;
 							}
 						}
 						if($u['danhsachdoan_2']){
 							foreach ($u['danhsachdoan_2'] as $ds2) {
-								if($ds2['id_donvi'][0] == $id_donvi && $ds2['id_donvi'][1] == $a2['_id'] && $ds2['id_donvi'][2] == $a3['_id']) $c3++;
+								if($ds2['id_donvi'][0] == $id_donvi && $ds2['id_donvi'][1] == strval($a2['_id']) && $ds2['id_donvi'][2] == strval($a3['_id'])) $c3++;
 							}
 						}
 					}
-					if($c3)	echo '<li>'.$a3['ten'].': <a href="thongkedoanratheoluotxuatcanh.php?id_donvi='.$id_donvi.'-'.$a2['_id'] . '-' .$a3['_id'].'&tungay='.$tungay.'&denngay='.$denngay.'&id_quocgia='.$id_quocgia.'&id_kinhphi='.$id_kinhphi.'&submit=OK">'.$c3.'</a></li>';
+					if($c3)	echo '<li>'.$a3['ten'].': <a href="thongkedoanratheoluotxuatcanh.php?id_donvi='.$id_donvi.'-'.$a2['_id'] . '-' .$a3['_id'].'&tungay='.$tungay.'&denngay='.$denngay.'&id_quocgia='.$id_quocgia.'&id_kinhphi='.$id_kinhphi.'&submit=OK" target="_blank">'.$c3.'</a></li>';
 					if(isset($a3['level4']) && $a3['level4']){
 						echo '<ul>';
 						foreach ($a3['level4'] as $a4) {
@@ -193,16 +193,16 @@ if(isset($id_donvi) && $id_donvi){
 							foreach ($union_list as $u) {
 								if($u['danhsachdoan']){
 									foreach ($u['danhsachdoan'] as $ds) {
-										if($ds['id_donvi'][0] == $id_donvi && $ds['id_donvi'][1]==$a2['_id'] && $ds['id_donvi'][2]==$a3['_id'] && $ds['id_donvi'][3]==$a4['_id']) $c4++;
+										if($ds['id_donvi'][0] == $id_donvi && $ds['id_donvi'][1]==strval($a2['_id']) && $ds['id_donvi'][2]==strval($a3['_id']) && $ds['id_donvi'][3]==strval($a4['_id'])) $c4++;
 									}
 								}
 								if($u['danhsachdoan_2']){
 									foreach ($u['danhsachdoan_2'] as $ds2) {
-										if($ds2['id_donvi'][0] == $id_donvi && $ds2['id_donvi'][1] == $a2['_id'] && $ds2['id_donvi'][2] == $a3['_id'] && $ds2['id_donvi'][3] == $a4['_id']) $c4++;
+										if($ds2['id_donvi'][0] == $id_donvi && $ds2['id_donvi'][1] == $a2['_id'] && $ds2['id_donvi'][2] == $a3['_id'] && $ds2['id_donvi'][3] == strval($a4['_id'])) $c4++;
 									}
 								}
 							}
-							if($c4)	echo '<li>'.$a4['ten'].': <a href="thongkedoanratheoluotxuatcanh.php?id_donvi='.$id_donvi.'-'.$a2['_id'] . '-' .$a3['_id'].'-'.$a4['_id'].'&tungay='.$tungay.'&denngay='.$denngay.'&id_quocgia='.$id_quocgia.'&id_kinhphi='.$id_kinhphi.'&submit=OK">'.$c4.'</a></li>';
+							if($c4)	echo '<li>'.$a4['ten'].': <a href="thongkedoanratheoluotxuatcanh.php?id_donvi='.$id_donvi.'-'.$a2['_id'] . '-' .$a3['_id'].'-'.$a4['_id'].'&tungay='.$tungay.'&denngay='.$denngay.'&id_quocgia='.$id_quocgia.'&id_kinhphi='.$id_kinhphi.'&submit=OK" target="_blank">'.$c4.'</a></li>';
 						}
 						echo '</ul>';
 
@@ -213,6 +213,7 @@ if(isset($id_donvi) && $id_donvi){
 
 		}
 	}
+}
 }
 ?>
 <table class="table border bordered striped dataTable" id="list_result" >
@@ -250,43 +251,62 @@ if(isset($id_donvi) && $id_donvi){
 				$kinhphi->id = $u['id_kinhphi']; $kp = $kinhphi->get_one();
 				$tenkinhphi = $kp['ten'];
 			} else { $tenkinhphi = ''; }
+
 			if($u['danhsachdoan']){
 				foreach ($u['danhsachdoan'] as $ds) {
 					if($ds['id_donvi'][0] == $id_donvi){
-						$canbo->id = $ds['id_canbo']; $cb = $canbo->get_one();
-						echo '<tr>
-							<td>'.$i.'</td>
-							<td>'.$cb['hoten'].'</td>
-							<td><a href="'.$target_files.$file_xinphep.'" target="_blank">'.$cvxinphep.'</a></td>
-							<td><a href="'.$target_files.$file_chophep.'" target="_blank">'.$soquyetdinh.'</a></td>
-							<td>'.$ngaydi.'</td>
-							<td>'.$ngayve.'</td>
-							<td class="align-right">'.$songay.'</td>
-							<td>'.$nuocden.'</td>
-							<td>'.$tenkinhphi.'</td>
-							<td>'.$u['noidung'].'</td>
-							<td><a href="chitietdoanra.php?id='.$u['_id'].'" target="_blank"><span class="mif-list-numbered"></span></a></td>
-						</tr>';$i++;
+							$show = false;
+							if(count($a) == 2 && $a[1] == $ds['id_donvi'][1]){
+								$show = true;
+							} else if(count($a) == 1) {
+								$show = true;
+							}
+							if($show){
+								$canbo->id = $ds['id_canbo']; $cb = $canbo->get_one();
+								echo '<tr>
+									<td>'.$i.'</td>
+									<td>'.$cb['hoten'].'</td>
+									<td><a href="'.$target_files.$file_xinphep.'" target="_blank">'.$cvxinphep.'</a></td>
+									<td><a href="'.$target_files.$file_chophep.'" target="_blank">'.$soquyetdinh.'</a></td>
+									<td>'.$ngaydi.'</td>
+									<td>'.$ngayve.'</td>
+									<td class="align-right">'.$songay.'</td>
+									<td>'.$nuocden.'</td>
+									<td>'.$tenkinhphi.'</td>
+									<td>'.$u['noidung'].'</td>
+									<td><a href="chitietdoanra.php?id='.$u['_id'].'" target="_blank"><span class="mif-list-numbered"></span></a></td>
+								</tr>';$i++;
+							}
 					}
 				}
 			}
+
 			if($u['danhsachdoan_2']){
 				foreach ($u['danhsachdoan_2'] as $ds2) {
 					if($ds2['id_donvi'][0] == $id_donvi){
-						$canbo->id = $ds2['id_canbo']; $cb = $canbo->get_one();
-						echo '<tr>
-							<td>'.$i.'</td>
-							<td>'.$cb['hoten'].'</td>
-							<td><a href="'.$target_files.$file_xinphep.'" target="_blank">'.$cvxinphep.'</a></td>
-							<td><a href="'.$target_files.$file_chophep.'" target="_blank">'.$soquyetdinh.'</a></td>
-							<td>'.$ngaydi.'</td>
-							<td>'.$ngayve.'</td>
-							<td class="align-right">'.$songay.'</td>
-							<td>'.$nuocden.'</td>
-							<td>'.$tenkinhphi.'</td>
-							<td>'.$u['noidung'].'</td>
-							<td><a href="chitietdoanra.php?id='.$u['_id'].'" target="_blank"><span class="mif-list-numbered"></span></a></td>
-						</tr>';$i++;
+						$show = false;
+						if(count($a) == 2 && $a[1] == $ds2['id_donvi'][1]){
+							$show = true;
+						} else if(count($a) == 1) {
+							$show = true;
+						}
+						if($show){
+							$tendonvi = $donvi->tendonvi($ds2['id_donvi']);
+							$canbo->id = $ds2['id_canbo']; $cb = $canbo->get_one();
+							echo '<tr>
+								<td>'.$i.'</td>
+								<td>'.$cb['hoten'].'</td>
+								<td><a href="'.$target_files.$file_xinphep.'" target="_blank">'.$cvxinphep.'</a></td>
+								<td><a href="'.$target_files.$file_chophep.'" target="_blank">'.$soquyetdinh.'</a></td>
+								<td>'.$ngaydi.'</td>
+								<td>'.$ngayve.'</td>
+								<td class="align-right">'.$songay.'</td>
+								<td>'.$nuocden.'</td>
+								<td>'.$tenkinhphi.'</td>
+								<td>'.$u['noidung'].'</td>
+								<td><a href="chitietdoanra.php?id='.$u['_id'].'" target="_blank"><span class="mif-list-numbered"></span></a></td>
+							</tr>';$i++;
+						}
 					}
 				}
 			}

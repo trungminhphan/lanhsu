@@ -50,7 +50,7 @@ if(isset($_GET['submit'])){
 		});
 	});
 </script>
-<h1><a href="index.php" class="nav-button transform"><span></span></a>&nbsp;Thống kê Đoàn vào theo Đơn vị</h1>
+<h1><a href="index.php" class="nav-button transform"><span></span></a>&nbsp;Thống kê Đoàn vào theo Đơn vị tiếp</h1>
 <form method="GET" action="<?php echo $_SERVER['PHP_SELF']; ?>" id="thongkeform" data-role="validator" data-show-required-state="false" enctype="multipart/form-data">
 <div class="grid" style="margin-top: 30px;">
 	<div class="row cells12">

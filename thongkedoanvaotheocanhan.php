@@ -1,7 +1,7 @@
 <?php
 require_once('header.php');
 $canbo = new CanBo();$doanvao=new DoanVao();$quocgia=new QuocGia();
-$mucdich = new MucDich(); $linhvuc = new LinhVuc();
+$mucdich = new MucDich(); $linhvuc = new LinhVuc();$donvi = new DonVi();$dmdoanvao = new DMDoanVao();
 $id_canbo ='';$id_quocgia='';$id_kinhphi='';
 if(isset($_GET['submit'])){
 	$query = array();
@@ -155,6 +155,8 @@ if(isset($id_canbo) && $id_canbo){
 			<th>STT</th>
 			<th>Trưởng đoàn</th>
 			<th>Văn bản xin phép</th>
+			<th>Đơn vị tiếp</th>
+			<th>Đoàn nước ngoài</th>
 			<th>Văn bản cho phép</th>
 			<th>Ngày đến</th>
 			<th>Ngày đi</th>
@@ -171,6 +173,13 @@ if(isset($id_canbo) && $id_canbo){
 			} else {
 				$tentruongdoan = '';
 			}
+			if($u['congvanxinphep']['id_donvi']){
+				$tendonvi = $donvi->tendonvi($u['congvanxinphep']['id_donvi']);
+			} else { $tendonvi = '';}
+			if(isset($u['id_dmdoanvao']) && $u['id_dmdoanvao']){
+				$dmdoanvao->id = $u['id_dmdoanvao'];$dmdv = $dmdoanvao->get_one();
+				$tendoanvao = $dmdv['ten'];
+			} else { $tendoanvao = ''; }
 			$congvanxinphep = $u['congvanxinphep']['ten'];
 			$soquyetdinh = $u['quyetdinhchophep']['ten'];
 			$ngayden = $u['ngayden'] ? date("d/m/Y", $u['ngayden']->sec) : '';
@@ -194,11 +203,14 @@ if(isset($id_canbo) && $id_canbo){
 					}
 				}
 			}
+
 			if(!$id_quocgia || ($id_quocgia && $blnQuocGia==true)){
 				echo '<tr>
 					<td>'.$i.'</td>
 					<td>'.$tentruongdoan.'</td>
 					<td>'.$congvanxinphep.'</td>
+					<td>'.$tendonvi.'</td>
+					<td>'.$tendoanvao.'</td>
 					<td><a href="chitietdoanvao.php?id='.$u['_id'].'" target="_blank">'.$soquyetdinh.'</a></td>
 					<td>'.$ngayden.'</td>
 					<td>'.$ngaydi.'</td>
