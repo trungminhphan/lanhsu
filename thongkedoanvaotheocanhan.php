@@ -154,6 +154,7 @@ if(isset($id_canbo) && $id_canbo){
 		<tr>
 			<th>STT</th>
 			<th>Trưởng đoàn</th>
+			<th>Đơn vị</th>
 			<th>Văn bản xin phép</th>
 			<th>Đơn vị tiếp</th>
 			<th>Đoàn nước ngoài</th>
@@ -170,8 +171,11 @@ if(isset($id_canbo) && $id_canbo){
 			if(isset($u['danhsachdoan'][0]['id_canbo']) && $u['danhsachdoan'][0]['id_canbo']){
 				$canbo->id = $u['danhsachdoan'][0]['id_canbo']; $cb = $canbo->get_one();
 				$tentruongdoan = $cb['hoten'];
+			} else { $tentruongdoan = ''; }
+			if(isset($u['danhsachdoan'][0]['id_donvi']) && $u['danhsachdoan'][0]['id_donvi']){
+				$donvitruongdoan = $donvi->tendonvi($u['danhsachdoan'][0]['id_donvi']);
 			} else {
-				$tentruongdoan = '';
+				$donvitruongdoan = '';
 			}
 			if($u['congvanxinphep']['id_donvi']){
 				$tendonvi = $donvi->tendonvi($u['congvanxinphep']['id_donvi']);
@@ -208,6 +212,7 @@ if(isset($id_canbo) && $id_canbo){
 				echo '<tr>
 					<td>'.$i.'</td>
 					<td>'.$tentruongdoan.'</td>
+					<td>'.$donvitruongdoan.'</td>
 					<td>'.$congvanxinphep.'</td>
 					<td>'.$tendonvi.'</td>
 					<td>'.$tendoanvao.'</td>

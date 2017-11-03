@@ -112,7 +112,7 @@ if(isset($_GET['submit'])){
 			<button name="submit" id="submit" value="OK" class="button primary"><span class="mif-checkmark"></span> Thống kê</button>
 			<?php if(isset($_GET['submit'])) : ?>
 				<a href="in_thongkedoanvaotheodonvi.php?<?php echo $_SERVER['QUERY_STRING']; ?>" class="open_window button"><span class="mif-printer"></span> Print</a>
-				<a href="export_thongkedoanvaotheodonvi.php??<?php echo $_SERVER['QUERY_STRING']; ?>" class="button success"><span class="mif-file-excel"></span> Excel</a>
+				<a href="export_thongkedoanvaotheodonvi.php?<?php echo $_SERVER['QUERY_STRING']; ?>" class="button success"><span class="mif-file-excel"></span> Excel</a>
 				<!--<a href="export_thongkedoanratheocanhan_word.php" class="button bg-teal fg-white"><span class="mif-file-word"></span> Word</a>-->
 			<?php endif; ?>
 		</div>
@@ -162,7 +162,9 @@ if(isset($id_donvi) && $id_donvi){
 		<tr>
 			<th>STT</th>
 			<th>Trưởng đoàn</th>
+			<th>Đơn vị</th>
 			<th>Quốc tịch</th>
+			<th>Đơn vị tiếp</th>
 			<th>Văn bản xin phép</th>
 			<th>Văn bản cho phép</th>
 			<th>Ngày đến</th>
@@ -180,7 +182,14 @@ if(isset($id_donvi) && $id_donvi){
 			} else {
 				$tentruongdoan = '';
 			}
-
+			if(isset($u['danhsachdoan'][0]['id_donvi']) && $u['danhsachdoan'][0]['id_donvi']){
+				$donvitruongdoan = $donvi->tendonvi($u['danhsachdoan'][0]['id_donvi']);
+			} else {
+				$donvitruongdoan = '';
+			}
+			if($u['congvanxinphep']['id_donvi']){
+				$tendonvi = $donvi->tendonvi($u['congvanxinphep']['id_donvi']);
+			} else { $tendonvi = '';}
 			$congvanxinphep = $u['congvanxinphep']['ten'];
 			$soquyetdinh = $u['quyetdinhchophep']['ten'];
 			$ngayden = $u['ngayden'] ? date("d/m/Y", $u['ngayden']->sec) : '';
@@ -192,7 +201,9 @@ if(isset($id_donvi) && $id_donvi){
 			echo '<tr>
 				<td>'.$i.'</td>
 				<td>'.$tentruongdoan.'</td>
+				<td>'.$donvitruongdoan.'</td>
 				<td>'.$tenquoctich.'</td>
+				<td>'.$tendonvi.'</td>
 				<td><a href="chitietdoanvao.php?id='.$u['_id'].'">'.$congvanxinphep.'</a></td>
 				<td>'.$soquyetdinh.'</td>
 				<td>'.$ngayden.'</td>

@@ -103,7 +103,9 @@ if(isset($id_donvi) && $id_donvi){
 		<tr>
 			<th>STT</th>
 			<th>Trưởng đoàn</th>
+			<th>Đơn vị</th>
 			<th>Quốc tịch</th>
+			<th>Đơn vị tiếp</th>
 			<th>Văn bản xin phép</th>
 			<th>Văn bản cho phép</th>
 			<th>Ngày đến</th>
@@ -121,6 +123,14 @@ if(isset($id_donvi) && $id_donvi){
 			} else {
 				$tentruongdoan = '';
 			}
+			if(isset($u['danhsachdoan'][0]['id_donvi']) && $u['danhsachdoan'][0]['id_donvi']){
+				$donvitruongdoan = $donvi->tendonvi($u['danhsachdoan'][0]['id_donvi']);
+			} else {
+				$donvitruongdoan = '';
+			}
+			if($u['congvanxinphep']['id_donvi']){
+				$tendonvi = $donvi->tendonvi($u['congvanxinphep']['id_donvi']);
+			} else { $tendonvi = '';}
 
 			$congvanxinphep = $u['congvanxinphep']['ten'];
 			$soquyetdinh = $u['quyetdinhchophep']['ten'];
@@ -133,7 +143,9 @@ if(isset($id_donvi) && $id_donvi){
 			echo '<tr>
 				<td>'.$i.'</td>
 				<td>'.$tentruongdoan.'</td>
+				<td>'.$donvitruongdoan.'</td>
 				<td>'.$tenquoctich.'</td>
+				<td>'.$tendonvi.'</td>
 				<td>'.$congvanxinphep.'</td>
 				<td>'.$soquyetdinh.'</td>
 				<td>'.$ngayden.'</td>

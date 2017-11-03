@@ -27,6 +27,7 @@ if($update == 'no') $msg = 'Không thể xoá';
 		<th>Tên trưởng đoàn</th>
 		<th>Ngày đến</th>
 		<th>Ngày đi</th>
+		<th>Tên đơn vị</th>
 		<th>Văn bản xin phép</th>
 		<th>Văn bản cho phép</th>
 		<th><span class="mif-bin"></span></th>
@@ -47,12 +48,16 @@ if($update == 'no') $msg = 'Không thể xoá';
 				$canbo->id = $dv['danhsachdoan'][0]['id_canbo'];$cb=$canbo->get_one();
 				$tentruongdoan = $cb['hoten'];
 			} else { $tentruongdoan = '';}
+			if($dv['congvanxinphep']['id_donvi']){
+				$tendonvi = $donvi->tendonvi($dv['congvanxinphep']['id_donvi']);
+			} else { $tendonvi = ''; }
 			echo '<tr>';
 			echo '<td>'.$i.'</td>';
 			echo '<td><a href="chitietdoanvao.php?id='.$dv['_id'].'">'.$tendoanvao.'</a></td>';
 			echo '<td>'.$tentruongdoan.'</td>';
 			echo '<td>'.(isset($dv['ngayden']) ? date("d/m/Y", $dv['ngayden']->sec) : '').'</td>';
 			echo '<td>'.(isset($dv['ngaydi']) ? date("d/m/Y", $dv['ngaydi']->sec) : '').'</td>';
+			echo '<td>'.$tendonvi.'</td>';
 			echo '<td><a href="chitietdoanvao.php?id='.$dv['_id'].'">'.$dv['congvanxinphep']['ten'].'</a></td>';
 			echo '<td>'.(isset($dv['quyetdinhchophep']['ten']) ? $dv['quyetdinhchophep']['ten'] : '').'</td>';
 			if($users->is_admin()){

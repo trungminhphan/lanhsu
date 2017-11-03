@@ -65,6 +65,9 @@ if(isset($union_list) && $union_list->count() > 0){
 			$canbo->id = $u['danhsachdoan'][0]['id_canbo']; $cb = $canbo->get_one();
 			$tentruongdoan = $cb['hoten'];
 		} else {$tentruongdoan = '';}
+		if(isset($u['danhsachdoan'][0]['id_donvi']) && $u['danhsachdoan'][0]['id_donvi']){
+				$donvitruongdoan = $donvi->tendonvi($u['danhsachdoan'][0]['id_donvi']);
+			} else { $donvitruongdoan = ''; }
 		if($u['congvanxinphep']['id_donvi']){
 			$tendonvi = $donvi->tendonvi($u['congvanxinphep']['id_donvi']);
 		} else { $tendonvi = '';}
@@ -99,13 +102,14 @@ if(isset($union_list) && $union_list->count() > 0){
 		if(!$id_quocgia || ($id_quocgia && $blnQuocGia==true)){
 			$objPHPExcel->setActiveSheetIndex()->setCellValue('A'.$i, $stt);
 			$objPHPExcel->setActiveSheetIndex()->setCellValue('B'.$i, $tentruongdoan);
-			$objPHPExcel->setActiveSheetIndex()->setCellValue('C'.$i, $congvanxinphep);
-			$objPHPExcel->setActiveSheetIndex()->setCellValue('D'.$i, $tendonvi);
-			$objPHPExcel->setActiveSheetIndex()->setCellValue('E'.$i, $tendoanvao);
-			$objPHPExcel->setActiveSheetIndex()->setCellValue('F'.$i, $soquyetdinh);
-			$objPHPExcel->setActiveSheetIndex()->setCellValue('G'.$i, $ngayden);
-			$objPHPExcel->setActiveSheetIndex()->setCellValue('H'.$i, $ngaydi);
-			$objPHPExcel->setActiveSheetIndex()->setCellValue('I'.$i, $u['noidung']);
+			$objPHPExcel->setActiveSheetIndex()->setCellValue('C'.$i, $donvitruongdoan);
+			$objPHPExcel->setActiveSheetIndex()->setCellValue('D'.$i, $congvanxinphep);
+			$objPHPExcel->setActiveSheetIndex()->setCellValue('E'.$i, $tendonvi);
+			$objPHPExcel->setActiveSheetIndex()->setCellValue('F'.$i, $tendoanvao);
+			$objPHPExcel->setActiveSheetIndex()->setCellValue('G'.$i, $soquyetdinh);
+			$objPHPExcel->setActiveSheetIndex()->setCellValue('H'.$i, $ngayden);
+			$objPHPExcel->setActiveSheetIndex()->setCellValue('I'.$i, $ngaydi);
+			$objPHPExcel->setActiveSheetIndex()->setCellValue('J'.$i, $u['noidung']);
 			$i++;$stt++;
 		}
 	}
