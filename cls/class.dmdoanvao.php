@@ -73,6 +73,20 @@ class DMDoanVao{
 		$query = array('id_user' => new MongoId($this->id_user));
 		return $this->_collection->count($query);
 	}
+
+	public function tendoan($arr){
+		if($arr){
+			$str_arr = array();
+			foreach($arr as $key => $value){
+				$this->id = $value;
+				$result = $this->get_one();
+				array_push($str_arr, $result['ten']);
+			}
+			return implode(", ", $str_arr);
+		} else {
+			return '';
+		}
+	}
 }
 
 ?>

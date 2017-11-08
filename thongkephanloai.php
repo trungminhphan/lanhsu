@@ -207,10 +207,12 @@ if(isset($_GET['submit'])){
 					if($cb['donvi']){
 						$donvi = new DonVi();$chucvu = new ChucVu();
 						if(isset($cb['donvi'][0]['id_donvi'][0]) && $cb['donvi'][0]['id_donvi'][0]){
-							$tendonvi = $donvi->tendonvi($cb['donvi'][0]['id_donvi']);
+							$count = count($cb['donvi']) - 1;
+							$tendonvi = $donvi->tendonvi($cb['donvi'][$count]['id_donvi']);
 						} else { $tendonvi = ''; $full_donvi='';}
 						if(isset($cb['donvi'][0]['id_chucvu']) && $cb['donvi'][0]['id_chucvu']){
-							$chucvu->id = $cb['donvi'][0]['id_chucvu'];$cv = $chucvu->get_one();
+							$count = count($cb['donvi']) - 1;
+							$chucvu->id = $cb['donvi'][$count]['id_chucvu'];$cv = $chucvu->get_one();
 							$tenchucvu = $cv['ten'];
 						} else{
 							$tenchucvu = '';

@@ -27,8 +27,8 @@ $doanvao->id = $id; $dv = $doanvao->get_one();
 			//$donvi->id = $ds['id_donvi']; $dvi = $donvi->get_one();
 			//$dvi = $donvi->tendonvi($ds['id_donvi']);
 			if(isset($dv['id_dmdoanvao']) && $dv['id_dmdoanvao']){
-				$dmdoanvao->id = $dv['id_dmdoanvao']; $d = $dmdoanvao->get_one();
-				$tendoanvao = $d['ten'];
+				//$dmdoanvao->id = $dv['id_dmdoanvao']; $d = $dmdoanvao->get_one();
+				$tendoanvao = $dmdoanvao->tendoan($dv['id_dmdoanvao']);
 			} else { $tendoanvao = ''; }
 			if(isset($ds['id_chucvu']) && $ds['id_chucvu']){
 				$chucvu->id = $ds['id_chucvu']; $cv=$chucvu->get_one();

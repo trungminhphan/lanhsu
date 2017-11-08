@@ -103,7 +103,7 @@ if(isset($_POST['submit'])){
 		'ten' => $tenquyetdinhchophep_2,
 		'attachments' => $filequyetdinhchophep_2,
 		'ngaybanhanh' => $ngaybanhanhquyetdinhchophep_2 ? new MongoDate(convert_date_dd_mm_yyyy($ngaybanhanhquyetdinhchophep_2)) : '');
-		
+
 	$ngayden = isset($_POST['ngayden']) ? $_POST['ngayden'] : '';
 	$ngaydi = isset($_POST['ngaydi']) ? $_POST['ngaydi'] : '';
 	$id_mucdich = isset($_POST['id_mucdich']) ? $_POST['id_mucdich'] : '';
@@ -227,8 +227,8 @@ $(document).ready(function(){
 <div class="grid">
 	<div class="row cells12" >
 		<div class="cell colspan2 padding-top-10 align-right"><b>1. Tên đoàn</b></div>
-		<div class="cell colspan4 input-control select">
-		<select name="id_dmdoanvao" id="id_dmdoanvao" class="select2">
+		<div class="cell colspan6 input-control select" style="height:100%;position:relative;">
+		<select name="id_dmdoanvao[]" id="id_dmdoanvao" class="select2" multiple="multiple">
 			<?php
 				$dmdoanvao = new DMDoanVao();
 				$dmdoanvao_list = $dmdoanvao->get_all_list();
@@ -240,10 +240,10 @@ $(document).ready(function(){
 			?>
 		</select>
 		</div>
-		<div class="cell colspan3 input-control text" data-role="datepicker" data-format="dd/mm/yyyy">
+		<div class="cell colspan2 input-control text" data-role="datepicker" data-format="dd/mm/yyyy">
 			<input type="text" name="ngayden" id="ngayden" value="<?php echo isset($ngayden) ? $ngayden : '';?>" placeholder="Ngày đến." data-inputmask="'alias': 'date'" class="ngaythangnam"/>
 		</div>
-		<div class="cell colspan3 input-control text" data-role="datepicker" data-format="dd/mm/yyyy">
+		<div class="cell colspan2 input-control text" data-role="datepicker" data-format="dd/mm/yyyy">
 			<input type="text" name="ngaydi" id="ngaydi" value="<?php echo isset($ngaydi) ? $ngaydi : '';?>" placeholder="Ngày đi." data-inputmask="'alias': 'date'" class="ngaythangnam"/>
 		</div>
 	</div>
@@ -384,7 +384,7 @@ $(document).ready(function(){
 							$member = $cbo['hoten'] . ' ['.$cbo['code'].']';
 							$id_cbo = $cbo['_id'];
 						} else { $member = ''; $id_cbo = '';}
-						$count = count($cbo['donvi']) - 1;						
+						$count = count($cbo['donvi']) - 1;
 						//if(isset($value['id_ham']) && $value['id_ham']) { $ham->id=$value['id_ham'];$h = $ham->get_one(); $tenham=$h['ten'];} else { $tenham=''; }
 						$v = $id_cbo . '-' . implode(",", $value['id_donvi']) . '-' . $value['id_chucvu'] . '-'.$value['id_ham'];
 						echo '<option value="'.$v.'" selected>'.$member.'</option>';
@@ -438,7 +438,7 @@ $(document).ready(function(){
 			}
 		?>
 	</div>
-	
+
 	<div class="row cells12">
 		<div class="cell colspan2 padding-top-10 align-right">Thành viên khác</div>
 		<div class="cell colspan5 input-control select" style="height:100%;position:relative;">
@@ -537,13 +537,13 @@ $(document).ready(function(){
 		</div>
 	</div>
 	<div class="row cells12">
-		<div class="cell colspan2 padding-top-10 align-right"><b>6. Nội dung</b></div>	
+		<div class="cell colspan2 padding-top-10 align-right"><b>6. Nội dung</b></div>
 		<div class="cell colspan10 input-control textarea">
 			<textarea name="noidung" id="noidung" placeholder="Nội dung"><?php echo isset($noidung) ? $noidung : ''; ?></textarea>
 		</div>
 	</div>
 	<div class="row cells12">
-		<div class="cell colspan2 padding-top-10 align-right"><b>7. Ghi chú</b></div>	
+		<div class="cell colspan2 padding-top-10 align-right"><b>7. Ghi chú</b></div>
 		<div class="cell colspan10 input-control textarea">
 			<textarea name="ghichu" id="ghichu" placeholder="Ghi chú"><?php echo isset($ghichu) ? $ghichu : ''; ?></textarea>
 		</div>

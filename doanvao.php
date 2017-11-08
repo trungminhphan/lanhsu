@@ -39,8 +39,8 @@ if($update == 'no') $msg = 'Không thể xoá';
 		$i = 1;
 		foreach ($doanvao_list as $dv) {
 			if(isset($dv['id_dmdoanvao']) && $dv['id_dmdoanvao']){
-				$dmdoanvao->id = $dv['id_dmdoanvao'];$dm=$dmdoanvao->get_one();
-				$tendoanvao = $dm['ten'];
+				//$dmdoanvao->id = $dv['id_dmdoanvao'];$dm=$dmdoanvao->get_one();
+				$tendoanvao = $dmdoanvao->tendoan($dv['id_dmdoanvao']);
 			} else {
 				$tendoanvao = '';
 			}
@@ -74,4 +74,3 @@ if($update == 'no') $msg = 'Không thể xoá';
 </table>
 <?php endif; ?>
 <?php require_once('footer.php'); ?>
-

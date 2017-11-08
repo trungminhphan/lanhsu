@@ -68,11 +68,13 @@ if(isset($canbo_list) && $canbo_list->count() >0){
 			$count = $doanvao->count_soluong($q);
 			if($count){
 				if(isset($cb['donvi']) && $cb['donvi']){
-						if(isset($cb['donvi'][0]['id_donvi'][0]) && $cb['donvi'][0]['id_donvi'][0]){
-						$tendonvi = $donvi->tendonvi($cb['donvi'][0]['id_donvi']);
+					if(isset($cb['donvi'][0]['id_donvi'][0]) && $cb['donvi'][0]['id_donvi'][0]){
+						$c = count($cb['donvi']) - 1;
+						$tendonvi = $donvi->tendonvi($cb['donvi'][$c]['id_donvi']);
 					} else { $tendonvi = ''; $full_donvi='';}
 					if(isset($cb['donvi'][0]['id_chucvu']) && $cb['donvi'][0]['id_chucvu']){
-						$chucvu->id = $cb['donvi'][0]['id_chucvu'];$cv = $chucvu->get_one();
+						$c = count($cb['donvi']) - 1;
+						$chucvu->id = $cb['donvi'][$c]['id_chucvu'];$cv = $chucvu->get_one();
 						$tenchucvu = $cv['ten'];
 					} else{
 						$tenchucvu = '';
@@ -99,10 +101,12 @@ if(isset($canbo_list) && $canbo_list->count() >0){
 				if($cb['donvi']){
 					$donvi = new DonVi();$chucvu = new ChucVu();
 					if(isset($cb['donvi'][0]['id_donvi'][0]) && $cb['donvi'][0]['id_donvi'][0]){
-						$tendonvi = $donvi->tendonvi($cb['donvi'][0]['id_donvi']);
+						$c = count($cb['donvi']) - 1;
+						$tendonvi = $donvi->tendonvi($cb['donvi'][$c]['id_donvi']);
 					} else { $tendonvi = ''; $full_donvi='';}
 					if(isset($cb['donvi'][0]['id_chucvu']) && $cb['donvi'][0]['id_chucvu']){
-						$chucvu->id = $cb['donvi'][0]['id_chucvu'];$cv = $chucvu->get_one();
+						$c = count($cb['donvi']) - 1;
+						$chucvu->id = $cb['donvi'][$c]['id_chucvu'];$cv = $chucvu->get_one();
 						$tenchucvu = $cv['ten'];
 					} else{
 						$tenchucvu = '';

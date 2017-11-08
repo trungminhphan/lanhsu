@@ -8,7 +8,7 @@ class DoanVao{
 	public $congvanxinphep = array(); //id_donvi=array(1,2,3,4), ten, attachments = array(alias_name, filename, filetype), ngayky.
 	public $quyetdinhchophep = array(); //id_donvi, ten, attachments = array(alias_name, filename, filetype), ngaybanhanh
 	public $quyetdinhchophep_2= array(); //id_donvi, ten, attachments = array(alias_name, filename, filetype), ngaybanhanh
-	public $id_dmdoanvao = '';
+	public $id_dmdoanvao = ''; //array()
 	public $ngayden = '';
 	public $ngaydi = '';
 	public $noidung = ''; //noi dung lam viec
@@ -40,7 +40,7 @@ class DoanVao{
 						'congvanxinphep' => $this->congvanxinphep,
 						'quyetdinhchophep' => $this->quyetdinhchophep,
 						'quyetdinhchophep_2' => $this->quyetdinhchophep_2,
-						'id_dmdoanvao' => new MongoId($this->id_dmdoanvao),
+						'id_dmdoanvao' => $this->id_dmdoanvao,
 						'ngayden' => $this->ngayden,
 						'ngaydi' => $this->ngaydi,
 						//'id_donvi' => new MongoId($this->id_donvi),
@@ -93,7 +93,7 @@ class DoanVao{
 						'congvanxinphep' => $this->congvanxinphep,
 						'quyetdinhchophep' => $this->quyetdinhchophep,
 						'quyetdinhchophep_2' => $this->quyetdinhchophep_2,
-						'id_dmdoanvao' => new MongoId($this->id_dmdoanvao),
+						'id_dmdoanvao' => $this->id_dmdoanvao,
 						'ngayden' => $this->ngayden,
 						'ngaydi' => $this->ngaydi,
 						//'id_donvi' => new MongoId($this->id_donvi),
@@ -325,5 +325,12 @@ class DoanVao{
 		}
 		return $arr_canbo;
 	}
+
+	public function set_id_dmdoanvao($arr){
+		$query = array('$set' => array('id_dmdoanvao' => $arr));
+		$condition = array('_id' => new MongoId($this->id));
+		return $this->_collection->update($condition, $query);
+	}
 }
+
 ?>
