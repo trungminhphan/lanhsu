@@ -15,8 +15,9 @@ if(isset($_GET['submit'])){
 	} else {
 		$start_date = new MongoDate(convert_date_dd_mm_yyyy($tungay));
 		$end_date = new MongoDate(convert_date_dd_mm_yyyy($denngay));
-		array_push($query, array('ngaydi' => array('$gte' => $start_date)));
-		array_push($query, array('ngayve' => array('$lte' => $end_date)));
+		array_push($query, array('$or' => array(array('ngaydi' => array('$gte' => $start_date)), array('ngaydi' => array('$lte' => $end_date)))));
+		//array_push($query, array('ngaydi' => array('$gte' => $start_date)));
+		//array_push($query, array('ngayve' => array('$lte' => $end_date)));
 		if($id_kinhphi){
 			array_push($query, array('id_kinhphi' => new MongoId($id_kinhphi)));
 		}
@@ -50,7 +51,7 @@ if(isset($_GET['submit'])){
 				$(this).html('<span class="mif-plus"> Hiển thị tất cả');
 				$(".items_detail").hide();
 			}
-			
+
 		});
 
 	});
@@ -161,7 +162,7 @@ foreach ($arr_union_list as $u) {
 					$tendonvi = $donvi->tendonvi($ds['id_donvi']);
 				} else {$tendonvi = '';}
 				if(isset($ds['id_ham']) && $ds['id_ham']) {
-					$ham->id = $ds['id_ham']; $h=$ham->get_one(); $tenham=isset($h['ten']) ? $h['ten'] : ''; 
+					$ham->id = $ds['id_ham']; $h=$ham->get_one(); $tenham=isset($h['ten']) ? $h['ten'] : '';
 				} else { $tenham = '';}
 				if(count($cb['passport'])){
 					$count = count($cb['passport']) - 1;
@@ -186,7 +187,7 @@ foreach ($arr_union_list as $u) {
 					$tendonvi = $donvi->tendonvi($ds2['id_donvi']);
 				} else {$tendonvi = '';}
 				if(isset($ds2['id_ham']) && $ds2['id_ham']) {
-					$ham->id = $ds2['id_ham']; $h=$ham->get_one(); $tenham=isset($h['ten']) ? $h['ten'] : ''; 
+					$ham->id = $ds2['id_ham']; $h=$ham->get_one(); $tenham=isset($h['ten']) ? $h['ten'] : '';
 				} else { $tenham = '';}
 				if(count($cb['passport'])){
 					$count = count($cb['passport']) - 1;

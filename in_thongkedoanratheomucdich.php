@@ -14,8 +14,9 @@ if(isset($_GET['submit'])){
 	} else {
 		$start_date = new MongoDate(convert_date_dd_mm_yyyy($tungay));
 		$end_date = new MongoDate(convert_date_dd_mm_yyyy($denngay));
-		array_push($query, array('ngaydi' => array('$gte' => $start_date)));
-		array_push($query, array('ngayve' => array('$lte' => $end_date)));
+		//array_push($query, array('ngaydi' => array('$gte' => $start_date)));
+		//array_push($query, array('ngayve' => array('$lte' => $end_date)));
+		array_push($query, array('$or' => array(array('ngaydi' => array('$gte' => $start_date)), array('ngaydi' => array('$lte' => $end_date)))));
 		if($id_mucdich){
 			array_push($query, array('id_mucdich' => new MongoId($id_mucdich)));
 		}
@@ -44,7 +45,7 @@ if(isset($_GET['submit'])){
 </head>
 <body>
 <div class="place-left align-center">
-	<b>UBND TỈNH AN GIANG <br /> 
+	<b>UBND TỈNH AN GIANG <br />
 	SỞ NGOẠI VỤ</b> <br />_____________
 
 </div>

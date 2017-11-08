@@ -12,8 +12,9 @@ if(isset($_GET['submit'])){
 	} else {
 		$start_date = new MongoDate(convert_date_dd_mm_yyyy($tungay));
 		$end_date = new MongoDate(convert_date_dd_mm_yyyy($denngay));
-		array_push($query, array('ngaydi' => array('$gte' => $start_date)));
-		array_push($query, array('ngayve' => array('$lte' => $end_date)));
+		array_push($query, array('$or' => array(array('ngaydi' => array('$gte' => $start_date)), array('ngaydi' => array('$lte' => $end_date)))));
+		//array_push($query, array('ngaydi' => array('$gte' => $start_date)));
+		//array_push($query, array('ngayve' => array('$lte' => $end_date)));
 		//$query = array('$and' => $query);
 		$danhsachquocgia = $id_quocgia ? $quocgia->get_list_condition(array('_id' => new MongoId($id_quocgia))) : $quocgia->get_all_list();
 	}
@@ -91,12 +92,14 @@ if(isset($_GET['submit'])){
 		$q = $query;
 		array_push($q, array('id_quocgia' => $ds['_id']->{'$id'}));
 		$count = $doanra->get_list_condition(array('$and' => $q))->count();
-		echo '<tr>
-			<td>'.$i.'</td>
-			<td>'.$ds['ten'].'</td>
-			<td>'.$count.'</td>
-			<td><a href="chitietthongkedoanratheoquocgia.php?id_quocgia='.$ds['_id'].'&tungay='.$tungay.'&denngay='.$denngay.'&submit=OK" target="_blank"><span class="mif-cloud-upload"></span></a></td>
-		</tr>';	$i++;
+		if($count){
+			echo '<tr>
+				<td>'.$i.'</td>
+				<td>'.$ds['ten'].'</td>
+				<td>'.$count.'</td>
+				<td><a href="chitietthongkedoanratheoquocgia.php?id_quocgia='.$ds['_id'].'&tungay='.$tungay.'&denngay='.$denngay.'&submit=OK" target="_blank"><span class="mif-cloud-upload"></span></a></td>
+			</tr>';	$i++;
+		}
 	}
 	?>
 	</tbody>
