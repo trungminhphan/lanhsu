@@ -13,8 +13,8 @@ if(isset($_GET['submit'])){
 	} else {
 		$start_date = new MongoDate(convert_date_dd_mm_yyyy($tungay));
 		$end_date = new MongoDate(convert_date_dd_mm_yyyy($denngay));
-        array_push($query, array('$or' => array(array('ngaydi' => array('$gte' => $start_date)), array('ngaydi' => array('$lte' => $end_date)))));
-		//array_push($query, array('ngaydi' => array('$gte' => $start_date)));
+        array_push($query, array('ngaydi' => array('$gte' => $start_date)));
+        array_push($query, array('ngaydi' => array('$lte' => $end_date)));
 		//array_push($query, array('ngayve' => array('$lte' => $end_date)));
 		//$query = array('$and' => $query);
 		$danhsachquocgia = $id_quocgia ? $quocgia->get_list_condition(array('_id' => new MongoId($id_quocgia))) : $quocgia->get_all_list();

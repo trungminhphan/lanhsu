@@ -16,8 +16,8 @@ if(isset($_GET['submit'])){
 	} else {
 		$start_date = new MongoDate(convert_date_dd_mm_yyyy($tungay));
 		$end_date = new MongoDate(convert_date_dd_mm_yyyy($denngay));
-		array_push($query, array('$or' => array(array('ngaydi' => array('$gte' => $start_date)), array('ngaydi' => array('$lte' => $end_date)))));
-		//array_push($query, array('ngaydi' => array('$gte' => $start_date)));
+		array_push($query, array('ngaydi' => array('$gte' => $start_date)));
+		array_push($query, array('ngaydi' => array('$lte' => $end_date)));
 		//array_push($query, array('ngayve' => array('$lte' => $end_date)));
 		if($id_donvi && count($a) == 1){
 			array_push($query, array('$or' => array(array('danhsachdoan.id_donvi.0' => $id_donvi), array('danhsachdoan_2.id_donvi.0' => $id_donvi))));
